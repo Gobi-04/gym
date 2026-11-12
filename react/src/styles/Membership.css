@@ -1,0 +1,220 @@
+
+/* MEMBERSHIP SECTION */
+
+.membership-section {
+  width: 100%;
+  background: #050505;
+  padding: 65px 0 75px;
+  color: #f5f8e5;
+}
+
+.membership-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: auto;
+  padding: 0 7.5%;
+}
+
+/* HEADING */
+
+.membership-heading {
+  margin-bottom: 30px;
+}
+
+.membership-heading p {
+  color: #c5f900;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.membership-heading h2 {
+  color: #f5f8e5;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.membership-heading h2 span {
+  color: #c5f900;
+}
+
+/* PRICING GRID */
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+  align-items: stretch;
+}
+
+/* PRICING CARD */
+
+.pricing-card {
+  min-width: 0;
+  min-height: 327px;
+  padding: 18px 20px 12px;
+  border: 1px solid #718e00;
+  border-radius: 11px;
+  background: #080808;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s ease,
+              transform 0.3s ease;
+}
+
+.pricing-card:hover {
+  border-color: #c5f900;
+  transform: translateY(-3px);
+}
+
+/* PLAN TOP */
+
+.plan-top h3 {
+  color: #f5f8e5;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.plan-description {
+  color: #999999;
+  font-size: 9px;
+  line-height: 1.5;
+  min-height: 28px;
+}
+
+/* PRICE */
+
+.plan-price {
+  margin-top: 20px;
+  margin-bottom: 17px;
+}
+
+.plan-price h2 {
+  color: #f5f8e5;
+  font-size: 23px;
+  font-weight: 800;
+  margin-bottom: 7px;
+}
+
+.plan-price p {
+  color: #999999;
+  font-size: 9px;
+  margin-bottom: 8px;
+}
+
+.plan-badge {
+  display: inline-block;
+  color: #c5f900;
+  border: 1px solid #353535;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+/* BENEFITS */
+
+.plan-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 20px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.benefit-check {
+  color: #c5f900;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.benefit-item p {
+  color: #eeeeee;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* JOIN BUTTON */
+
+.plan-button {
+  width: 100%;
+  min-height: 34px;
+  margin-top: auto;
+  border: 1px solid #718e00;
+  border-radius: 30px;
+  background: transparent;
+  color: #f5f8e5;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.plan-button:hover {
+  background: #c5f900;
+  border-color: #c5f900;
+  color: #050505;
+}
+
+/* TABLET */
+
+@media (max-width: 1050px) {
+
+  .membership-container {
+    padding: 0 5%;
+  }
+
+  .pricing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .pricing-card {
+    min-height: 330px;
+  }
+
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .membership-section {
+    padding: 45px 0 55px;
+  }
+
+  .membership-container {
+    padding: 0 6%;
+  }
+
+  .membership-heading h2 {
+    font-size: 19px;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pricing-card {
+    min-height: 310px;
+    padding: 20px;
+  }
+
+  .plan-price h2 {
+    font-size: 25px;
+  }
+
+}

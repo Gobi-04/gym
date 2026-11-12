@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "dev": "npm --prefix react run dev",
+    "build": "npm --prefix react run build",
+    "preview": "npm --prefix react run preview"
+  },
+  "dependencies": {
+    "lucide-react": "^1.72.0"
+  }
+}
