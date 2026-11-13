@@ -8,9 +8,17 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Payment from './components/Payment';
 import MemberDashboard from './components/MemberDashboard';
+import { Route, Routes, useSearchParams } from 'react-router-dom';
 import './App.css';
 
-function App() {
+function LoginPage() {
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('mode') === 'signup' ? 'signup' : 'login';
+
+  return <Payment initialTab={initialTab} />;
+}
+
+function LandingPage() {
   return (
     <>
       <Navbar />
@@ -21,14 +29,19 @@ function App() {
         <Membership />
         <Reviews />
         <Contact />
-         <Payment />
-        <MemberDashboard/>
+        <MemberDashboard />
         <Footer />
-       
-      
       </main>
-      
     </>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="*" element={<LandingPage />} />
+    </Routes>
   );
 }
 

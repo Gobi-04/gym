@@ -14,8 +14,8 @@ import {
 
 import "../styles/Payment.css";
 
-function Payment() {
-  const [activeTab, setActiveTab] = useState("login");
+function Payment({ initialTab = "login" }) {
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
