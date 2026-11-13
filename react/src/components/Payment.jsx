@@ -21,6 +21,7 @@ function Payment() {
   const [rememberMe, setRememberMe] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedPlan, setSelectedPlan] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("UPI");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -60,6 +61,7 @@ function Payment() {
     { id: "quarterly", name: "Quarterly", duration: "3 Months", price: "₹4,000" },
     { id: "annual", name: "Annual", duration: "12 Month", price: "₹14,000" },
   ];
+  const chosenPlan = plans.find((plan) => plan.id === selectedPlan);
 
   return (
     <div className="gym-page">
@@ -86,7 +88,7 @@ function Payment() {
         )}
 
         {/* Form Card */}
-        <div className={`signup-card ${activeTab === "login" ? "login-card" : ""} ${activeTab === "signup" && currentStep === 2 ? "plan-card" : ""}`}>
+        <div className={`signup-card ${activeTab === "login" ? "login-card" : ""} ${activeTab === "signup" && currentStep >= 2 ? "plan-card" : ""}`}>
           {activeTab === "login" && (
             <a href="#" className="public-link login-public-link">
               <FiExternalLink />
@@ -129,9 +131,76 @@ function Payment() {
                   type="button"
                   className="plan-continue"
                   disabled={!selectedPlan}
-                  onClick={() => alert(`Selected plan: ${plans.find((plan) => plan.id === selectedPlan)?.name}`)}
+                  onClick={() => setCurrentStep(3)}
                 >
                   Continue
+                </button>
+              </div>
+            </div>
+          ) : activeTab === "signup" && currentStep === 3 ? (
+            <div className="payment-selection">
+              <h1 className="gym-heading">JOIN UNISEX GYM</h1>
+              <div className="steps plan-steps">
+                <button type="button" className="step" onClick={() => setCurrentStep(1)}>1. Account</button>
+                <button type="button" className="step" onClick={() => setCurrentStep(2)}>2. Plan</button>
+                <div className="step active">3. Payment</div>
+                <div className="step">4. Done</div>
+              </div>
+
+              <div className="payment-panel">
+                <h2>Payment</h2>
+                <div className="payment-summary">
+                  <span>{chosenPlan?.name} Plan . {chosenPlan?.duration}</span>
+                  <strong>{chosenPlan?.price}</strong>
+                </div>
+
+                <fieldset className="payment-methods">
+                  <legend className="visually-hidden">Choose a payment method</legend>
+                  {["UPI", "Card", "Net Banking"].map((method) => (
+                    <label className="payment-method" key={method}>
+                      <input
+                        type="radio"
+                        name="payment-method"
+                        value={method}
+                        checked={paymentMethod === method}
+                        onChange={() => setPaymentMethod(method)}
+                      />
+                      <span>{method}</span>
+                    </label>
+                  ))}
+                </fieldset>
+
+                <p className="payment-disclaimer">
+                  Demo only: no real payment is taken and the result below is simulated. In production the payment provider collects payment details and your account activates only after the server verifies it.
+                </p>
+
+                <div className="payment-actions">
+                  <button type="button" className="plan-back" onClick={() => setCurrentStep(2)}>
+                    Back
+                  </button>
+                  <button type="button" className="demo-pay-button" onClick={() => setCurrentStep(4)}>
+                    Pay {chosenPlan?.price} with {paymentMethod} (demo)
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : activeTab === "signup" && currentStep === 4 ? (
+            <div className="payment-success">
+              <h1 className="gym-heading">JOIN UNISEX GYM</h1>
+              <div className="steps plan-steps">
+                <div className="step">1. Account</div>
+                <div className="step">2. Plan</div>
+                <div className="step">3. Payment</div>
+                <div className="step active">4. Done</div>
+              </div>
+              <div className="success-panel">
+                <h2>Welcome to UNISEX GYM</h2>
+                <p><FiCheck /> Payment verified</p>
+                <button type="button" className="demo-pay-button" onClick={() => {
+                  setActiveTab("login");
+                  setCurrentStep(1);
+                }}>
+                  Next
                 </button>
               </div>
             </div>

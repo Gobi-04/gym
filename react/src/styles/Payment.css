@@ -481,6 +481,129 @@
   cursor: not-allowed;
 }
 
+.payment-selection .gym-heading,
+.payment-success .gym-heading {
+  margin: 0;
+  text-align: center;
+  font-size: 30px;
+}
+
+.payment-panel {
+  min-height: 656px;
+  padding: 54px 60px;
+  background: #1b1f0c;
+  color: #f3f5e8;
+}
+
+.payment-panel h2,
+.success-panel h2 {
+  margin: 0 0 34px;
+  font-size: 28px;
+}
+
+.payment-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 48px;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.payment-summary strong {
+  flex-shrink: 0;
+  color: #c5ff16;
+  font-size: 20px;
+}
+
+.payment-methods {
+  display: grid;
+  gap: 22px;
+  border: 0;
+  padding: 0;
+  margin: 0 0 30px;
+}
+
+.payment-method {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  margin: 0 !important;
+  color: #f3f5e8 !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+}
+
+.payment-method input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #c5ff16;
+}
+
+.payment-disclaimer {
+  max-width: 760px;
+  margin-bottom: 38px;
+  color: #a9aa9f;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.payment-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.demo-pay-button {
+  min-height: 44px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 24px;
+  background: #c5ff16;
+  color: #10110b;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.success-panel {
+  min-height: 354px;
+  padding: 56px 60px;
+  background: #1b1f0c;
+  color: #f3f5e8;
+}
+
+.success-panel p {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  margin-bottom: 42px;
+  border: 1px solid #c5ff16;
+  border-radius: 10px;
+  color: #f3f5e8;
+  font-size: 18px;
+}
+
+.success-panel p svg {
+  color: #c5ff16;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
 @media (max-width: 500px) {
   .gym-container {
     padding: 30px 12px;
@@ -562,6 +685,56 @@
     min-width: 96px;
     height: 38px;
     font-size: 13px;
+  }
+
+  .payment-selection .gym-heading,
+  .payment-success .gym-heading {
+    font-size: 22px;
+  }
+
+  .payment-panel,
+  .success-panel {
+    min-height: 0;
+    padding: 26px 18px;
+  }
+
+  .payment-panel h2,
+  .success-panel h2 {
+    margin-bottom: 24px;
+    font-size: 21px;
+  }
+
+  .payment-summary {
+    gap: 10px;
+    margin-bottom: 32px;
+    font-size: 14px;
+  }
+
+  .payment-summary strong {
+    font-size: 15px;
+  }
+
+  .payment-method {
+    font-size: 14px !important;
+  }
+
+  .payment-disclaimer {
+    margin-bottom: 26px;
+    font-size: 12px;
+  }
+
+  .payment-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .payment-actions .plan-back,
+  .demo-pay-button {
+    width: 100%;
+  }
+
+  .success-panel p {
+    font-size: 14px;
   }
 }
 
