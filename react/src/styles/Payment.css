@@ -258,6 +258,126 @@
   margin: 12px 0 20px;
 }
 
+.gym-container.login-mode {
+  min-height: 100vh;
+  padding: 54px 20px;
+  background: #050505;
+  border-radius: 0;
+  color: #111111;
+}
+
+.login-card {
+  max-width: 768px;
+  padding: 20px 42px 44px;
+  background: #1e1e1e;
+}
+
+.login-public-link {
+  width: fit-content;
+  margin: 0 auto 34px;
+}
+
+.login-card .auth-tabs {
+  margin-bottom: 36px;
+}
+
+.login-view {
+  max-width: 576px;
+  margin: 0 auto;
+}
+
+.login-view h2 {
+  color: #c5ff16;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.login-description {
+  max-width: 460px;
+  margin: 0 auto 30px;
+  color: #a0a0a0;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.login-form > label:first-child,
+.login-password-heading label {
+  color: #bdbdbd;
+  font-size: 10px;
+}
+
+.login-view .input-box {
+  height: 48px;
+  margin-bottom: 20px;
+  border-radius: 9px;
+}
+
+.login-view .input-box input {
+  font-size: 12px;
+}
+
+.login-password-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.login-password-heading label {
+  margin-bottom: 0;
+}
+
+.forgot-password {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #c5ff16;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.remember-option {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 18px !important;
+  color: #9a9a9a !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  cursor: pointer;
+}
+
+.remember-option input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #c5ff16;
+}
+
+.login-view .continue-btn {
+  height: 52px;
+  font-size: 12px;
+}
+
+.login-view .login-text {
+  margin-top: 24px;
+  font-size: 11px;
+}
+
+.login-view .login-text button {
+  border: 0;
+  padding: 0;
+  margin-left: 4px;
+  background: transparent;
+  color: #c5ff16;
+  font-size: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 @media (max-width: 500px) {
   .gym-container {
     padding: 30px 12px;
@@ -283,6 +403,26 @@
 
   .tab {
     font-size: 9px;
+  }
+
+  .gym-container.login-mode {
+    padding: 32px 12px;
+  }
+
+  .login-card {
+    padding: 16px 14px 28px;
+  }
+
+  .login-public-link {
+    margin-bottom: 24px;
+  }
+
+  .login-card .auth-tabs {
+    margin-bottom: 26px;
+  }
+
+  .login-view h2 {
+    font-size: 20px;
   }
 }
 

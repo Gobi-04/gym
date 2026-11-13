@@ -15,9 +15,10 @@ import {
 import "../styles/Payment.css";
 
 function Payment() {
-  const [activeTab, setActiveTab] = useState("signup");
+  const [activeTab, setActiveTab] = useState("login");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -54,27 +55,36 @@ function Payment() {
 
   return (
     <div className="gym-page">
-      <div className="gym-container">
+      <div className={`gym-container ${activeTab === "login" ? "login-mode" : ""}`}>
 
-        <a href="#" className="public-link">
-          <FiExternalLink />
-          Public Site
-        </a>
+        {activeTab !== "login" && (
+          <a href="#" className="public-link">
+            <FiExternalLink />
+            Public Site
+          </a>
+        )}
 
-        <h1 className="gym-heading">JOIN UNISEX GYM</h1>
+        {activeTab !== "login" && (
+          <>
+            <h1 className="gym-heading">JOIN UNISEX GYM</h1>
 
-        {/* Steps */}
-        <div className="steps">
-          <div className="step active">
-            1. Account
-          </div>
-          <div className="step">2. Plan</div>
-          <div className="step">3. Payment</div>
-          <div className="step">4. Done</div>
-        </div>
+            <div className="steps">
+              <div className="step active">1. Account</div>
+              <div className="step">2. Plan</div>
+              <div className="step">3. Payment</div>
+              <div className="step">4. Done</div>
+            </div>
+          </>
+        )}
 
         {/* Form Card */}
-        <div className="signup-card">
+        <div className={`signup-card ${activeTab === "login" ? "login-card" : ""}`}>
+          {activeTab === "login" && (
+            <a href="#" className="public-link login-public-link">
+              <FiExternalLink />
+              Public Site
+            </a>
+          )}
 
           {/* Login / Signup Tabs */}
           <div className="auth-tabs">
@@ -237,15 +247,74 @@ function Payment() {
               </p>
             </>
           ) : (
-            <div className="login-placeholder">
-              <h2>Welcome Back!</h2>
-              <p>Login form can be added here.</p>
-              <button
-                className="continue-btn"
-                onClick={() => setActiveTab("signup")}
-              >
-                Create New Account
-              </button>
+            <div className="login-view">
+              <h2>MEMBER LOGIN</h2>
+              <p className="login-description">
+                Only paid members can enter the portal. Demo: use an account
+                you create via Join Now, or the demo member below.
+              </p>
+
+              <form className="login-form" onSubmit={(e) => e.preventDefault()}>
+                <label htmlFor="login-email">EMAIL ADDRESS OR MOBILE NUMBER</label>
+                <div className="input-box">
+                  <FiMail />
+                  <input
+                    id="login-email"
+                    type="text"
+                    name="login"
+                    placeholder="e.g. arjun.kapoor@example.com"
+                    autoComplete="username"
+                    required
+                  />
+                </div>
+
+                <div className="login-password-heading">
+                  <label htmlFor="login-password">PASSWORD</label>
+                  <button type="button" className="forgot-password">
+                    Forgot Password?
+                  </button>
+                </div>
+                <div className="input-box">
+                  <FiLock />
+                  <input
+                    id="login-password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Enter your password"
+                    autoComplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="eye-btn"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
+                </div>
+
+                <label className="remember-option">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  <span>Remember me on this browser</span>
+                </label>
+
+                <button type="submit" className="continue-btn">
+                  Sign In to Member Dashboard
+                  <FiArrowRight />
+                </button>
+              </form>
+
+              <p className="login-text">
+                Don&apos;t have a FITGUIDE account yet?
+                <button type="button" onClick={() => setActiveTab("signup")}>
+                  Create Account &amp; Join Now
+                </button>
+              </p>
             </div>
           )}
 
