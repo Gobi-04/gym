@@ -7,8 +7,7 @@ import Reviews from './components/Reviews';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Payment from './components/Payment';
-// import GymSignUp from '.components/GymSignUp';
-// import Loginpage from './components/Loginpage';
+import MemberDashboard from './components/MemberDashboard';
 import './App.css';
 
 function App() {
@@ -23,7 +22,7 @@ function App() {
         <Reviews />
         <Contact />
          <Payment />
-        
+        <MemberDashboard/>
         <Footer />
        
       
