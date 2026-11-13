@@ -6,7 +6,9 @@ import Membership from './components/Membership';
 import Reviews from './components/Reviews';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-
+import Payment from './components/Payment';
+// import GymSignUp from '.components/GymSignUp';
+// import Loginpage from './components/Loginpage';
 import './App.css';
 
 function App() {
@@ -20,10 +22,16 @@ function App() {
         <Membership />
         <Reviews />
         <Contact />
+         <Payment />
+        
         <Footer />
+       
+      
       </main>
+      
     </>
   );
 }
+
 
 export default App;
