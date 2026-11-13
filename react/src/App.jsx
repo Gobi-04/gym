@@ -8,6 +8,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Payment from './components/Payment';
 import MemberDashboard from './components/MemberDashboard';
+import FitnessOnboarding from './components/FitnessOnboarding';
 import { Route, Routes, useSearchParams } from 'react-router-dom';
 import './App.css';
 
@@ -29,7 +30,6 @@ function LandingPage() {
         <Membership />
         <Reviews />
         <Contact />
-        <MemberDashboard />
         <Footer />
       </main>
     </>
@@ -40,6 +40,8 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/onboarding" element={<FitnessOnboarding />} />
+      <Route path="/dashboard" element={<MemberDashboard />} />
       <Route path="*" element={<LandingPage />} />
     </Routes>
   );

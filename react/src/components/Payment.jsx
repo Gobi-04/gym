@@ -11,10 +11,12 @@ import {
   FiEyeOff,
   FiCheck,
 } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 import "../styles/Payment.css";
 
 function Payment({ initialTab = "login" }) {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(initialTab);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -196,10 +198,7 @@ function Payment({ initialTab = "login" }) {
               <div className="success-panel">
                 <h2>Welcome to UNISEX GYM</h2>
                 <p><FiCheck /> Payment verified</p>
-                <button type="button" className="demo-pay-button" onClick={() => {
-                  setActiveTab("login");
-                  setCurrentStep(1);
-                }}>
+                <button type="button" className="demo-pay-button" onClick={() => navigate("/onboarding")}>
                   Next
                 </button>
               </div>
