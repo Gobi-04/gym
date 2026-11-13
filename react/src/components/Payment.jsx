@@ -19,6 +19,8 @@ function Payment() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [selectedPlan, setSelectedPlan] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -50,27 +52,33 @@ function Payment() {
       return;
     }
 
-    alert("Account details submitted successfully!");
+    setCurrentStep(2);
   };
+
+  const plans = [
+    { id: "monthly", name: "Monthly", duration: "1 Month", price: "₹1,500" },
+    { id: "quarterly", name: "Quarterly", duration: "3 Months", price: "₹4,000" },
+    { id: "annual", name: "Annual", duration: "12 Month", price: "₹14,000" },
+  ];
 
   return (
     <div className="gym-page">
       <div className={`gym-container ${activeTab === "login" ? "login-mode" : ""}`}>
 
-        {activeTab !== "login" && (
+        {activeTab === "signup" && currentStep === 1 && (
           <a href="#" className="public-link">
             <FiExternalLink />
             Public Site
           </a>
         )}
 
-        {activeTab !== "login" && (
+        {activeTab === "signup" && currentStep === 1 && (
           <>
             <h1 className="gym-heading">JOIN UNISEX GYM</h1>
 
             <div className="steps">
-              <div className="step active">1. Account</div>
-              <div className="step">2. Plan</div>
+              <button type="button" className="step active" onClick={() => setCurrentStep(1)}>1. Account</button>
+              <button type="button" className="step" onClick={() => setCurrentStep(2)}>2. Plan</button>
               <div className="step">3. Payment</div>
               <div className="step">4. Done</div>
             </div>
@@ -78,7 +86,7 @@ function Payment() {
         )}
 
         {/* Form Card */}
-        <div className={`signup-card ${activeTab === "login" ? "login-card" : ""}`}>
+        <div className={`signup-card ${activeTab === "login" ? "login-card" : ""} ${activeTab === "signup" && currentStep === 2 ? "plan-card" : ""}`}>
           {activeTab === "login" && (
             <a href="#" className="public-link login-public-link">
               <FiExternalLink />
@@ -86,6 +94,49 @@ function Payment() {
             </a>
           )}
 
+          {activeTab === "signup" && currentStep === 2 ? (
+            <div className="plan-selection">
+              <h1 className="gym-heading">JOIN UNISEX GYM</h1>
+              <div className="steps plan-steps">
+                <button type="button" className="step" onClick={() => setCurrentStep(1)}>1. Account</button>
+                <button type="button" className="step active" onClick={() => setCurrentStep(2)}>2. Plan</button>
+                <div className="step">3. Payment</div>
+                <div className="step">4. Done</div>
+              </div>
+
+              <div className="plan-options" role="radiogroup" aria-label="Membership plan">
+                {plans.map((plan) => (
+                  <label className={`plan-option ${selectedPlan === plan.id ? "selected" : ""}`} key={plan.id}>
+                    <input
+                      type="radio"
+                      name="membership-plan"
+                      value={plan.id}
+                      checked={selectedPlan === plan.id}
+                      onChange={() => setSelectedPlan(plan.id)}
+                    />
+                    <span className="plan-name">{plan.name}</span>
+                    <span className="plan-duration">{plan.duration}</span>
+                    <span className="plan-price">{plan.price}</span>
+                  </label>
+                ))}
+              </div>
+
+              <div className="plan-actions">
+                <button type="button" className="plan-back" onClick={() => setCurrentStep(1)}>
+                  Back
+                </button>
+                <button
+                  type="button"
+                  className="plan-continue"
+                  disabled={!selectedPlan}
+                  onClick={() => alert(`Selected plan: ${plans.find((plan) => plan.id === selectedPlan)?.name}`)}
+                >
+                  Continue
+                </button>
+              </div>
+            </div>
+          ) : (
+          <>
           {/* Login / Signup Tabs */}
           <div className="auth-tabs">
             <button
@@ -318,6 +369,8 @@ function Payment() {
             </div>
           )}
 
+          </>
+          )}
         </div>
       </div>
     </div>
