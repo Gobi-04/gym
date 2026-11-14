@@ -178,6 +178,15 @@
   justify-content: space-between;
   padding: 17px 8px;
   min-width: 0;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.other-coach-card:hover,
+.other-coach-card.active {
+  border-color: #dfff3b;
+  box-shadow: 0 0 0 1px rgba(197, 249, 0, 0.35), 0 0 18px rgba(197, 249, 0, 0.18);
+  transform: translateY(-1px);
 }
 
 .other-coach-card h3 {
