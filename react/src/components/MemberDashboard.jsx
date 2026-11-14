@@ -625,20 +625,6 @@ function MemberDashboard() {
                 </button>
               ))}
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div className="diet-focus-card">
               <div className="calendar-icon diet-icon">
                 <FiCoffee />
