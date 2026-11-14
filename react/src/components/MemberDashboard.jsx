@@ -173,6 +173,7 @@ const days = [
 function MemberDashboard() {
   const [activeMenu, setActiveMenu] = useState("My Workouts");
   const [activeDay, setActiveDay] = useState("Mon");
+  const [activeDietDay, setActiveDietDay] = useState("Mon");
   const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [completed, setCompleted] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -603,6 +604,40 @@ function MemberDashboard() {
                 </button>
               </div>
             </div>
+
+
+
+            {/* WEEKLY DIET DAYS */}
+            <div className="weekly-schedule">
+              {days.map(([day, label]) => (
+                <button
+                  type="button"
+                  key={day}
+                  className={
+                    activeDietDay === day
+                      ? "day-card active-day"
+                      : "day-card"
+                  }
+                  onClick={() => setActiveDietDay(day)}
+                >
+                  <strong>{day}</strong>
+                  <span>{label}</span>
+                </button>
+              ))}
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <div className="diet-focus-card">
               <div className="calendar-icon diet-icon">
