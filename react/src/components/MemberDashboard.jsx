@@ -183,6 +183,24 @@ function MemberDashboard() {
 
   const currentDietPlan = dietPlanData[selectedDiet];
 
+  const membershipPackages = [
+    { name: "1 Month", price: "₹1,500", badge: "1 Month" },
+    { name: "3 Months", price: "₹4,000", badge: "3 Months" },
+    { name: "6 Months", price: "₹7,500", badge: "6 Months" },
+    { name: "12 Months", price: "₹14,000", badge: "12 Months" },
+  ];
+
+  const paymentHistory = [
+    {
+      receipt: "FG-ROC-2026-8841",
+      packageName: "Quarterly Membership",
+      date: "01 Nov 2026, 10:45 AM",
+      method: "UPI / Google Pay (PhonePe)",
+      amount: "₹4,499",
+      status: "Paid",
+    },
+  ];
+
   const menuItems = [
     { name: "Dashboard", icon: <FiGrid /> },
     { name: "My Workouts", icon: <FiActivity /> },
@@ -603,6 +621,121 @@ function MemberDashboard() {
                   </div>
                 </div>
               ))}
+            </div>
+          </section>
+
+        ) : activeMenu === "Membership & Payments" ? (
+
+          <section className="membership-content">
+            <span className="section-label">MEMBER PORTAL</span>
+
+            <div className="membership-header-row">
+              <div>
+                <h1>MEMBERSHIP &amp; PAYMENTS</h1>
+                <p>Manage your active subscription, access official tax invoices, and download PDF receipts.</p>
+              </div>
+
+              <button className="download-btn">Download Latest Receipt(PDF)</button>
+            </div>
+
+            <div className="membership-card">
+              <div className="membership-card-header">
+                <div className="payment-badge-wrap">
+                  <span className="green-dot" />
+                  <span className="member-status">MEMBERSHIP ACTIVE</span>
+                </div>
+
+                <div className="summary-tag">Paid &amp; Verified</div>
+              </div>
+
+              <div className="membership-main-row">
+                <div className="membership-title">
+                  <h2>QUARTERLY MEMBERSHIP</h2>
+                  <p>Includes unlimited equipment access and exclusive fitness classes.</p>
+                </div>
+
+                <div className="membership-summary-box">
+                  <div className="summary-row">
+                    <span>Membership Fee</span>
+                    <strong>₹4,499</strong>
+                  </div>
+                  <div className="summary-row">
+                    <span>Payment Status</span>
+                    <strong>Paid &amp; Verified</strong>
+                  </div>
+                  <div className="summary-row">
+                    <span>Expiry Date</span>
+                    <strong>31 Jan 2027</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className="membership-meta-grid">
+                <div className="meta-item">
+                  <span className="meta-label">Start Date</span>
+                  <strong>01 Nov 2026</strong>
+                </div>
+                <div className="meta-item">
+                  <span className="meta-label">Renewal Due</span>
+                  <strong>31 Jan 2027</strong>
+                </div>
+                <div className="meta-item">
+                  <span className="meta-label">Next Renewal</span>
+                  <strong>Assigned to Coach Marcus</strong>
+                </div>
+              </div>
+            </div>
+
+            <div className="payment-history-section">
+              <div className="section-heading-row">
+                <h3>Payment &amp; Receipt History</h3>
+                <p>Official downloadable GST receipts for tax compliance and record keeping.</p>
+              </div>
+
+              <div className="receipt-table-wrap">
+                <table className="receipt-table">
+                  <thead>
+                    <tr>
+                      <th>Receipt Number</th>
+                      <th>Package</th>
+                      <th>Date &amp; Time</th>
+                      <th>Method</th>
+                      <th>Amount</th>
+                      <th>Invoice</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paymentHistory.map((item) => (
+                      <tr key={item.receipt}>
+                        <td>{item.receipt}</td>
+                        <td>{item.packageName}</td>
+                        <td>{item.date}</td>
+                        <td>{item.method}</td>
+                        <td>₹4,499</td>
+                        <td><button className="view-receipt">View Receipt</button></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="renewal-section">
+              <div className="section-heading-row">
+                <h3>Available Renewal &amp; Upgrade Packages</h3>
+                <p>Flexible plans for continued access with better value and extended training support.</p>
+              </div>
+
+              <div className="package-grid">
+                {membershipPackages.map((plan) => (
+                  <div key={plan.badge} className="package-card">
+                    <div className="package-badge">{plan.badge}</div>
+                    <h4>{plan.name}</h4>
+                    <div className="package-price">{plan.price}</div>
+                    <button className="package-button">Select Plan</button>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 

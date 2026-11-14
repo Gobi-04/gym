@@ -604,6 +604,298 @@
   font-size: 12px;
 }
 
+/* MEMBERSHIP & PAYMENTS */
+
+.membership-content {
+  max-width: 1180px;
+  padding: 35px 28px 40px;
+  margin: auto;
+}
+
+.membership-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.membership-header-row h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.membership-header-row p {
+  color: #8f8f8f;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.download-btn {
+  background: #c5ff16;
+  border: none;
+  color: #101010;
+  font-weight: 700;
+  font-size: 11px;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.membership-card {
+  background: #171717;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 20px 22px 18px;
+  margin-bottom: 28px;
+}
+
+.membership-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.payment-badge-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #c5ff16;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.green-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #c5ff16;
+  display: inline-block;
+}
+
+.summary-tag {
+  background: rgba(197, 255, 22, 0.15);
+  border: 1px solid #6b7a00;
+  color: #c5ff16;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.membership-main-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.membership-title h2 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #f2f2f2;
+}
+
+.membership-title p {
+  color: #8f8f8f;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.membership-summary-box {
+  width: 360px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #b3b3b3;
+  font-size: 11px;
+  padding: 7px 0;
+}
+
+.summary-row strong {
+  color: #f1f1f1;
+  font-size: 11px;
+}
+
+.membership-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.meta-item {
+  background: #0d0d0d;
+  border: 1px solid #2c2c2c;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.meta-label {
+  color: #8f8f8f;
+  font-size: 10px;
+}
+
+.meta-item strong {
+  font-size: 12px;
+  color: #ededed;
+}
+
+.payment-history-section,
+.renewal-section {
+  margin-top: 24px;
+}
+
+.section-heading-row {
+  margin-bottom: 16px;
+}
+
+.section-heading-row h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.section-heading-row p {
+  color: #8d8d8d;
+  font-size: 12px;
+}
+
+.receipt-table-wrap {
+  background: #171717;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.receipt-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #e5e5e5;
+}
+
+.receipt-table thead {
+  background: #111111;
+}
+
+.receipt-table th,
+.receipt-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #2d2d2d;
+  font-size: 11px;
+}
+
+.receipt-table th {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #d9d9d9;
+}
+
+.receipt-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.view-receipt {
+  background: transparent;
+  border: 1px solid #3d3d3d;
+  color: #c5ff16;
+  border-radius: 5px;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+
+.package-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.package-card {
+  background: #171717;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 18px 16px;
+}
+
+.package-badge {
+  background: #232323;
+  color: #c5ff16;
+  border: 1px solid #536100;
+  border-radius: 6px;
+  padding: 7px 8px;
+  font-size: 9px;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+
+.package-card h4 {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.package-price {
+  color: #c5ff16;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.package-button {
+  width: 100%;
+  background: #c5ff16;
+  border: none;
+  border-radius: 8px;
+  color: #101010;
+  padding: 10px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .membership-main-row,
+  .membership-header-row {
+    flex-direction: column;
+  }
+
+  .membership-summary-box {
+    width: 100%;
+  }
+
+  .membership-meta-grid,
+  .package-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .membership-content {
+    padding: 28px 14px 30px;
+  }
+
+  .membership-meta-grid,
+  .package-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .receipt-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
 /* DIET PLAN */
 
 .diet-plan-content {
