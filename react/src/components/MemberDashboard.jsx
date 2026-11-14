@@ -544,39 +544,43 @@ function MemberDashboard() {
 
           <section className="diet-plan-content">
             <span className="section-label">MEMBER PORTAL</span>
-            <h1>MY DIET PLAN</h1>
-            <p className="diet-plan-description">
-              Welcome to your My Diet Plan section.
-            </p>
+            <div className="diet-plan-header">
+              <div>
+                <h1>MY DIET PLAN</h1>
+                <p className="diet-plan-description">
+                  Assigned for MUSCLE BUILDING - Whole Food Performance Fuel
+                </p>
+              </div>
 
-            <div className="diet-toggle-row">
-              <button
-                type="button"
-                className={selectedDiet === "non-vegetarian" ? "diet-toggle active" : "diet-toggle"}
-                onClick={() => setSelectedDiet("non-vegetarian")}
-              >
-                Non-Vegetarian
-              </button>
-              <button
-                type="button"
-                className={selectedDiet === "vegetarian" ? "diet-toggle active" : "diet-toggle"}
-                onClick={() => setSelectedDiet("vegetarian")}
-              >
-                Vegetarian
-              </button>
+              <div className="diet-toggle-row">
+                <button
+                  type="button"
+                  className={selectedDiet === "non-vegetarian" ? "diet-toggle active" : "diet-toggle"}
+                  onClick={() => setSelectedDiet("non-vegetarian")}
+                >
+                  Non-Vegetarian
+                </button>
+                <button
+                  type="button"
+                  className={selectedDiet === "vegetarian" ? "diet-toggle active" : "diet-toggle"}
+                  onClick={() => setSelectedDiet("vegetarian")}
+                >
+                  Vegetarian
+                </button>
+              </div>
             </div>
 
             <div className="diet-focus-card">
-              <div className="calendar-icon">
+              <div className="calendar-icon diet-icon">
                 <FiCoffee />
               </div>
 
-              <div className="focus-details">
+              <div className="focus-details diet-focus-details">
                 <small>{currentDietPlan.label.toUpperCase()} PLAN</small>
                 <h2>{currentDietPlan.focus}</h2>
               </div>
 
-              <span className="exercise-count">{currentDietPlan.description}</span>
+              <span className="diet-plan-note">{currentDietPlan.description}</span>
             </div>
 
             <div className="diet-grid">
