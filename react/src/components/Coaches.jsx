@@ -133,6 +133,7 @@ function Coaches() {
             <div
               className={`other-coach-card ${selectedCoachId === coach.id ? 'active' : ''}`}
               key={coach.number}
+              onMouseEnter={() => setSelectedCoachId(coach.id)}
               onClick={() => setSelectedCoachId(coach.id)}
             >
 
