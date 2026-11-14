@@ -196,10 +196,26 @@ function MemberDashboard() {
       packageName: "Quarterly Membership",
       date: "01 Nov 2026, 10:45 AM",
       method: "UPI / Google Pay (PhonePe)",
-      amount: "₹4,499",
+      amount: 4499,
+      gst: 1000,
+      total: 5499,
       status: "Paid",
+      customer: {
+        name: "Karan Verma",
+        phone: "+91 98765 43210",
+        email: "karan.verma@example.com",
+        memberId: "FITGUIDE-001",
+      },
+      startDate: "01 Nov 2026",
+      expiryDate: "31 Jan 2027",
+      duration: "3 Months",
+      transactionId: "TXN-2026-8841",
+      paymentType: "Google Pay / UPI",
     },
   ];
+
+  const latestReceipt = paymentHistory[0];
+  const [viewReceipt, setViewReceipt] = useState(null);
 
   const menuItems = [
     { name: "Dashboard", icon: <FiGrid /> },
@@ -635,7 +651,12 @@ function MemberDashboard() {
                 <p>Manage your active subscription, access official tax invoices, and download PDF receipts.</p>
               </div>
 
-              <button className="download-btn">Download Latest Receipt(PDF)</button>
+              <button
+                className="download-btn"
+                onClick={() => setViewReceipt(latestReceipt)}
+              >
+                Download Latest Receipt(PDF)
+              </button>
             </div>
 
             <div className="membership-card">
@@ -711,8 +732,15 @@ function MemberDashboard() {
                         <td>{item.packageName}</td>
                         <td>{item.date}</td>
                         <td>{item.method}</td>
-                        <td>₹4,499</td>
-                        <td><button className="view-receipt">View Receipt</button></td>
+                        <td>₹{item.amount.toLocaleString("en-IN")}</td>
+                        <td>
+                          <button
+                            className="view-receipt"
+                            onClick={() => setViewReceipt(item)}
+                          >
+                            View Receipt
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -756,6 +784,128 @@ function MemberDashboard() {
             </button>
           </section>
 
+        )}
+
+        {viewReceipt && (
+          <div className="receipt-modal-backdrop" onClick={() => setViewReceipt(null)}>
+            <div className="receipt-modal" onClick={(event) => event.stopPropagation()}>
+              <div className="receipt-modal-header">
+                <div className="receipt-company">
+                  <span className="receipt-brand">FITGUIDE</span>
+                  <small>Fitness Performance Gym & Fitness Center</small>
+                </div>
+
+                <div className="receipt-action-row">
+                  <span className="receipt-badge">VERIFIED GYM TAX INVOICE</span>
+                  <button
+                    className="receipt-print-button"
+                    onClick={() => window.print()}
+                  >
+                    Download PDF
+                  </button>
+                </div>
+              </div>
+
+              <div className="receipt-card-box">
+                <div className="receipt-card-top">
+                  <div className="receipt-user-block">
+                    <span className="receipt-user-label">Member Name</span>
+                    <strong>{viewReceipt.customer.name}</strong>
+                  </div>
+
+                  <div className="receipt-user-meta">
+                    <span>{viewReceipt.customer.memberId}</span>
+                    <span>{viewReceipt.status}</span>
+                  </div>
+                </div>
+
+                <div className="receipt-profile-row">
+                  <div className="receipt-profile-name">
+                    <span className="receipt-avatar">{viewReceipt.customer.name.split(" ")[0][0]}</span>
+                    <div>
+                      <strong>{viewReceipt.customer.name}</strong>
+                      <small>{viewReceipt.packageName}</small>
+                    </div>
+                  </div>
+                  <div className="receipt-amount-tag">₹{viewReceipt.total.toLocaleString("en-IN")}</div>
+                </div>
+
+                <div className="receipt-detail-grid">
+                  <div className="receipt-detail-item">
+                    <span>Receipt Number</span>
+                    <strong>{viewReceipt.receipt}</strong>
+                  </div>
+                  <div className="receipt-detail-item">
+                    <span>Transaction ID</span>
+                    <strong>{viewReceipt.transactionId}</strong>
+                  </div>
+                  <div className="receipt-detail-item">
+                    <span>Invoice Date</span>
+                    <strong>{viewReceipt.date}</strong>
+                  </div>
+                  <div className="receipt-detail-item">
+                    <span>Payment Method</span>
+                    <strong>{viewReceipt.method}</strong>
+                  </div>
+                </div>
+
+                <div className="receipt-contact-box">
+                  <div>
+                    <span className="receipt-user-label">Mobile</span>
+                    <strong>{viewReceipt.customer.phone}</strong>
+                  </div>
+                  <div>
+                    <span className="receipt-user-label">Email</span>
+                    <strong>{viewReceipt.customer.email}</strong>
+                  </div>
+                </div>
+
+                <div className="receipt-table-box">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Description</th>
+                        <th>Duration</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{viewReceipt.packageName}</td>
+                        <td>{viewReceipt.duration}</td>
+                        <td>₹{viewReceipt.amount.toLocaleString("en-IN")}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="receipt-total-box">
+                  <div className="receipt-total-row">
+                    <span>Membership Fee</span>
+                    <strong>₹{viewReceipt.amount.toLocaleString("en-IN")}</strong>
+                  </div>
+                  <div className="receipt-total-row">
+                    <span>GST (CGST + SGST)</span>
+                    <strong>₹{viewReceipt.gst.toLocaleString("en-IN")}</strong>
+                  </div>
+                  <div className="receipt-total-row grand-total">
+                    <span>Total Paid</span>
+                    <strong>₹{viewReceipt.total.toLocaleString("en-IN")}</strong>
+                  </div>
+                </div>
+
+                <div className="receipt-footer-row">
+                  <div className="receipt-status-badge">
+                    <span className="status-dot" />
+                    Digitally Signed &amp; Verified
+                  </div>
+                  <div className="receipt-validity">
+                    Valid from {viewReceipt.startDate} to {viewReceipt.expiryDate}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
 
       </main>
