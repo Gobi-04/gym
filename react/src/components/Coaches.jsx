@@ -133,6 +133,7 @@ function Coaches() {
             <div
               className={`other-coach-card ${selectedCoachId === coach.id ? 'active' : ''}`}
               key={coach.number}
+              onClick={() => setSelectedCoachId(coach.id)}
             >
 
               <h3>{coach.number}</h3>
