@@ -29,8 +29,13 @@ const fitnessGoals = [
 
 function FitnessOnboarding() {
   const [selectedGoal, setSelectedGoal] = useState("muscle-building");
-  const [diet, setDiet] = useState("");
+  const [diet, setDiet] = useState(() => localStorage.getItem("fitguide-diet") || "");
   const navigate = useNavigate();
+
+  const handleDietChange = (value) => {
+    setDiet(value);
+    localStorage.setItem("fitguide-diet", value);
+  };
 
   return (
     <main className="fitness-onboarding">
@@ -78,7 +83,7 @@ function FitnessOnboarding() {
               name="diet"
               value="non-vegetarian"
               checked={diet === "non-vegetarian"}
-              onChange={() => setDiet("non-vegetarian")}
+              onChange={() => handleDietChange("non-vegetarian")}
             />
             <span><strong>Non-Vegetarian</strong><small>Chicken, Eggs, Fish, Paneer &amp; Dal</small></span>
           </label>
@@ -88,7 +93,7 @@ function FitnessOnboarding() {
               name="diet"
               value="vegetarian"
               checked={diet === "vegetarian"}
-              onChange={() => setDiet("vegetarian")}
+              onChange={() => handleDietChange("vegetarian")}
             />
             <span><strong>Vegetarian</strong><small>Paneer, Dal, Soya Chunks, Legumes</small></span>
           </label>
