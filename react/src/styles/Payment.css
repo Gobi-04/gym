@@ -54,15 +54,21 @@
 .step {
   border: 1px solid #555;
   color: #aaa;
+  background: transparent;
   padding: 5px 14px;
   border-radius: 20px;
   font-size: 9px;
+  appearance: none;
 }
 
 .step.active {
-  border-color: #c5ff16;
-  color: #c5ff16;
+  border: 1px solid #555;
+  color: #aaa;
+  background: transparent;
 }
+
+
+
 
 .signup-card {
   width: 100%;
