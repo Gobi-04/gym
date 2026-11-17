@@ -9,7 +9,7 @@ function Navbar() {
       <div className="navbar-inner">
 
         <a href="#home" className="brand">
-          <img src="/assets/logo.png" alt="FitFlex Logo" />
+          <img src="src/assets/gym-logo.png" alt="FitFlex Logo" />
         </a>
 
         <nav className="nav-links">
