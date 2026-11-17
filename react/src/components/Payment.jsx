@@ -275,7 +275,7 @@ function Payment({ initialTab = "login" }) {
                     <div className="input-box">
                       <FiPhone />
                       <input
-                        type="tel"
+                        type="number"
                         name="phone"
                         placeholder="+91 98765 43210"
                         value={formData.phone}
