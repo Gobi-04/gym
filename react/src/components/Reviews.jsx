@@ -8,21 +8,21 @@ function Reviews() {
     {
       id: 1,
       name: 'Madhu',
-      image: '/assets/review-madhu.png',
+      image: 'src/assets/Madhu.png',
       message:
         'The gym is very clean and neat. their equipment were excellent and well maintained.The trainers are very supportive and good motivator'
     },
     {
       id: 2,
       name: 'Suresh',
-      image: '/assets/review-suresh.png',
+      image: 'src/assets/Suresh.png',
       message:
         'Excellent gym to do exercise, caring and more encouraging.'
     },
     {
       id: 3,
-      name: 'Madhu',
-      image: '/assets/review-madhu-2.png',
+      name: 'Nithya',
+      image: 'src/assets/Nithya.png',
       message:
         'Highly recommend for really need a person to have a body fit.'
     }
