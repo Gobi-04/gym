@@ -71,13 +71,28 @@ function Payment({ initialTab = "signup" }) {
   /* ---------- SIGN UP ---------- */
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSignupError("");
-    setFormData({
-      ...formData,
-      [name]: name === "phone" ? value.replace(/\D/g, "").slice(0, 10) : value,
-    });
-  };
+  const { name } = e.target;
+  let value = e.target.value;
+
+  if (name === "phone") {
+    value = value.replace(/\D/g, "").slice(0, 10); // digits mattum, max 10
+  }
+
+  if (name === "email") {
+    value = value.replace(/\s/g, ""); // space venda
+    // "@" ku appuram ".com" vandha, adhukku mela type panna mudiyaadhu
+    const atIndex = value.indexOf("@");
+    if (atIndex !== -1) {
+      const comIndex = value.indexOf(".com", atIndex);
+      if (comIndex !== -1) {
+        value = value.slice(0, comIndex + 4);
+      }
+    }
+  }
+
+  setSignupError("");
+  setFormData({ ...formData, [name]: value });
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
