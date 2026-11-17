@@ -1,5 +1,6 @@
 
 import React from 'react';
+import dumbbleimage from "../assets/dumbbleimage.png";
 import '../styles/About.css';
 
 function About() {
@@ -38,7 +39,7 @@ function About() {
           {/* Left Image */}
           <div className="about-image-wrapper">
             <img
-              src="/assets/about-dumbbell.png"
+               src={dumbbleimage}
               alt="Athlete lifting a dumbbell"
               className="about-dumbbell-image"
             />

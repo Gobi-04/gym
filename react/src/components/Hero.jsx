@@ -1,5 +1,6 @@
 
 import React from 'react';
+import aboutimage from "../assets/aboutimage.png";
 import '../styles/Hero.css';
 
 function Hero() {
@@ -52,7 +53,7 @@ function Hero() {
           </div>
 
           <img
-            src="/assets/hero-athletes.png"
+            src={aboutimage}
             alt="Fitness athletes"
             className="athlete-image"
           />
