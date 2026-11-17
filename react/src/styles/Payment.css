@@ -59,6 +59,7 @@
   border-radius: 20px;
   font-size: 9px;
   appearance: none;
+    cursor: pointer;
 }
 
 .step.active {
