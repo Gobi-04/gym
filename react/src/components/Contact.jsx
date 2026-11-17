@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { api } from '../services/api';
 import {
   UserRound,
   Mail,
@@ -31,8 +32,14 @@ function Contact() {
     setSubmitted(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      await api.submitContact(formData);
+    } catch (err) {
+      console.warn('Backend not reachable, inquiry logged locally:', err.message);
+    }
 
     setSubmitted(true);
 

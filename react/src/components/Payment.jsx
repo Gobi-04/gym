@@ -11,6 +11,7 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { api } from "../services/api";
 
 import "../styles/Payment.css";
 
@@ -126,16 +127,35 @@ function Payment({ initialTab = "signup" }) {
   };
 
   // Payment mudinjadhum user ah save pannum (paid member aagiduvaanga)
-  const handlePay = () => {
+  const handlePay = async () => {
     const email = formData.email.trim().toLowerCase();
     const users = getUsers();
 
+    // 1. Try saving to MySQL Database via backend
+    try {
+      const res = await api.register({
+        name: formData.name.trim(),
+        email,
+        phone: formData.phone,
+        password: formData.password,
+        plan: chosenPlan?.name,
+        amount: chosenPlan ? parseFloat(chosenPlan.price.replace(/[^\d.]/g, "")) : 1500,
+        paymentMethod: paymentMethod,
+      });
+      if (res?.user) {
+        localStorage.setItem("fitguideCurrentUser", JSON.stringify(res.user));
+      }
+    } catch (err) {
+      console.warn("Backend API offline, saving to localStorage:", err.message);
+    }
+
+    // 2. Local storage fallback
     if (!users.some((u) => u.email === email || u.phone === formData.phone)) {
       users.push({
         name: formData.name.trim(),
         email,
         phone: formData.phone,
-        password: formData.password, // DEMO ONLY: real project la password hash pannanum
+        password: formData.password,
         plan: chosenPlan?.name,
       });
       saveUsers(users);
@@ -152,9 +172,27 @@ function Payment({ initialTab = "signup" }) {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
+    // 1. Try logging in via MySQL Database backend
+    try {
+      const res = await api.login(loginData.login, loginData.password);
+      if (res?.user) {
+        localStorage.setItem("fitguideCurrentUser", JSON.stringify(res.user));
+        setLoginError("");
+        navigate("/dashboard");
+        return;
+      }
+    } catch (err) {
+      if (err.message.includes("Incorrect password") || err.message.includes("No account found")) {
+        setLoginError(err.message);
+        return;
+      }
+      console.warn("Backend not available, trying local storage:", err.message);
+    }
+
+    // 2. Fallback to localStorage
     const user = findUser(loginData.login);
 
     if (!user) {
@@ -169,8 +207,9 @@ function Payment({ initialTab = "signup" }) {
       return;
     }
 
+    localStorage.setItem("fitguideCurrentUser", JSON.stringify(user));
     setLoginError("");
-    navigate("/dashboard"); // unga dashboard route ku maathikonga
+    navigate("/dashboard");
   };
 
   const plans = [

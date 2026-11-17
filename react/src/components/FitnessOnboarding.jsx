@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FiCheck, FiArrowRight, FiActivity } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { api } from "../services/api";
 import "../styles/FitnessOnboarding.css";
 
 const fitnessGoals = [
@@ -35,6 +36,18 @@ function FitnessOnboarding() {
   const handleDietChange = (value) => {
     setDiet(value);
     localStorage.setItem("fitguide-diet", value);
+  };
+
+  const handleContinue = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("fitguideCurrentUser") || "{}");
+      if (user?.id) {
+        await api.updateFitnessProfile(user.id, selectedGoal, diet);
+      }
+    } catch (e) {
+      console.warn("Could not sync fitness profile to db:", e.message);
+    }
+    navigate("/dashboard");
   };
 
   return (
@@ -102,7 +115,7 @@ function FitnessOnboarding() {
 
       <footer className="onboarding-footer">
         <p>Your goal can be updated anytime from your profile settings.</p>
-        <button type="button" disabled={!selectedGoal || !diet} onClick={() => navigate("/dashboard")}>
+        <button type="button" disabled={!selectedGoal || !diet} onClick={handleContinue}>
           CONTINUE TO DASHBOARD <FiArrowRight />
         </button>
       </footer>
