@@ -80,12 +80,19 @@
   overflow: hidden;
 }
 
-.coach-image {
+/* .coach-image {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
   object-position: center;
+} */
+.coach-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 /* COACH DETAILS */

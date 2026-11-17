@@ -15,7 +15,7 @@ function Coaches() {
       years: '8',
       clients: '1.2K',
       rating: '4.9',
-      image: '/assets/coach-rahul.png',
+      image: 'src/assets/Trainer1.png',
     },
     {
       id: 2,
@@ -29,7 +29,7 @@ function Coaches() {
       years: '6',
       clients: '980',
       rating: '4.8',
-      image: '/assets/coach-rahul.png',
+      image: 'src/assets/Trainer2.png',
     },
     {
       id: 3,
@@ -43,7 +43,7 @@ function Coaches() {
       years: '7',
       clients: '1.4K',
       rating: '4.9',
-      image: '/assets/coach-rahul.png',
+      image: 'src/assets/Trainer4.png',
     },
     {
       id: 4,
@@ -57,7 +57,7 @@ function Coaches() {
       years: '9',
       clients: '2.1K',
       rating: '5.0',
-      image: '/assets/coach-rahul.png',
+      image: 'src/assets/Trainer3.png',
     },
   ];
 
