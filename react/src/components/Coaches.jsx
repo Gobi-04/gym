@@ -144,13 +144,14 @@ function Coaches() {
               <button
                 className="coach-arrow"
                 aria-label={`Explore ${coach.title}`}
-                onClick={() => {
+                onClick={(e) => {
+
                   setSelectedCoachId(coach.id);
-                  document.getElementById('membership')
-                    ?.scrollIntoView({ behavior: 'smooth' });
+                  // document.getElementById('membership')
+                  //   ?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                <span>›</span>
+                <span >›</span>
               </button>
 
             </div>
