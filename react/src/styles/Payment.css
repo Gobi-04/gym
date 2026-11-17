@@ -776,3 +776,21 @@
     font-size: 14px;
   }
 }
+/* Browser autofill white/blue background remove */
+.input-box input:-webkit-autofill,
+.input-box input:-webkit-autofill:hover,
+.input-box input:-webkit-autofill:focus,
+.input-box input:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff;
+  caret-color: #ffffff;
+  -webkit-box-shadow: 0 0 0 1000px #0d100e inset;
+  box-shadow: 0 0 0 1000px #0d100e inset;
+  border-radius: 10px;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Text select pannina theriyura color */
+.input-box input::selection {
+  background: #c5ff16;
+  color: #000000;
+}
