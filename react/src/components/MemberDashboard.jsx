@@ -158,6 +158,58 @@ const workouts = [
       "Slowly return to the starting position.",
     ],
   },
+  {
+    id: 3,
+    title: "Standing Cable Fly",
+    image:
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
+    sets: 3,
+    reps: "10 - 12 Reps",
+    duration: "10 Minutes",
+    muscle: "Chest",
+    description:
+      "Standing cable fly helps improve chest muscle strength and control.",
+    steps: [
+      "Stand between the cable machine handles.",
+      "Hold both handles with your arms open.",
+      "Bring your hands together in front of your chest.",
+      "Slowly return to the starting position.",
+    ],
+  },{
+    id: 3,
+    title: "Standing Cable Fly",
+    image:
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
+    sets: 3,
+    reps: "10 - 12 Reps",
+    duration: "10 Minutes",
+    muscle: "Chest",
+    description:
+      "Standing cable fly helps improve chest muscle strength and control.",
+    steps: [
+      "Stand between the cable machine handles.",
+      "Hold both handles with your arms open.",
+      "Bring your hands together in front of your chest.",
+      "Slowly return to the starting position.",
+    ],
+  },{
+    id: 3,
+    title: "Standing Cable Fly",
+    image:
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
+    sets: 3,
+    reps: "10 - 12 Reps",
+    duration: "10 Minutes",
+    muscle: "Chest",
+    description:
+      "Standing cable fly helps improve chest muscle strength and control.",
+    steps: [
+      "Stand between the cable machine handles.",
+      "Hold both handles with your arms open.",
+      "Bring your hands together in front of your chest.",
+      "Slowly return to the starting position.",
+    ],
+  },
 ];
 
 const days = [
