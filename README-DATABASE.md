@@ -1,63 +1,62 @@
 # 🏋️ Gym Management System - Database Setup Guide
 
-Indha project-la database and backend complete-ah setup panniyaachu. Vera entha system-la indha project-ah download panni run pannaalum, database easily create aagidum!
+This project includes a complete automated MySQL database setup and a Node.js + Express backend API. Any system cloning or running this project can initialize the database with a single command.
 
 ---
 
 ## 📁 Database Files Structure
-* **`gym/server/database/schema.sql`** : Complete MySQL Database Structure (Tables: `users`, `plans`, `memberships`, `payments`, `fitness_profiles`, `contact_inquiries`, plus initial plans seed data).
-* **`gym/server/database/init-db.js`** : Automated script. Idhu `schema.sql`-ah read panni MySQL-la database & tables automatic-ah create pannidum.
-* **`setup-database.bat`** : Windows One-Click batch file! Double click pannale database setup aagidum.
-* **`gym/server/.env`** : Database configuration (Host, User, Password, Port).
+* **`gym/server/database/schema.sql`** : Complete MySQL Database Schema (Tables: `users`, `plans`, `memberships`, `payments`, `fitness_profiles`, `contact_inquiries`, plus default membership plans seed data).
+* **`gym/server/database/init-db.js`** : Automated migration runner. Connects to MySQL, creates the database if it doesn't exist, and executes `schema.sql` automatically.
+* **`setup-database.bat`** : One-click Windows batch script to install dependencies and initialize the database.
+* **`gym/server/.env`** : Database configuration file (Host, User, Password, Port).
 
 ---
 
-## 🚀 Vera System-la Database Create Panna Steps (How to Setup in Any System)
+## 🚀 How to Set Up Database on Any System
 
-### Step 1: Start MySQL (XAMPP)
-* Unga system-la **XAMPP Control Panel** open panni, **MySQL**-ah **Start** pannunga.
-* (Default MySQL user: `root`, password: empty `""`).
+### Step 1: Start MySQL
+* Start your local MySQL service (e.g. open **XAMPP Control Panel** and click **Start** next to **MySQL**).
+* Default MySQL credentials: user `root`, password empty `""`.
 
-### Step 2: Database Setup (Single Command)
-Project root folder-la terminal open panni indha command run pannunga:
+### Step 2: Run Database Setup
+Open a terminal in the project directory and run:
 ```bash
 npm run db:setup
 ```
-*(Or unga root folder-la irukura **`setup-database.bat`** file-ah double-click panni open pannalaam).*
+*(Or double-click the **`setup-database.bat`** script on Windows).*
 
-Idhu automatic-ah:
-1. `gym_db` database create pannum.
-2. Ellaa tables (`users`, `memberships`, `payments`, `fitness_profiles`, etc.) create pannum.
-3. Default membership plans data-vai insert pannidum!
+This automatically:
+1. Creates the `gym_db` database if not present.
+2. Creates all required relational tables.
+3. Seeds initial membership plan packages.
 
 ---
 
-## 🖥️ Server & Frontend Run Panradhu Eppadi?
+## 🖥️ Starting the Application
 
-### 1. Backend Server Start Panna:
+### 1. Start the Backend API Server:
 ```bash
 npm run server
 ```
-* Backend URL: `http://localhost:5000`
+* Backend runs on: `http://localhost:5000`
 
-### 2. React Frontend Start Panna:
+### 2. Start the React Frontend:
 ```bash
 npm run client
 # Or
 cd gym/react && npm run dev
 ```
-* Frontend URL: `http://localhost:5173`
+* Frontend runs on: `http://localhost:5173`
 
 ---
 
-## ⚙️ MySQL Config Maatha Venduma?
-Oru vela vera system-la MySQL password set pannirundhaa:
-`gym/server/.env` file open panni password change pannikkalaam:
+## ⚙️ Customizing MySQL Credentials
+If your MySQL instance has a custom password or port, edit `gym/server/.env`:
 ```env
 PORT=5000
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
-DB_PASSWORD=your_password_here
+DB_PASSWORD=your_mysql_password
 DB_NAME=gym_db
 ```

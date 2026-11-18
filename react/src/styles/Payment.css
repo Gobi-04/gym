@@ -57,7 +57,7 @@
   padding: 5px 14px;
   border-radius: 20px;
   font-size: 9px;
-  font-family: inherit; /* button aana pinnaadi font maaraama irukka */
+  font-family: inherit; /* Inherit font family when rendered as button */
   appearance: none;
 }
 
@@ -405,7 +405,7 @@
   cursor: pointer;
 }
 
-/* Plan/Payment page la active pill um highlight aaganum */
+/* Highlight active pill on Plan/Payment pages */
 .plan-steps .step.active {
   background: rgba(197, 255, 22, 0.08);
 }
@@ -613,14 +613,14 @@
   clip-path: inset(50%);
 }
 
-/* Lock aana step pills (Plan select pannala / Pay pannala) */
+/* Disabled / locked step pills */
 .step:disabled,
 .plan-steps .step:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-/* Warning message (already registered / account illa / password thappu) */
+/* Form alert and error message styling */
 .form-warning {
   background: rgba(255, 80, 80, 0.12);
   border: 1px solid #ff5050;
@@ -789,7 +789,7 @@
   transition: background-color 9999s ease-in-out 0s;
 }
 
-/* Text select pannina theriyura color */
+/* Selection highlight color */
 .input-box input::selection {
   background: #c5ff16;
   color: #000000;

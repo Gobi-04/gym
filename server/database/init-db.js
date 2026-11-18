@@ -42,17 +42,17 @@ async function setupDatabase() {
     console.log('   - fitness_profiles');
     console.log('   - contact_inquiries');
     console.log('========================================================');
-    console.log('🎉 Setup complete! Vera entha system-layum `npm run db:setup`');
-    console.log('   run pannale automatic ah database create aagidum.');
+    console.log('🎉 Setup complete! Running `npm run db:setup` on any system');
+    console.log('   will automatically initialize and configure this database.');
     console.log('========================================================');
   } catch (error) {
     console.error('\n❌ Database setup failed!');
     if (error.code === 'ECONNREFUSED') {
-      console.error('👉 Error: MySQL server connect aaga mudiyala!');
-      console.error('👉 Tip: XAMPP Control Panel open panni MySQL-ah "Start" pannunga.');
+      console.error('👉 Error: Could not connect to MySQL server.');
+      console.error('👉 Tip: Ensure MySQL is running (e.g. Start MySQL in XAMPP Control Panel).');
     } else if (error.code === 'ER_ACCESS_DENIED_ERROR') {
-      console.error('👉 Error: MySQL username/password thappa irukku!');
-      console.error('👉 Tip: server/.env file-la DB_USER and DB_PASSWORD correct ah check pannunga.');
+      console.error('👉 Error: MySQL username or password incorrect.');
+      console.error('👉 Tip: Verify DB_USER and DB_PASSWORD inside server/.env');
     } else {
       console.error(`👉 Error Details: ${error.message}`);
     }

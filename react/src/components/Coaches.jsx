@@ -76,8 +76,8 @@ function Coaches() {
 
   useEffect(() => () => clearTimeout(hoverTimer.current), []);
 
-  // Selected card = wide (2.2fr), matha ellam = narrow (0.42fr).
-  // Order 01, 02, 03, 04 appadiye irukkum, so card adhe edathula expand aagum.
+  // Selected card = wide (2.2fr), other cards = narrow (0.42fr).
+  // Keeps order 01, 02, 03, 04 intact so each card expands in place.
   const gridColumns = coaches
     .map((coach) => (coach.id === selectedCoachId ? '2.2fr' : '0.42fr'))
     .join(' ');

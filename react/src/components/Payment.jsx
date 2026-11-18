@@ -15,8 +15,7 @@ import { api } from "../services/api";
 
 import "../styles/Payment.css";
 
-/* ---------- DEMO USER STORAGE (browser localStorage) ----------
-   Real project la idhu backend/database la irukkanum. */
+/* ---------- DEMO USER STORAGE (browser localStorage fallback) ---------- */
 const USERS_KEY = "fitguideUsers";
 
 const getUsers = () => {
@@ -46,7 +45,7 @@ function Payment({ initialTab = "signup" }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedPlan, setSelectedPlan] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("UPI");
-  const [paid, setPaid] = useState(false); // Pay click pannina appuram true
+  const [paid, setPaid] = useState(false); // True after payment is completed
 
   const [formData, setFormData] = useState({
     name: "",
@@ -76,12 +75,12 @@ function Payment({ initialTab = "signup" }) {
   let value = e.target.value;
 
   if (name === "phone") {
-    value = value.replace(/\D/g, "").slice(0, 10); // digits mattum, max 10
+    value = value.replace(/\D/g, "").slice(0, 10); // Digits only, max 10 digits
   }
 
   if (name === "email") {
-    value = value.replace(/\s/g, ""); // space venda
-    // "@" ku appuram ".com" vandha, adhukku mela type panna mudiyaadhu
+    value = value.replace(/\s/g, ""); // Remove spaces
+    // Prevent typing further once .com is entered
     const atIndex = value.indexOf("@");
     if (atIndex !== -1) {
       const comIndex = value.indexOf(".com", atIndex);
@@ -113,7 +112,7 @@ function Payment({ initialTab = "signup" }) {
       return;
     }
 
-    // Already registered user ah nu check
+    // Check if user is already registered
     if (findUser(formData.email) || findUser(formData.phone)) {
       setSignupError(
         "This email or mobile number is already registered. Please login."
@@ -121,12 +120,12 @@ function Payment({ initialTab = "signup" }) {
       return;
     }
 
-    // New user: Plan page ku pogalaam
+    // New user: Proceed to plan selection
     setSignupError("");
     setCurrentStep(2);
   };
 
-  // Payment mudinjadhum user ah save pannum (paid member aagiduvaanga)
+  // Save user upon completing payment
   const handlePay = async () => {
     const email = formData.email.trim().toLowerCase();
     const users = getUsers();
@@ -236,7 +235,7 @@ function Payment({ initialTab = "signup" }) {
 
             <div className="steps">
               <button type="button" className="step active" onClick={() => setCurrentStep(1)}>1. Account</button>
-              {/* Plan pill lock: Continue button dhaan Plan ku kootitu pogum */}
+              {/* Plan pill lock: Continue button advances to Plan step */}
               <button type="button" className="step" disabled>2. Plan</button>
               <div className="step">3. Payment</div>
               <div className="step">4. Done</div>
