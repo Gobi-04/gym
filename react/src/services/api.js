@@ -55,5 +55,13 @@ export const api = {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Failed to fetch plans');
     return data;
+  },
+
+  // 6. Fetch user details and membership
+  async getUser(userId) {
+    const res = await fetch(`${API_BASE_URL}/auth/user/${userId}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to fetch user');
+    return data;
   }
 };

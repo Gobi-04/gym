@@ -1,6 +1,8 @@
 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../services/api";
 import {
   FiGrid,
   FiActivity,
@@ -225,6 +227,7 @@ const days = [
 ];
 
 function MemberDashboard() {
+  const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState("My Workouts");
   const [activeDay, setActiveDay] = useState("Mon");
   const [activeDietDay, setActiveDietDay] = useState("Mon");
@@ -235,6 +238,96 @@ function MemberDashboard() {
     const savedDiet = localStorage.getItem("fitguide-diet");
     return savedDiet === "vegetarian" ? "vegetarian" : "non-vegetarian";
   });
+
+  // Current logged in user
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem("fitguideCurrentUser");
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn("Could not parse current user:", e);
+    }
+    return {
+      name: "Guest Member",
+      email: "guest@fitguide.com",
+      phone: "+91 98765 43210",
+      plan: "Quarterly Membership",
+      id: "001",
+    };
+  });
+
+  // Fetch updated user details from backend if available
+  useEffect(() => {
+    if (currentUser?.id && typeof currentUser.id === "number") {
+      api.getUser(currentUser.id)
+        .then((fresh) => {
+          if (fresh && !fresh.error) {
+            setCurrentUser((prev) => ({ ...prev, ...fresh }));
+          }
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("fitguideCurrentUser");
+    navigate("/login");
+  };
+
+  const userInitials = (currentUser?.name || "M")
+    .trim()
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+  const memberId =
+    currentUser?.memberId ||
+    `FITGUIDE-${String(currentUser?.id || 1).padStart(3, "0")}`;
+
+  const userPlanName =
+    currentUser?.plan ||
+    currentUser?.membership?.plan_name ||
+    "Quarterly Membership";
+
+  const isAnnual =
+    userPlanName.toLowerCase().includes("annual") ||
+    userPlanName.toLowerCase().includes("12");
+  const isQuarterly =
+    userPlanName.toLowerCase().includes("quarterly") ||
+    userPlanName.toLowerCase().includes("3");
+
+  const durationStr = isAnnual ? "12 Months" : isQuarterly ? "3 Months" : "1 Month";
+  const feeAmount =
+    currentUser?.amount ||
+    (isAnnual ? 11999 : isQuarterly ? 4499 : 1499);
+  const gstAmount = Math.round(feeAmount * 0.18);
+  const totalAmount = feeAmount + gstAmount;
+
+  const now = new Date();
+  const startDateStr = now.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  const expiryDateObj = new Date();
+  if (isAnnual) {
+    expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
+  } else if (isQuarterly) {
+    expiryDateObj.setMonth(expiryDateObj.getMonth() + 3);
+  } else {
+    expiryDateObj.setMonth(expiryDateObj.getMonth() + 1);
+  }
+  const expiryDateStr = expiryDateObj.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  const paymentMethodStr =
+    currentUser?.paymentMethod || "UPI / Google Pay (PhonePe)";
 
   const currentDietPlan = dietPlanData[selectedDiet];
 
@@ -247,25 +340,25 @@ function MemberDashboard() {
 
   const paymentHistory = [
     {
-      receipt: "FG-ROC-2026-8841",
-      packageName: "Quarterly Membership",
-      date: "01 Nov 2026, 10:45 AM",
-      method: "UPI / Google Pay (PhonePe)",
-      amount: 4499,
-      gst: 1000,
-      total: 5499,
+      receipt: `FG-ROC-${now.getFullYear()}-${String(currentUser?.id || 8841).padStart(4, "0")}`,
+      packageName: userPlanName,
+      date: `${startDateStr}, 10:45 AM`,
+      method: paymentMethodStr,
+      amount: feeAmount,
+      gst: gstAmount,
+      total: totalAmount,
       status: "Paid",
       customer: {
-        name: "Karan Verma",
-        phone: "+91 98765 43210",
-        email: "karan.verma@example.com",
-        memberId: "FITGUIDE-001",
+        name: currentUser?.name || "Member",
+        phone: currentUser?.phone || "+91 98765 43210",
+        email: currentUser?.email || "member@example.com",
+        memberId: memberId,
       },
-      startDate: "01 Nov 2026",
-      expiryDate: "31 Jan 2027",
-      duration: "3 Months",
-      transactionId: "TXN-2026-8841",
-      paymentType: "Google Pay / UPI",
+      startDate: startDateStr,
+      expiryDate: expiryDateStr,
+      duration: durationStr,
+      transactionId: `TXN-${now.getFullYear()}-${String(currentUser?.id || 8841).padStart(4, "0")}`,
+      paymentType: paymentMethodStr,
     },
   ];
 
@@ -340,10 +433,10 @@ function MemberDashboard() {
         <div className="sidebar-bottom">
           <button className="menu-item">
             <FiUser />
-            <span>Profile & Settings</span>
+            <span>{currentUser.name}</span>
           </button>
 
-          <button className="logout-button">
+          <button className="logout-button" onClick={handleLogout}>
             <FiLogOut />
             Logout
           </button>
@@ -368,7 +461,7 @@ function MemberDashboard() {
           </div>
 
           <div className="header-actions">
-            <button className="public-site">
+            <button className="public-site" onClick={() => navigate("/")}>
               ↗ Public Site
             </button>
 
@@ -376,7 +469,7 @@ function MemberDashboard() {
               <FiBell />
             </button>
 
-            <div className="profile-avatar">S</div>
+            <div className="profile-avatar">{userInitials}</div>
           </div>
 
         </header>
@@ -746,14 +839,14 @@ function MemberDashboard() {
 
               <div className="membership-main-row">
                 <div className="membership-title">
-                  <h2>QUARTERLY MEMBERSHIP</h2>
-                  <p>Includes unlimited equipment access and exclusive fitness classes.</p>
+                  <h2>{userPlanName.toUpperCase()}</h2>
+                  <p>Includes unlimited equipment access and personalized workout plans.</p>
                 </div>
 
                 <div className="membership-summary-box">
                   <div className="summary-row">
                     <span>Membership Fee</span>
-                    <strong>₹4,499</strong>
+                    <strong>₹{feeAmount.toLocaleString("en-IN")}</strong>
                   </div>
                   <div className="summary-row">
                     <span>Payment Status</span>
@@ -761,7 +854,7 @@ function MemberDashboard() {
                   </div>
                   <div className="summary-row">
                     <span>Expiry Date</span>
-                    <strong>31 Jan 2027</strong>
+                    <strong>{expiryDateStr}</strong>
                   </div>
                 </div>
               </div>
@@ -769,15 +862,15 @@ function MemberDashboard() {
               <div className="membership-meta-grid">
                 <div className="meta-item">
                   <span className="meta-label">Start Date</span>
-                  <strong>01 Nov 2026</strong>
+                  <strong>{startDateStr}</strong>
                 </div>
                 <div className="meta-item">
                   <span className="meta-label">Renewal Due</span>
-                  <strong>31 Jan 2027</strong>
+                  <strong>{expiryDateStr}</strong>
                 </div>
                 <div className="meta-item">
-                  <span className="meta-label">Next Renewal</span>
-                  <strong>Assigned to Coach Marcus</strong>
+                  <span className="meta-label">Member ID</span>
+                  <strong>{memberId}</strong>
                 </div>
               </div>
             </div>

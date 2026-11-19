@@ -131,34 +131,45 @@ function Payment({ initialTab = "signup" }) {
     const users = getUsers();
 
     // 1. Try saving to MySQL Database via backend
+    let savedUser = null;
     try {
       const res = await api.register({
         name: formData.name.trim(),
         email,
         phone: formData.phone,
         password: formData.password,
-        plan: chosenPlan?.name,
+        plan: chosenPlan?.name || "Monthly Starter",
         amount: chosenPlan ? parseFloat(chosenPlan.price.replace(/[^\d.]/g, "")) : 1500,
         paymentMethod: paymentMethod,
       });
       if (res?.user) {
-        localStorage.setItem("fitguideCurrentUser", JSON.stringify(res.user));
+        savedUser = res.user;
       }
     } catch (err) {
       console.warn("Backend API offline, saving to localStorage:", err.message);
     }
 
     // 2. Local storage fallback
+    const localUserRecord = {
+      id: savedUser?.id || Date.now(),
+      name: formData.name.trim(),
+      email,
+      phone: formData.phone,
+      password: formData.password,
+      plan: chosenPlan?.name || "Monthly Starter",
+      amount: chosenPlan ? parseFloat(chosenPlan.price.replace(/[^\d.]/g, "")) : 1500,
+      paymentMethod: paymentMethod,
+    };
+
     if (!users.some((u) => u.email === email || u.phone === formData.phone)) {
-      users.push({
-        name: formData.name.trim(),
-        email,
-        phone: formData.phone,
-        password: formData.password,
-        plan: chosenPlan?.name,
-      });
+      users.push(localUserRecord);
       saveUsers(users);
     }
+
+    localStorage.setItem(
+      "fitguideCurrentUser",
+      JSON.stringify(savedUser || localUserRecord)
+    );
 
     setPaid(true);
     setCurrentStep(4);
