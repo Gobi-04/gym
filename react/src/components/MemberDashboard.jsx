@@ -159,55 +159,57 @@ const workouts = [
     ],
   },
   {
-    id: 3,
-    title: "Standing Cable Fly",
+    id: 4,
+    title: "Seated Dumbbell Shoulder Press",
     image:
       "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
     sets: 3,
     reps: "10 - 12 Reps",
     duration: "10 Minutes",
-    muscle: "Chest",
+    muscle: "Shoulders",
     description:
-      "Standing cable fly helps improve chest muscle strength and control.",
+      "Seated dumbbell press builds overhead pushing strength and sculpted shoulders.",
     steps: [
-      "Stand between the cable machine handles.",
-      "Hold both handles with your arms open.",
-      "Bring your hands together in front of your chest.",
-      "Slowly return to the starting position.",
+      "Sit upright with back support and dumbbells at shoulder height.",
+      "Press the weights upward until arms are almost fully extended.",
+      "Pause briefly at the top without banging the weights together.",
+      "Lower under control back to ear level.",
     ],
-  },{
-    id: 3,
-    title: "Standing Cable Fly",
+  },
+  {
+    id: 5,
+    title: "Triceps Rope Pushdown",
     image:
-      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900",
     sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "10 Minutes",
-    muscle: "Chest",
+    reps: "12 - 15 Reps",
+    duration: "8 Minutes",
+    muscle: "Triceps",
     description:
-      "Standing cable fly helps improve chest muscle strength and control.",
+      "Rope pushdowns isolate the lateral and long heads of the triceps.",
     steps: [
-      "Stand between the cable machine handles.",
-      "Hold both handles with your arms open.",
-      "Bring your hands together in front of your chest.",
-      "Slowly return to the starting position.",
+      "Attach a rope to a high cable pulley.",
+      "Keep elbows tucked tightly to your sides.",
+      "Push downward and spread the rope apart at the bottom contraction.",
+      "Return slowly to 90-degree elbow flexion.",
     ],
-  },{
-    id: 3,
-    title: "Standing Cable Fly",
+  },
+  {
+    id: 6,
+    title: "Parallel Bar Dips",
     image:
-      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
+      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900",
     sets: 3,
     reps: "10 - 12 Reps",
     duration: "10 Minutes",
-    muscle: "Chest",
+    muscle: "Chest & Triceps",
     description:
-      "Standing cable fly helps improve chest muscle strength and control.",
+      "Dips are an essential compound movement for chest and tricep power.",
     steps: [
-      "Stand between the cable machine handles.",
-      "Hold both handles with your arms open.",
-      "Bring your hands together in front of your chest.",
-      "Slowly return to the starting position.",
+      "Grip the parallel bars and push yourself up to the starting position.",
+      "Lean forward slightly to target the chest.",
+      "Lower your body until elbows reach a 90-degree bend.",
+      "Drive back up using your chest and triceps.",
     ],
   },
 ];
@@ -547,7 +549,7 @@ function MemberDashboard() {
               <span className="exercise-count">
                 {activeDay === "Sun"
                   ? "Rest Day"
-                  : "3 Exercises Assigned"}
+                  : `${workouts.length} Exercises Assigned`}
               </span>
 
             </div>
@@ -557,8 +559,8 @@ function MemberDashboard() {
 
               <div className="rest-message">
                 <FiCoffee />
-                <h2>Take a Rest Day!</h2>
-                <p>Give your body time to recover.</p>
+                <h2>Sunday is Rest & Recovery Day</h2>
+                <p>No workout videos or exercises scheduled today. Focus on hydration, light stretching, and complete muscle recovery.</p>
               </div>
 
             ) : (

@@ -590,18 +590,34 @@
 }
 
 .rest-message {
-  padding: 50px 20px;
+  padding: 60px 24px;
   text-align: center;
+  background: #171717;
+  border: 1px solid #292929;
+  border-radius: 8px;
+  color: #c5ff16;
+  margin-top: 10px;
+}
+
+.rest-message svg {
+  font-size: 42px;
+  margin-bottom: 12px;
   color: #c5ff16;
 }
 
 .rest-message h2 {
-  margin: 15px 0;
+  margin: 12px 0 8px;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0.5px;
 }
 
 .rest-message p {
   color: #999;
-  font-size: 12px;
+  font-size: 13px;
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.5;
 }
 
 /* MEMBERSHIP & PAYMENTS */
