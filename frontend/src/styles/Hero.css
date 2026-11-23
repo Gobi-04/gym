@@ -37,14 +37,14 @@
   border: 1px solid #282828;
   border-radius: 30px;
   color: #bcbcbc;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 500;
   margin-bottom: 22px;
 }
 
 .tag-dot {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #c5f900;
 }
@@ -65,7 +65,7 @@
 
 .hero-description {
   color: #999999;
-  font-size: 13px;
+  font-size: 17px;
   line-height: 1.5;
   font-weight: 400;
   margin-bottom: 25px;
@@ -77,11 +77,11 @@
   justify-content: space-between;
   gap: 12px;
   height: 35px;
-  padding: 4px 7px 4px 19px;
+  padding: 26px 15px 26px 25px;
   border: 1px solid #b5e900;
-  border-radius: 30px;
+  border-radius: 40px;
   color: #f5f5e9;
-  font-size: 9px;
+  font-size: 16px;
   font-weight: 700;
   text-decoration: none;
   transition: 0.3s ease;
@@ -96,7 +96,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .hero-cta:hover {
