@@ -1,579 +1,154 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  FiMail,
-  FiLock,
-  FiEye,
-  FiEyeOff,
-  FiArrowRight,
-  FiUsers,
-  FiCreditCard,
-  FiDollarSign,
-  FiMessageSquare,
-  FiActivity,
-  FiTrash2,
-  FiLogOut,
-  FiExternalLink,
-} from "react-icons/fi";
+import AdminSignIn from "./admin/AdminSignIn";
+import AdminSidebar from "./admin/AdminSidebar";
+import AdminOverview from "./admin/AdminOverview";
+import AdminMembers from "./admin/AdminMembers";
+import AdminPayments from "./admin/AdminPayments";
+import AdminWorkouts from "./admin/AdminWorkouts";
+import AdminDiet from "./admin/AdminDiet";
+import AdminSettings from "./admin/AdminSettings";
 import { api } from "../services/api";
 import "../styles/AdminPortal.css";
 
-function AdminPortal({ defaultTab = "login" }) {
-  const navigate = useNavigate();
-
+function AdminPortal() {
   // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem("fitguideAdminToken") ? true : false;
   });
 
-  const [email, setEmail] = useState("admin@fitguide.club");
-  const [password, setPassword] = useState("FitGuide@2026");
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
-  const [loginError, setLoginError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // Active Menu: "Dashboard" | "Member Management" | "Membership & Payments" | "Workout Management" | "Diet Plan Management" | "Profile & Settings"
+  const [activeMenu, setActiveMenu] = useState("Dashboard");
 
-  // Dashboard Active Navigation
-  const [activeNav, setActiveNav] = useState("overview");
-
-  // Dashboard Data State
-  const [stats, setStats] = useState({
-    totalMembers: 1,
-    activeMemberships: 1,
-    totalRevenue: 5499,
-    totalInquiries: 0,
-  });
-
+  // Dynamic Members & Payments List
   const [members, setMembers] = useState([]);
   const [payments, setPayments] = useState([]);
-  const [inquiries, setInquiries] = useState([]);
 
-  // Load Admin Data on Authentication
   useEffect(() => {
     if (isAuthenticated) {
-      loadDashboardData();
+      loadData();
     }
   }, [isAuthenticated]);
 
-  const loadDashboardData = async () => {
+  const loadData = async () => {
     try {
-      // 1. Fetch Stats
-      const statsRes = await api.getAdminStats();
-      if (statsRes) setStats(statsRes);
+      const res = await api.getAdminMembers();
+      if (res && Array.isArray(res) && res.length > 0) {
+        setMembers(res);
+      } else {
+        fallbackMembers();
+      }
     } catch {
-      // Graceful fallback from localStorage users
-      const localUsers = JSON.parse(localStorage.getItem("fitguideUsers") || "[]");
-      setStats((prev) => ({
-        ...prev,
-        totalMembers: Math.max(localUsers.length, 1),
-        activeMemberships: Math.max(localUsers.length, 1),
-      }));
+      fallbackMembers();
     }
 
     try {
-      // 2. Fetch Members
-      const membersRes = await api.getAdminMembers();
-      if (membersRes && Array.isArray(membersRes)) {
-        setMembers(membersRes);
+      const payRes = await api.getAdminPayments();
+      if (payRes && Array.isArray(payRes) && payRes.length > 0) {
+        setPayments(payRes);
+      } else {
+        fallbackPayments();
       }
     } catch {
-      const localUsers = JSON.parse(localStorage.getItem("fitguideUsers") || "[]");
+      fallbackPayments();
+    }
+  };
+
+  const fallbackMembers = () => {
+    const localUsers = JSON.parse(localStorage.getItem("fitguideUsers") || "[]");
+    if (localUsers.length > 0) {
       setMembers(
-        localUsers.map((u, index) => ({
-          id: index + 1,
+        localUsers.map((u, i) => ({
+          id: i + 1,
           name: u.name,
           email: u.email,
           phone: u.phone,
-          plan_name: u.plan || "Monthly Starter",
+          plan_name: u.plan || "Monthly - 1 Month",
           membership_status: "active",
           created_at: new Date().toISOString(),
         }))
       );
-    }
-
-    try {
-      // 3. Fetch Payments
-      const paymentsRes = await api.getAdminPayments();
-      if (paymentsRes && Array.isArray(paymentsRes)) {
-        setPayments(paymentsRes);
-      }
-    } catch {
-      setPayments([
-        {
-          id: 1,
-          customer_name: "Demo Member",
-          customer_email: "member@example.com",
-          plan_name: "Quarterly Pro",
-          amount: 4499,
-          payment_method: "UPI",
-          status: "success",
-          paid_at: new Date().toISOString(),
-        },
+    } else {
+      setMembers([
+        { id: 1041, name: "Suresh Kumar", email: "suresh@fitguide.com", phone: "+91 98765 11111", plan_name: "Monthly - 1 Month", membership_status: "active", created_at: "2026-10-12" },
+        { id: 1042, name: "Madhu Shalini", email: "madhu@fitguide.com", phone: "+91 98765 22222", plan_name: "Quarterly - 3 Months", membership_status: "active", created_at: "2026-09-18" },
+        { id: 1043, name: "Rohan Malhotra", email: "rohan@fitguide.com", phone: "+91 98765 33333", plan_name: "Monthly - 1 Month", membership_status: "expired", created_at: "2026-10-12" },
+        { id: 1047, name: "Kabir Deshmukh", email: "kabir@fitguide.com", phone: "+91 98765 44444", plan_name: "Monthly - 1 Month", membership_status: "expired", created_at: "2026-10-05" },
+        { id: 1050, name: "Ishita Banerjee", email: "ishita@fitguide.com", phone: "+91 98765 55555", plan_name: "Quarterly - 3 Months", membership_status: "expired", created_at: "2026-08-14" },
       ]);
-    }
-
-    try {
-      // 4. Fetch Inquiries
-      const inquiriesRes = await api.getAdminInquiries();
-      if (inquiriesRes && Array.isArray(inquiriesRes)) {
-        setInquiries(inquiriesRes);
-      }
-    } catch {
-      setInquiries([]);
     }
   };
 
-  const handleAdminLogin = async (e) => {
-    e.preventDefault();
-    setLoginError("");
-    setIsLoading(true);
-
-    try {
-      // Try backend authentication
-      const res = await api.adminLogin(email, password);
-      if (res?.token) {
-        if (rememberMe) {
-          localStorage.setItem("fitguideAdminToken", res.token);
-        }
-        setIsAuthenticated(true);
-        setIsLoading(false);
-        return;
-      }
-    } catch {
-      // Fallback: Verify default demo admin credentials directly
-      if (email.trim().toLowerCase() === "admin@fitguide.club" && password === "FitGuide@2026") {
-        localStorage.setItem("fitguideAdminToken", "admin-demo-token-2026");
-        setIsAuthenticated(true);
-        setIsLoading(false);
-        return;
-      }
-      setLoginError("Invalid admin credentials. Please use the demo credentials provided.");
-    }
-    setIsLoading(false);
+  const fallbackPayments = () => {
+    setPayments([
+      { id: "TXN-8841", customer_name: "Karan Verma", plan_name: "Quarterly Membership", amount: 4499, method: "UPI / PhonePe", status: "Paid", date: "01 Nov 2026" },
+      { id: "TXN-8842", customer_name: "Madhu Shalini", plan_name: "Quarterly Membership", amount: 4499, method: "Credit Card", status: "Paid", date: "15 Oct 2026" },
+      { id: "TXN-8843", customer_name: "Suresh Kumar", plan_name: "Annual Elite", amount: 14000, method: "Google Pay", status: "Paid", date: "20 Oct 2026" },
+    ]);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("fitguideAdminToken");
     setIsAuthenticated(false);
-    navigate("/admin");
+    setActiveMenu("Dashboard");
   };
 
-  const handleDeleteMember = async (id) => {
-    if (window.confirm("Are you sure you want to delete this member?")) {
-      try {
-        await api.deleteMember(id);
-      } catch (err) {
-        console.warn("Delete member offline:", err.message);
-      }
-      setMembers((prev) => prev.filter((m) => m.id !== id));
-    }
-  };
-
-  // ==========================================================
-  // 1. SIGN IN SCREEN (Exact match with user's screenshot)
-  // ==========================================================
+  // If not authenticated, render Sign In View
   if (!isAuthenticated) {
-    return (
-      <div className="admin-portal-wrapper">
-        <header className="admin-top-bar">
-          <div className="admin-portal-brand">
-            FITGUIDE <span>Admin Portal</span>
-          </div>
-          <button
-            className="admin-portal-brand"
-            style={{ background: "none", border: "none", cursor: "pointer" }}
-            onClick={() => navigate("/")}
-          >
-            ↗ Public Site
-          </button>
-        </header>
-
-        <main className="admin-signin-container">
-          <div className="admin-signin-header">
-            <h1>Admin Portal Sign In</h1>
-            <p>
-              Manage member accounts, plans, payments, workouts, and diet
-              schedules.
-            </p>
-          </div>
-
-          <div className="admin-signin-card">
-            {loginError && <div className="admin-error-box">{loginError}</div>}
-
-            <form onSubmit={handleAdminLogin}>
-              <div className="admin-form-group">
-                <label>Email Address</label>
-                <div className="admin-input-box">
-                  <FiMail className="admin-input-icon" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@fitguide.club"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="admin-form-group">
-                <label>Password</label>
-                <div className="admin-input-box">
-                  <FiLock className="admin-input-icon" />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter password"
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="admin-eye-button"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FiEyeOff /> : <FiEye />}
-                  </button>
-                </div>
-              </div>
-
-              <div className="admin-remember-row">
-                <label className="admin-remember-label">
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                  />
-                  Remember Me
-                </label>
-                <a href="#forgot" className="admin-forgot-link" onClick={(e) => { e.preventDefault(); alert("Admin password reset request sent to system administrator."); }}>
-                  Forgot Password?
-                </a>
-              </div>
-
-              <button
-                type="submit"
-                className="admin-login-button"
-                disabled={isLoading}
-              >
-                {isLoading ? "Signing in..." : "Login to Dashboard"} <FiArrowRight />
-              </button>
-
-              <div className="admin-demo-box">
-                <span>
-                  Demo Admin: <strong>admin@fitguide.club</strong>
-                </span>
-                <span>
-                  <strong>FitGuide@2026</strong>
-                </span>
-              </div>
-            </form>
-          </div>
-        </main>
-      </div>
-    );
+    return <AdminSignIn onLoginSuccess={() => setIsAuthenticated(true)} />;
   }
 
-  // ==========================================================
-  // 2. ADMIN DASHBOARD SCREEN
-  // ==========================================================
+  // Authenticated Admin Dashboard Layout
   return (
-    <div className="admin-portal-wrapper">
-      <header className="admin-top-bar">
-        <div className="admin-portal-brand">
-          FITGUIDE <span>Admin Panel</span>
-        </div>
-        <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-          <span style={{ fontSize: "12px", color: "#9ca3af" }}>
-            Signed in as <strong>admin@fitguide.club</strong>
-          </span>
-          <button
-            className="admin-portal-brand"
-            style={{ background: "none", border: "none", cursor: "pointer" }}
-            onClick={() => navigate("/")}
-          >
-            ↗ Public Site
-          </button>
-        </div>
-      </header>
+    <div className="admin-dashboard-container">
+      {/* 1. LEFT SIDEBAR */}
+      <AdminSidebar
+        activeMenu={activeMenu}
+        onSelectMenu={(menu) => setActiveMenu(menu)}
+        onLogout={handleLogout}
+      />
 
-      <div className="admin-dashboard-layout">
-        {/* SIDEBAR NAVIGATION */}
-        <aside className="admin-sidebar">
-          <nav className="admin-sidebar-nav">
-            <button
-              className={`admin-nav-item ${activeNav === "overview" ? "active" : ""}`}
-              onClick={() => setActiveNav("overview")}
-            >
-              <FiActivity /> Overview &amp; Stats
-            </button>
-            <button
-              className={`admin-nav-item ${activeNav === "members" ? "active" : ""}`}
-              onClick={() => setActiveNav("members")}
-            >
-              <FiUsers /> Member Accounts
-            </button>
-            <button
-              className={`admin-nav-item ${activeNav === "payments" ? "active" : ""}`}
-              onClick={() => setActiveNav("payments")}
-            >
-              <FiCreditCard /> Payments &amp; Revenue
-            </button>
-            <button
-              className={`admin-nav-item ${activeNav === "inquiries" ? "active" : ""}`}
-              onClick={() => setActiveNav("inquiries")}
-            >
-              <FiMessageSquare /> Contact Inquiries
-            </button>
-          </nav>
+      {/* 2. MAIN VIEWPORT */}
+      <main className="admin-main-viewport">
+        {/* TOP APP BAR */}
+        <header className="admin-app-bar">
+          <div className="admin-breadcrumb">Admin Portal / {activeMenu}</div>
 
-          <div className="admin-sidebar-footer">
-            <button className="admin-logout-btn" onClick={handleLogout}>
-              <FiLogOut /> Sign Out
-            </button>
+          <div className="admin-top-profile">
+            <div className="admin-profile-info">
+              <div className="admin-profile-name">Marcus Vance</div>
+              <div className="admin-profile-email">admin@fitguide.club</div>
+            </div>
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
+              alt="Marcus Vance"
+              className="admin-profile-thumb"
+            />
           </div>
-        </aside>
+        </header>
 
-        {/* MAIN ADMIN CONTENT */}
-        <main className="admin-content-area">
-          {activeNav === "overview" && (
-            <>
-              <div className="admin-view-header">
-                <h2>Dashboard Overview</h2>
-                <p>Real-time analytics for members, subscriptions, and revenue.</p>
-              </div>
-
-              <div className="admin-stats-grid">
-                <div className="admin-stat-card">
-                  <div className="admin-stat-icon">
-                    <FiUsers />
-                  </div>
-                  <div className="admin-stat-info">
-                    <small>Total Members</small>
-                    <strong>{stats.totalMembers}</strong>
-                  </div>
-                </div>
-
-                <div className="admin-stat-card">
-                  <div className="admin-stat-icon">
-                    <FiCreditCard />
-                  </div>
-                  <div className="admin-stat-info">
-                    <small>Active Memberships</small>
-                    <strong>{stats.activeMemberships}</strong>
-                  </div>
-                </div>
-
-                <div className="admin-stat-card">
-                  <div className="admin-stat-icon">
-                    <FiDollarSign />
-                  </div>
-                  <div className="admin-stat-info">
-                    <small>Total Revenue</small>
-                    <strong>₹{Number(stats.totalRevenue).toLocaleString("en-IN")}</strong>
-                  </div>
-                </div>
-
-                <div className="admin-stat-card">
-                  <div className="admin-stat-icon">
-                    <FiMessageSquare />
-                  </div>
-                  <div className="admin-stat-info">
-                    <small>Contact Inquiries</small>
-                    <strong>{stats.totalInquiries}</strong>
-                  </div>
-                </div>
-              </div>
-
-              {/* RECENT MEMBERS TABLE */}
-              <div className="admin-table-container">
-                <div className="admin-table-title">Recent Registered Members</div>
-                <table className="admin-data-table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Plan</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {members.slice(0, 5).map((m) => (
-                      <tr key={m.id}>
-                        <td><strong>{m.name}</strong></td>
-                        <td>{m.email}</td>
-                        <td>{m.phone}</td>
-                        <td>{m.plan_name || "Monthly Starter"}</td>
-                        <td>
-                          <span className="admin-status-badge active">
-                            Active
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                    {members.length === 0 && (
-                      <tr>
-                        <td colSpan="5" style={{ textAlign: "center", color: "#6b7280" }}>
-                          No members registered yet.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </>
+        {/* CONTENT CANVAS */}
+        <div className="admin-canvas">
+          {activeMenu === "Dashboard" && (
+            <AdminOverview onNavigateMenu={(menu) => setActiveMenu(menu)} />
           )}
 
-          {activeNav === "members" && (
-            <>
-              <div className="admin-view-header">
-                <h2>Member Accounts Management</h2>
-                <p>View, verify, and manage all gym members and their subscriptions.</p>
-              </div>
-
-              <div className="admin-table-container">
-                <table className="admin-data-table">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Member Name</th>
-                      <th>Email</th>
-                      <th>Mobile</th>
-                      <th>Membership Plan</th>
-                      <th>Fitness Goal</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {members.map((m) => (
-                      <tr key={m.id}>
-                        <td>#{m.id}</td>
-                        <td><strong>{m.name}</strong></td>
-                        <td>{m.email}</td>
-                        <td>{m.phone}</td>
-                        <td>{m.plan_name || "Monthly Starter"}</td>
-                        <td>{m.goal || "Muscle Building"}</td>
-                        <td>
-                          <span className="admin-status-badge active">
-                            {m.membership_status || "Active"}
-                          </span>
-                        </td>
-                        <td>
-                          <button
-                            className="admin-delete-btn"
-                            title="Delete Member"
-                            onClick={() => handleDeleteMember(m.id)}
-                          >
-                            <FiTrash2 />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                    {members.length === 0 && (
-                      <tr>
-                        <td colSpan="8" style={{ textAlign: "center", color: "#6b7280" }}>
-                          No members found.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </>
+          {activeMenu === "Member Management" && (
+            <AdminMembers members={members} />
           )}
 
-          {activeNav === "payments" && (
-            <>
-              <div className="admin-view-header">
-                <h2>Payment &amp; Revenue Transactions</h2>
-                <p>Complete record of member payments, fees, and transactions.</p>
-              </div>
-
-              <div className="admin-table-container">
-                <table className="admin-data-table">
-                  <thead>
-                    <tr>
-                      <th>Transaction ID</th>
-                      <th>Customer Name</th>
-                      <th>Package Plan</th>
-                      <th>Amount Paid</th>
-                      <th>Method</th>
-                      <th>Date</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {payments.map((p) => (
-                      <tr key={p.id}>
-                        <td><code>{p.transaction_id || `TXN-2026-${p.id}`}</code></td>
-                        <td><strong>{p.customer_name || "Member"}</strong></td>
-                        <td>{p.plan_name}</td>
-                        <td>₹{Number(p.amount).toLocaleString("en-IN")}</td>
-                        <td>{p.payment_method || "UPI"}</td>
-                        <td>{new Date(p.paid_at).toLocaleDateString("en-GB")}</td>
-                        <td>
-                          <span className="admin-status-badge success">
-                            {p.status || "Paid"}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                    {payments.length === 0 && (
-                      <tr>
-                        <td colSpan="7" style={{ textAlign: "center", color: "#6b7280" }}>
-                          No payment transactions recorded yet.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </>
+          {activeMenu === "Membership & Payments" && (
+            <AdminPayments payments={payments} />
           )}
 
-          {activeNav === "inquiries" && (
-            <>
-              <div className="admin-view-header">
-                <h2>Contact Form Inquiries</h2>
-                <p>Messages and questions sent by website visitors.</p>
-              </div>
+          {activeMenu === "Workout Management" && <AdminWorkouts />}
 
-              <div className="admin-table-container">
-                <table className="admin-data-table">
-                  <thead>
-                    <tr>
-                      <th>Sender Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Message</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {inquiries.map((inq) => (
-                      <tr key={inq.id}>
-                        <td><strong>{inq.name}</strong></td>
-                        <td>{inq.email}</td>
-                        <td>{inq.phone}</td>
-                        <td style={{ maxWidth: "300px" }}>{inq.message}</td>
-                        <td>{new Date(inq.created_at).toLocaleDateString("en-GB")}</td>
-                      </tr>
-                    ))}
-                    {inquiries.length === 0 && (
-                      <tr>
-                        <td colSpan="5" style={{ textAlign: "center", color: "#6b7280" }}>
-                          No contact inquiries yet.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </>
+          {activeMenu === "Diet Plan Management" && <AdminDiet />}
+
+          {activeMenu === "Profile & Settings" && (
+            <AdminSettings onLogout={handleLogout} />
           )}
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }
