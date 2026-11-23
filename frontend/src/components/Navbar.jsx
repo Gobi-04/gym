@@ -15,6 +15,7 @@ function Navbar() {
         <nav className="nav-links">
           <a href="#home">HOME</a>
           <a href="#about">ABOUT</a>
+          <a href="#coaches">COACHES</a>
           <a href="#membership">MEMBERSHIP</a>
           <a href="#contact">CONTACT</a>
         </nav>
