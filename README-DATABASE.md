@@ -5,10 +5,10 @@ This project includes a complete automated MySQL database setup and a Node.js + 
 ---
 
 ## 📁 Database Files Structure
-* **`gym/server/database/schema.sql`** : Complete MySQL Database Schema (Tables: `users`, `plans`, `memberships`, `payments`, `fitness_profiles`, `contact_inquiries`, plus default membership plans seed data).
-* **`gym/server/database/init-db.js`** : Automated migration runner. Connects to MySQL, creates the database if it doesn't exist, and executes `schema.sql` automatically.
+* **`backend/database/schema.sql`** : Complete MySQL Database Schema (Tables: `users`, `plans`, `memberships`, `payments`, `fitness_profiles`, `contact_inquiries`, plus default membership plans and admin seed data).
+* **`backend/database/init-db.js`** : Automated migration runner. Connects to MySQL, creates the database if it doesn't exist, and executes `schema.sql` automatically.
 * **`setup-database.bat`** : One-click Windows batch script to install dependencies and initialize the database.
-* **`gym/server/.env`** : Database configuration file (Host, User, Password, Port).
+* **`backend/.env`** : Database configuration file (Host, User, Password, Port).
 
 ---
 
@@ -28,7 +28,7 @@ npm run db:setup
 This automatically:
 1. Creates the `gym_db` database if not present.
 2. Creates all required relational tables.
-3. Seeds initial membership plan packages.
+3. Seeds initial membership plan packages and default admin account.
 
 ---
 
@@ -36,17 +36,18 @@ This automatically:
 
 ### 1. Start the Backend API Server:
 ```bash
-npm run server
+npm run backend
 ```
 * Backend runs on: `http://localhost:5000`
 
-### 2. Start the React Frontend:
+### 2. Start the Frontend App:
 ```bash
-npm run client
+npm run dev
 # Or
-cd gym/react && npm run dev
+cd frontend && npm run dev
 ```
-* Frontend runs on: `http://localhost:5173`
+* Frontend User Portal: `http://localhost:5173`
+* Frontend Admin Portal: `http://localhost:5173/admin`
 
 ---
 

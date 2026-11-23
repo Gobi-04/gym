@@ -80,3 +80,7 @@ INSERT IGNORE INTO `plans` (`name`, `price`, `duration_months`, `features`) VALU
 ('Monthly Starter', 1499.00, 1, 'Full Gym Access, Free Locker, General Trainer Guidance'),
 ('Quarterly Pro', 3999.00, 3, 'Full Gym Access, Diet Plan, Personal Trainer Support (2 sessions)'),
 ('Annual Elite', 11999.00, 12, 'VIP Access, Customized Diet & Workout Plan, Unlimited Trainer Support, Free Steam Bath');
+
+-- 9. Seed Default Admin Account if not exists
+INSERT IGNORE INTO `users` (`name`, `email`, `phone`, `password`, `role`) VALUES
+('Chief Admin', 'admin@fitguide.club', '9999999999', 'FitGuide@2026', 'admin');

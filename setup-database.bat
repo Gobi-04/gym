@@ -4,8 +4,8 @@ echo   Gym Management System - Database Auto-Setup
 echo ===================================================
 echo.
 
-cd server
-echo Installing server dependencies (if needed)...
+cd backend
+echo Installing backend dependencies (if needed)...
 call npm install --no-audit --no-fund
 
 echo.
