@@ -1491,3 +1491,15 @@
     padding: 17px;
   }
 }
+/* Add this at the bottom of MemberDashboard.css */
+.exercise-image iframe,
+.exercise-image video,
+.detail-image iframe,
+.detail-image video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+  display: block;
+  background: #000;
+}
