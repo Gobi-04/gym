@@ -665,6 +665,94 @@
   gap: 4px;
 }
 
+.admin-status-pill-due {
+  color: #f59e0b;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-bottom-panels {
+  margin-top: 24px;
+}
+
+.admin-recent-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-recent-item:last-child {
+  border-bottom: none;
+}
+
+.admin-recent-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.admin-recent-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.admin-recent-meta {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.admin-recent-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.admin-recent-date {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.admin-recent-amount {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.admin-recent-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  text-align: right;
+}
+
+.badge-active {
+  color: #c5ff16;
+  background: rgba(197, 255, 22, 0.08);
+}
+
+.badge-verified {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.badge-pending {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+
 .admin-action-link {
   color: #c5ff16;
   background: none;
