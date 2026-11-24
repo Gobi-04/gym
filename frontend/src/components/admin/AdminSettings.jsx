@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { FiUpload, FiEye, FiEyeOff, FiCheck } from "react-icons/fi";
+import { FiUpload, FiEye, FiEyeOff, FiCheck, FiLogOut,} from "react-icons/fi";
 import "../../styles/AdminPortal.css";
 
-function AdminSettings({ profile, onUpdateProfile }) {
+function AdminSettings({ profile, onUpdateProfile ,onLogout}) {
   const [name, setName] = useState(profile?.name || "Marcus Vance");
   const [email, setEmail] = useState(profile?.email || "admin@fitguide.club");
   const [avatar, setAvatar] = useState(
@@ -152,6 +152,12 @@ function AdminSettings({ profile, onUpdateProfile }) {
 
         {/* Action Row */}
         <div className="admin-settings-actions">
+          <div className="admin logout">
+            <button type="button" className="admin-logout" onClick={onLogout}  >
+               <FiLogOut />
+                <span>Log-out</span>
+            </button>
+          </div>
           <button type="submit" className="admin-save-settings-btn">
             Save Changes
           </button>
