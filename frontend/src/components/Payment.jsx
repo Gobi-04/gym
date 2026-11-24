@@ -74,32 +74,33 @@ function Payment({ initialTab = "signup" }) {
   /* ---------- SIGN UP ---------- */
 
   const handleChange = (e) => {
-  const { name } = e.target;
-  let value = e.target.value;
+    const { name } = e.target;
+    let value = e.target.value;
 
-  if (name === "name") {
-  value = value.replace(/\p{Nd}/gu, "");
-}
-
-  if (name === "phone") {
-    value = value.replace(/\D/g, "").slice(0, 10); // Digits only, max 10 digits
-  }
-
-  if (name === "email") {
-    value = value.replace(/\s/g, ""); // Remove spaces
-    // Prevent typing further once .com is entered
-    const atIndex = value.indexOf("@");
-    if (atIndex !== -1) {
-      const comIndex = value.indexOf(".com", atIndex);
-      if (comIndex !== -1) {
-        value = value.slice(0, comIndex + 4);
-      }
+    if (name === "name") {
+      value = value.replace(/\p{Nd}/gu, "");
     }
-  }
 
-  setSignupError("");
-  setFormData({ ...formData, [name]: value });
-};
+    if (name === "phone") {
+      value = value.replace(/\D/g, "").slice(0, 10); // Digits only, max 10 digits
+    }
+
+    if (name === "email") {
+      value = value.replace(/\s/g, ""); // Remove spaces
+      // Prevent typing further once .com is entered
+      const atIndex = value.indexOf("@");
+      if (atIndex !== -1) {
+        const comIndex = value.indexOf(".com", atIndex);
+        if (comIndex !== -1) {
+          value = value.slice(0, comIndex + 4);
+        }
+      }
+      setEmailError("");
+    }
+
+    setSignupError("");
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -417,22 +418,11 @@ function Payment({ initialTab = "signup" }) {
                     <div className="input-box">
                       <FiUser />
                       <input
-                        type="email"
-                        name="email"
+                        type="text"
+                        name="name"
                         placeholder="e.g. Rahul Sharma"
                         value={formData.name}
                         onChange={handleChange}
-                        onBlur={(event) => {
-  setEmailError(event.currentTarget.validity.typeMismatch ? "Invalid email" : "");
-}}
-onInvalid={(event) => {
-  if (event.currentTarget.validity.typeMismatch) {
-    event.preventDefault();
-    setEmailError("Invalid email");
-  }
-}}
-aria-invalid={Boolean(emailError)}
-aria-describedby={emailError ? "signup-email-error" : undefined}
                         required
                       />
                     </div>
@@ -448,9 +438,29 @@ aria-describedby={emailError ? "signup-email-error" : undefined}
                             placeholder="rahul@domain.com"
                             value={formData.email}
                             onChange={handleChange}
+                            onBlur={(event) => {
+                              setEmailError(event.currentTarget.validity.typeMismatch ? "Invalid email" : "");
+                            }}
+                            onInvalid={(event) => {
+                              if (event.currentTarget.validity.typeMismatch) {
+                                event.preventDefault();
+                                setEmailError("Invalid email");
+                              }
+                            }}
+                            aria-invalid={Boolean(emailError)}
+                            aria-describedby={emailError ? "signup-email-error" : undefined}
                             required
                           />
                         </div>
+                        {emailError && (
+                          <span
+                            id="signup-email-error"
+                            className="field-error-msg"
+                            style={{ color: "#ef4444", fontSize: "11px", marginTop: "4px", display: "block" }}
+                          >
+                            {emailError}
+                          </span>
+                        )}
                       </div>
 
                       <div className="form-group">
