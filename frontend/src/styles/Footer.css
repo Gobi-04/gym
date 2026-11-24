@@ -28,7 +28,7 @@
   display: inline-flex;
   align-items: center;
   color: #f5f8e5;
-  font-size: 23px;
+  font-size: 25px;
   font-weight: 900;
   font-style: italic;
   letter-spacing: -1px;
@@ -41,7 +41,7 @@
 
 .footer-description {
   color: #999999;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.55;
   max-width: 350px;
   margin-bottom: 13px;
@@ -49,7 +49,7 @@
 
 .footer-brand h4 {
   color: #c5f900;
-  font-size: 11px;
+  font-size: 12.5px;
   font-weight: 600;
   margin-bottom: 14px;
 }
@@ -62,10 +62,10 @@
 }
 
 .social-links a {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   border: 1px solid #242424;
-  border-radius: 6px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,8 +74,8 @@
 }
 
 .social-links a svg {
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
 }
 
 .social-links a:hover {
@@ -93,7 +93,7 @@
 
 .footer-explore h3,
 .footer-location h3 {
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 700;
   color: #f5f8e5;
   margin-bottom: 20px;
@@ -101,7 +101,7 @@
 
 .footer-explore a {
   color: #999999;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 500;
   margin-bottom: 17px;
   transition: 0.3s;
@@ -128,8 +128,8 @@
 }
 
 .footer-info svg {
-  width: 13px;
-  height: 13px;
+  width: 18px;
+  height: 18px;
   color: #c5f900;
   flex-shrink: 0;
   margin-top: 3px;
@@ -137,7 +137,7 @@
 
 .footer-info p {
   color: #bcbcbc;
-  font-size: 9px;
+  font-size: 14px;
   line-height: 1.8;
 }
 
@@ -158,7 +158,7 @@
 
 .footer-bottom p {
   color: #999999;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .footer-legal {
@@ -168,7 +168,7 @@
 
 .footer-legal a {
   color: #999999;
-  font-size: 10px;
+  font-size: 16px;
   transition: 0.3s;
 }
 
