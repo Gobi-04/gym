@@ -19,13 +19,13 @@
 
 .reviews-heading p {
   color: #c5f900;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 700;
   margin-bottom: 13px;
 }
 
 .reviews-heading h2 {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: #f5f8e5;
 }
@@ -55,28 +55,28 @@
 }
 
 .review-user img {
-  width: 17px;
-  height: 17px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .review-user h3 {
-  font-size: 13px;
+  font-size: 19px;
   color: #c5f900;
   font-weight: 700;
 }
 
 .review-stars {
   color: #c5f900;
-  font-size: 17px;
+  font-size: 18px;
   letter-spacing: 1px;
   margin-bottom: 8px;
 }
 
 .review-message {
   color: #eeeeee;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.4;
   max-width: 300px;
 }
