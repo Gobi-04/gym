@@ -28,14 +28,14 @@
 
 .contact-heading p {
   color: #c5f900;
-  font-size: 13px;
+  font-size: 19px;
   font-weight: 700;
   margin-bottom: 12px;
 }
 
 .contact-heading h2 {
   color: #c5f900;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
 }
 
@@ -65,7 +65,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 15px;
+  font-size: 18px;
   color: #f5f8e5;
 }
 
@@ -84,7 +84,7 @@
   outline: none;
   color: #ffffff;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .form-group input {
@@ -113,7 +113,7 @@
   border-radius: 30px;
   background: transparent;
   color: #c5f900;
-  font-size: 9px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   transition: 0.3s;
@@ -126,7 +126,7 @@
 
 .success-message {
   color: #c5f900;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.5;
 }
 
@@ -155,7 +155,7 @@
 
 .contact-info-item p {
   color: #f5f8e5;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.7;
 }
 
@@ -182,7 +182,7 @@
 
 .opening-hours span {
   color: #f5f8e5;
-  font-size: 14px;
+  font-size: 18px;
   white-space: nowrap;
 }
 
