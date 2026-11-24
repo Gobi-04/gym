@@ -11,6 +11,14 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Name, email, phone, and password are required.' });
     }
 
+    const cleanName = typeof name === "string" ? name.trim() : "";
+
+    if (!cleanName || /\p{Nd}/u.test(cleanName)) {
+      return res.status(400).json({
+        error: "Enter a full name without digits.",
+  });
+}
+
     const cleanEmail = email.trim().toLowerCase();
     const cleanPhone = phone.trim();
 

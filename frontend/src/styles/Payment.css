@@ -34,6 +34,11 @@
   border-radius: 9px;
 }
 
+.signup-email-error {
+  color: #c62828;
+  margin: 4px 0 0;
+}
+
 .gym-heading {
   color: #c5ff16;
   font-size: 18px;
