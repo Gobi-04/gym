@@ -13,7 +13,7 @@ const dbConfig = {
 
 async function setupDatabase() {
   console.log('========================================================');
-  console.log('🚀 Gym Database Auto-Setup Starting...');
+  console.log('Gym Database Auto-Setup Starting...');
   console.log(`Connecting to MySQL host: ${dbConfig.host}:${dbConfig.port} (User: ${dbConfig.user})`);
   console.log('========================================================');
 
@@ -21,7 +21,7 @@ async function setupDatabase() {
   try {
     // 1. Initial connection without database specified
     connection = await mysql.createConnection(dbConfig);
-    console.log('✅ Connected to MySQL server successfully.');
+    console.log('Connected to MySQL server successfully.');
 
     // 2. Read schema.sql file
     const sqlPath = path.join(__dirname, 'schema.sql');
@@ -31,10 +31,10 @@ async function setupDatabase() {
     const sqlContent = fs.readFileSync(sqlPath, 'utf8');
 
     // 3. Execute all SQL queries
-    console.log('⏳ Creating database and tables from schema.sql...');
+    console.log('Creating database and tables from schema.sql...');
     await connection.query(sqlContent);
 
-    console.log('✅ Database `gym_db` and all tables created successfully!');
+    console.log('Database `gym_db` and all tables created successfully!');
     console.log('   - users');
     console.log('   - plans');
     console.log('   - memberships');
@@ -42,19 +42,19 @@ async function setupDatabase() {
     console.log('   - fitness_profiles');
     console.log('   - contact_inquiries');
     console.log('========================================================');
-    console.log('🎉 Setup complete! Running `npm run db:setup` on any system');
+    console.log('Setup complete! Running `npm run db:setup` on any system');
     console.log('   will automatically initialize and configure this database.');
     console.log('========================================================');
   } catch (error) {
-    console.error('\n❌ Database setup failed!');
+    console.error('\nDatabase setup failed!');
     if (error.code === 'ECONNREFUSED') {
-      console.error('👉 Error: Could not connect to MySQL server.');
-      console.error('👉 Tip: Ensure MySQL is running (e.g. Start MySQL in XAMPP Control Panel).');
+      console.error('Error: Could not connect to MySQL server.');
+      console.error('Tip: Ensure MySQL is running (e.g. Start MySQL in XAMPP Control Panel).');
     } else if (error.code === 'ER_ACCESS_DENIED_ERROR') {
-      console.error('👉 Error: MySQL username or password incorrect.');
-      console.error('👉 Tip: Verify DB_USER and DB_PASSWORD inside server/.env');
+      console.error('Error: MySQL username or password incorrect.');
+      console.error('Tip: Verify DB_USER and DB_PASSWORD inside server/.env');
     } else {
-      console.error(`👉 Error Details: ${error.message}`);
+      console.error(`Error Details: ${error.message}`);
     }
     process.exit(1);
   } finally {

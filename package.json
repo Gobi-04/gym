@@ -9,11 +9,6 @@
     "server": "npm --prefix server start",
     "server:dev": "npm --prefix server run dev",
     "db:setup": "npm --prefix server run db:setup",
-    "install:all": "npm install && npm --prefix server install && npm --prefix react install"
-  },
-  "dependencies": {
-    "lucide-react": "^1.72.0",
-    "react-icons": "^5.7.0",
-    "react-router-dom": "^7.18.5"
+    "install:all": "cd server && npm install && cd ../react && npm install"
   }
 }

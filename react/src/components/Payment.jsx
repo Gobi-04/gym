@@ -60,6 +60,7 @@ function Payment({ initialTab = "signup" }) {
 
   // Warning messages
   const [signupError, setSignupError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [loginError, setLoginError] = useState("");
 
   const switchTab = (tab) => {
@@ -68,11 +69,17 @@ function Payment({ initialTab = "signup" }) {
     setActiveTab(tab);
   };
 
+
+
   /* ---------- SIGN UP ---------- */
 
   const handleChange = (e) => {
   const { name } = e.target;
   let value = e.target.value;
+
+  if (name === "name") {
+  value = value.replace(/\p{Nd}/gu, "");
+}
 
   if (name === "phone") {
     value = value.replace(/\D/g, "").slice(0, 10); // Digits only, max 10 digits
@@ -410,11 +417,22 @@ function Payment({ initialTab = "signup" }) {
                     <div className="input-box">
                       <FiUser />
                       <input
-                        type="text"
-                        name="name"
+                        type="email"
+                        name="email"
                         placeholder="e.g. Rahul Sharma"
                         value={formData.name}
                         onChange={handleChange}
+                        onBlur={(event) => {
+  setEmailError(event.currentTarget.validity.typeMismatch ? "Invalid email" : "");
+}}
+onInvalid={(event) => {
+  if (event.currentTarget.validity.typeMismatch) {
+    event.preventDefault();
+    setEmailError("Invalid email");
+  }
+}}
+aria-invalid={Boolean(emailError)}
+aria-describedby={emailError ? "signup-email-error" : undefined}
                         required
                       />
                     </div>
