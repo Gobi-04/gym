@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
 import {
@@ -20,40 +20,54 @@ import {
 
 import "../styles/MemberDashboard.css";
 
-/* ---------- VIDEO HELPERS ---------- */
-// Converts YouTube links (watch / youtu.be / embed) into an embed link.
-// const getEmbedUrl = (url) => {
-//   if (!url) return null;
-//   const yt = url.match(
-//     /(?:youtu\.be\/|youtube\.com\/shorts\/|v=|embed\/)([\w-]{11})/
-//   );
-//   return yt
-//     ? `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0&playsinline=1`
-//     : null;
-// };
-const getEmbedUrl = (url) => {
-  if (!url) return null;
-  const yt = url.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/);
-  return yt ? `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0` : null;
-};
+/* ---------- HOVER VIDEO (plays when the cursor is on the card) ---------- */
+function HoverVideo({ url, poster, onOpen }) {
+  const videoRef = useRef(null);
+  const [hovering, setHovering] = useState(false);
 
-// Shows YouTube link in an iframe, anything else (mp4/webm) in a <video> tag.
-function VideoPlayer({ url, title }) {
-  const embed = getEmbedUrl(url);
-  return embed ? (
-    <iframe
-      src={embed}
-      title={title}
-      allow="autoplay; encrypted-media; picture-in-picture"
-      allowFullScreen
-    />
-  ) : (
-    <video src={url} controls autoPlay />
+  const start = () => {
+    setHovering(true);
+    const video = videoRef.current;
+    if (video) {
+      const promise = video.play();
+      if (promise && promise.catch) promise.catch(() => {});
+    }
+  };
+
+  const stop = () => {
+    setHovering(false);
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
+  };
+
+  return (
+    <div
+      className={hovering ? "exercise-image is-playing" : "exercise-image"}
+      onMouseEnter={start}
+      onMouseLeave={stop}
+      onClick={onOpen}
+    >
+      <video
+        ref={videoRef}
+        src={url}
+        poster={poster}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+      />
+
+      <span className="demo-label">DEMO VIDEO</span>
+
+      <button className="play-button" type="button" aria-label="Open workout">
+        <FiPlay />
+      </button>
+    </div>
   );
 }
-
-const SAMPLE_VIDEO =
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
 const dietPlanData = {
   "non-vegetarian": {
@@ -138,122 +152,188 @@ const dietPlanData = {
   },
 };
 
-const workouts = [
-  {
-    id: 1,
-    title: "Flat Barbell Bench Press",
-    image:
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900",
-    videoUrl: "/videos/bench-press.mp4", // 👈 replace with your original link
-    sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "10 Minutes",
-    muscle: "Chest",
-    description:
-      "The flat barbell bench press helps build chest strength and upper body muscles.",
-    steps: [
-      "Lie flat on the bench.",
-      "Hold the barbell slightly wider than shoulder width.",
-      "Lower the bar slowly towards your chest.",
-      "Push the bar upward until your arms are extended.",
-    ],
-  },
-  {
-    id: 2,
-    title: "Incline Dumbbell Press",
-    image:
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900",
-    videoUrl: "/videos/incline-press.mp4", // 👈 replace with your original link
-    sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "12 Minutes",
-    muscle: "Upper Chest",
-    description:
-      "Incline dumbbell press focuses on developing the upper chest and shoulder muscles.",
-    steps: [
-      "Set the bench at an incline angle.",
-      "Hold one dumbbell in each hand.",
-      "Lower the dumbbells towards your upper chest.",
-      "Push both dumbbells upward with control.",
-    ],
-  },
-  {
-    id: 3,
-    title: "Standing Cable Fly",
-    image:
-      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
-    videoUrl:"/videos/cable-fly.mp4",  // 👈 replace with your original link
-    sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "10 Minutes",
-    muscle: "Chest",
-    description:
-      "Standing cable fly helps improve chest muscle strength and control.",
-    steps: [
-      "Stand between the cable machine handles.",
-      "Hold both handles with your arms open.",
-      "Bring your hands together in front of your chest.",
-      "Slowly return to the starting position.",
-    ],
-  },
-  {
-    id: 4,
-    title: "Seated Dumbbell Shoulder Press",
-    image:
-      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
-    videoUrl:  "/videos/shoulder-press.mp4",  // 👈 replace with your original link
-    sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "10 Minutes",
-    muscle: "Shoulders",
-    description:
-      "Seated dumbbell press builds overhead pushing strength and sculpted shoulders.",
-    steps: [
-      "Sit upright with back support and dumbbells at shoulder height.",
-      "Press the weights upward until arms are almost fully extended.",
-      "Pause briefly at the top without banging the weights together.",
-      "Lower under control back to ear level.",
-    ],
-  },
-  {
-    id: 5,
-    title: "Triceps Rope Pushdown",
-    image:
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900",
-    videoUrl: "/videos/triceps-pushdown.mp4",// 👈 replace with your original link
-    sets: 3,
-    reps: "12 - 15 Reps",
-    duration: "8 Minutes",
-    muscle: "Triceps",
-    description:
-      "Rope pushdowns isolate the lateral and long heads of the triceps.",
-    steps: [
-      "Attach a rope to a high cable pulley.",
-      "Keep elbows tucked tightly to your sides.",
-      "Push downward and spread the rope apart at the bottom contraction.",
-      "Return slowly to 90-degree elbow flexion.",
-    ],
-  },
-  {
-    id: 6,
-    title: "Parallel Bar Dips",
-    image:
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900",
-    videoUrl:"/videos/dips.mp4",// 👈 replace with your original link
-    sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "10 Minutes",
-    muscle: "Chest & Triceps",
-    description:
-      "Dips are an essential compound movement for chest and tricep power.",
-    steps: [
-      "Grip the parallel bars and push yourself up to the starting position.",
-      "Lean forward slightly to target the chest.",
-      "Lower your body until elbows reach a 90-degree bend.",
-      "Drive back up using your chest and triceps.",
-    ],
-  },
+/* ---------- WORKOUT PLANS (one list per day) ----------
+   Save each video in public/videos/ with the workout name (lowercase, spaces -> hyphens)
+   Thumbnail images are only the cover before the video plays. */
+const IMAGES = [
+  "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900",
+  "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900",
+  "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
 ];
+
+// Video file name is made from the workout name automatically:
+// "Lat Pulldown" -> /videos/lat-pulldown.mp4
+const videoFileName = (title) =>
+  title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") + ".mp4";
+
+const ex = (id, title, sets, reps, duration, muscle, description, steps) => ({
+  id,
+  title,
+  image: IMAGES[id % IMAGES.length],
+  videoUrl: `/videos/${videoFileName(title)}`,
+  sets,
+  reps,
+  duration,
+  muscle,
+  description,
+  steps,
+});
+
+const workoutPlans = {
+  Mon: {
+    focus: "Chest & Triceps Hypertrophy",
+    exercises: [
+      ex(1, "Flat Barbell Bench Press", 3, "10 - 12 Reps", "10 Minutes", "Chest",
+        "The flat barbell bench press helps build chest strength and upper body muscles.",
+        ["Lie flat on the bench.", "Hold the barbell slightly wider than shoulder width.", "Lower the bar slowly towards your chest.", "Push the bar upward until your arms are extended."]),
+      ex(2, "Incline Dumbbell Press", 3, "10 - 12 Reps", "12 Minutes", "Upper Chest",
+        "Incline dumbbell press focuses on developing the upper chest and shoulder muscles.",
+        ["Set the bench at an incline angle.", "Hold one dumbbell in each hand.", "Lower the dumbbells towards your upper chest.", "Push both dumbbells upward with control."]),
+      ex(3, "Standing Cable Fly", 3, "10 - 12 Reps", "10 Minutes", "Chest",
+        "Standing cable fly helps improve chest muscle strength and control.",
+        ["Stand between the cable machine handles.", "Hold both handles with your arms open.", "Bring your hands together in front of your chest.", "Slowly return to the starting position."]),
+      ex(4, "Seated Dumbbell Shoulder Press", 3, "10 - 12 Reps", "10 Minutes", "Shoulders",
+        "Seated dumbbell press builds overhead pushing strength and sculpted shoulders.",
+        ["Sit upright with back support and dumbbells at shoulder height.", "Press the weights upward until arms are almost fully extended.", "Pause briefly at the top without banging the weights together.", "Lower under control back to ear level."]),
+      ex(5, "Triceps Rope Pushdown", 3, "12 - 15 Reps", "8 Minutes", "Triceps",
+        "Rope pushdowns isolate the lateral and long heads of the triceps.",
+        ["Attach a rope to a high cable pulley.", "Keep elbows tucked tightly to your sides.", "Push downward and spread the rope apart at the bottom.", "Return slowly to 90-degree elbow flexion."]),
+      ex(6, "Parallel Bar Dips", 3, "10 - 12 Reps", "10 Minutes", "Chest & Triceps",
+        "Dips are an essential compound movement for chest and tricep power.",
+        ["Grip the parallel bars and push yourself up to the starting position.", "Lean forward slightly to target the chest.", "Lower your body until elbows reach a 90-degree bend.", "Drive back up using your chest and triceps."]),
+    ],
+  },
+
+  Tue: {
+    focus: "Back Strength & Width",
+    exercises: [
+      ex(11, "Lat Pulldown", 3, "10 - 12 Reps", "10 Minutes", "Lats",
+        "Lat pulldown builds back width and improves pulling strength.",
+        ["Sit down and grip the bar wider than shoulder width.", "Pull the bar down to your upper chest.", "Squeeze your shoulder blades together.", "Return the bar slowly with control."]),
+      ex(12, "Seated Cable Row", 3, "10 - 12 Reps", "10 Minutes", "Mid Back",
+        "Seated cable row targets the middle back and improves posture.",
+        ["Sit with your chest up and knees slightly bent.", "Pull the handle towards your stomach.", "Squeeze your back at the end of the pull.", "Extend your arms slowly."]),
+      ex(13, "Bent-Over Barbell Row", 3, "8 - 10 Reps", "12 Minutes", "Back",
+        "Barbell row is a heavy compound lift for back thickness.",
+        ["Hinge forward at the hips with a flat back.", "Pull the bar towards your lower chest.", "Keep your elbows close to your body.", "Lower the bar under control."]),
+      ex(14, "Single-Arm Dumbbell Row", 3, "10 - 12 Reps", "10 Minutes", "Lats",
+        "Single-arm row fixes strength imbalances between both sides.",
+        ["Place one knee and hand on a bench.", "Pull the dumbbell towards your hip.", "Keep your back flat and elbow close.", "Lower the weight slowly."]),
+      ex(15, "Pull-Ups", 3, "6 - 10 Reps", "8 Minutes", "Lats & Biceps",
+        "Pull-ups build a wide, strong back using your body weight.",
+        ["Hang from the bar with an overhand grip.", "Pull your chin above the bar.", "Keep your core tight.", "Lower yourself fully with control."]),
+      ex(16, "Face Pull", 3, "12 - 15 Reps", "8 Minutes", "Rear Delts",
+        "Face pulls strengthen the upper back and protect the shoulders.",
+        ["Set a rope at face height on a cable machine.", "Pull the rope towards your face.", "Spread your hands apart at the end.", "Return slowly to the start."]),
+    ],
+  },
+
+  Wed: {
+    focus: "Shoulder Strength & Definition",
+    exercises: [
+      ex(21, "Barbell Overhead Press", 3, "8 - 10 Reps", "12 Minutes", "Shoulders",
+        "Overhead press builds overall shoulder strength and size.",
+        ["Hold the bar at shoulder height.", "Press the bar straight overhead.", "Keep your core tight and glutes squeezed.", "Lower the bar back to your shoulders."]),
+      ex(22, "Dumbbell Lateral Raise", 3, "12 - 15 Reps", "8 Minutes", "Side Delts",
+        "Lateral raises create wider, rounder shoulders.",
+        ["Stand with dumbbells at your sides.", "Raise your arms out to shoulder height.", "Keep a slight bend in your elbows.", "Lower the weights slowly."]),
+      ex(23, "Front Raise", 3, "12 - 15 Reps", "8 Minutes", "Front Delts",
+        "Front raises target the front part of the shoulders.",
+        ["Hold dumbbells in front of your thighs.", "Raise one or both arms to shoulder height.", "Avoid swinging your body.", "Lower with control."]),
+      ex(24, "Rear Delt Fly", 3, "12 - 15 Reps", "8 Minutes", "Rear Delts",
+        "Rear delt fly improves shoulder balance and posture.",
+        ["Bend forward with a flat back.", "Raise the dumbbells out to the sides.", "Squeeze your shoulder blades.", "Lower slowly."]),
+      ex(25, "Arnold Press", 3, "10 - 12 Reps", "10 Minutes", "Shoulders",
+        "Arnold press works all three heads of the shoulder.",
+        ["Start with palms facing you at chest height.", "Rotate your palms outward as you press up.", "Fully extend your arms overhead.", "Reverse the movement back down."]),
+      ex(26, "Dumbbell Shrugs", 3, "12 - 15 Reps", "6 Minutes", "Traps",
+        "Shrugs build the upper trapezius muscles.",
+        ["Hold heavy dumbbells at your sides.", "Lift your shoulders straight up.", "Pause at the top for a second.", "Lower slowly without rolling the shoulders."]),
+    ],
+  },
+
+  Thu: {
+    focus: "Arms Biceps & Triceps Builder",
+    exercises: [
+      ex(31, "Barbell Curl", 3, "10 - 12 Reps", "8 Minutes", "Biceps",
+        "Barbell curl is the classic mass builder for the biceps.",
+        ["Stand tall holding the bar with an underhand grip.", "Curl the bar up to your shoulders.", "Keep your elbows fixed at your sides.", "Lower the bar slowly."]),
+      ex(32, "Hammer Curl", 3, "10 - 12 Reps", "8 Minutes", "Biceps & Forearms",
+        "Hammer curls build the brachialis and forearm muscles.",
+        ["Hold dumbbells with palms facing each other.", "Curl the weights up without twisting.", "Squeeze at the top.", "Lower with control."]),
+      ex(33, "Preacher Curl", 3, "10 - 12 Reps", "8 Minutes", "Biceps",
+        "Preacher curl isolates the biceps and stops body swing.",
+        ["Rest your upper arms on the pad.", "Curl the weight towards your shoulders.", "Pause at the top.", "Lower until your arms are almost straight."]),
+      ex(34, "Skull Crushers", 3, "10 - 12 Reps", "10 Minutes", "Triceps",
+        "Skull crushers target all three heads of the triceps.",
+        ["Lie on a bench holding the bar above your chest.", "Bend your elbows to lower the bar towards your forehead.", "Keep your upper arms still.", "Extend your arms back up."]),
+      ex(35, "Overhead Triceps Extension", 3, "10 - 12 Reps", "8 Minutes", "Triceps",
+        "Overhead extension stretches and strengthens the long head of the triceps.",
+        ["Hold one dumbbell overhead with both hands.", "Lower it behind your head.", "Keep your elbows pointing forward.", "Extend your arms back up."]),
+      ex(36, "Triceps Kickback", 3, "12 - 15 Reps", "6 Minutes", "Triceps",
+        "Kickbacks finish off the triceps with a strong squeeze.",
+        ["Hinge forward with your elbow tucked to your side.", "Extend your arm straight back.", "Squeeze your triceps at the end.", "Return slowly."]),
+    ],
+  },
+
+  Fri: {
+    focus: "Leg Day Power & Mass",
+    exercises: [
+      ex(41, "Barbell Squat", 4, "8 - 10 Reps", "15 Minutes", "Quads & Glutes",
+        "Squats are the king of leg exercises for strength and size.",
+        ["Place the bar on your upper back.", "Lower your hips until thighs are parallel to the floor.", "Keep your chest up and knees in line with toes.", "Drive through your heels to stand up."]),
+      ex(42, "Leg Press", 3, "10 - 12 Reps", "10 Minutes", "Quads",
+        "Leg press builds leg strength with back support.",
+        ["Sit and place your feet shoulder width on the platform.", "Lower the platform until knees reach 90 degrees.", "Press back up without locking your knees.", "Keep your lower back on the seat."]),
+      ex(43, "Romanian Deadlift", 3, "8 - 10 Reps", "12 Minutes", "Hamstrings",
+        "Romanian deadlift targets the hamstrings and glutes.",
+        ["Hold the bar at your thighs.", "Push your hips back with a flat back.", "Lower the bar along your legs.", "Squeeze your glutes to stand tall."]),
+      ex(44, "Leg Extension", 3, "12 - 15 Reps", "8 Minutes", "Quads",
+        "Leg extension isolates the front of the thighs.",
+        ["Sit with the pad on your lower shins.", "Extend your legs fully.", "Squeeze your quads at the top.", "Lower slowly."]),
+      ex(45, "Lying Leg Curl", 3, "12 - 15 Reps", "8 Minutes", "Hamstrings",
+        "Leg curl isolates the hamstrings.",
+        ["Lie face down and place the pad above your heels.", "Curl your legs towards your glutes.", "Pause at the top.", "Lower with control."]),
+      ex(46, "Standing Calf Raise", 4, "15 - 20 Reps", "8 Minutes", "Calves",
+        "Calf raises build lower leg size and ankle strength.",
+        ["Stand with the balls of your feet on a step.", "Rise as high as you can on your toes.", "Pause at the top.", "Lower your heels below the step."]),
+    ],
+  },
+
+  Sat: {
+    focus: "Abs & Core Stability",
+    exercises: [
+      ex(51, "Crunches", 3, "15 - 20 Reps", "6 Minutes", "Abs",
+        "Crunches target the upper abdominal muscles.",
+        ["Lie on your back with knees bent.", "Lift your shoulders off the floor.", "Squeeze your abs at the top.", "Lower slowly without pulling your neck."]),
+      ex(52, "Plank", 3, "45 - 60 Sec", "5 Minutes", "Core",
+        "Plank builds total core strength and stability.",
+        ["Rest on your forearms and toes.", "Keep your body in a straight line.", "Tighten your abs and glutes.", "Breathe steadily and hold."]),
+      ex(53, "Hanging Leg Raise", 3, "10 - 12 Reps", "8 Minutes", "Lower Abs",
+        "Hanging leg raises target the lower abdominal muscles.",
+        ["Hang from a bar with a firm grip.", "Raise your legs until parallel to the floor.", "Avoid swinging your body.", "Lower your legs slowly."]),
+      ex(54, "Russian Twist", 3, "20 Twists", "6 Minutes", "Obliques",
+        "Russian twists strengthen the obliques and rotation.",
+        ["Sit with knees bent and lean back slightly.", "Hold a weight or clasp your hands.", "Twist your torso side to side.", "Keep your chest up."]),
+      ex(55, "Cable Crunch", 3, "12 - 15 Reps", "8 Minutes", "Abs",
+        "Cable crunch adds resistance for stronger abs.",
+        ["Kneel under a high cable with the rope at your head.", "Crunch down, bringing elbows towards knees.", "Squeeze your abs.", "Return slowly."]),
+      ex(56, "Mountain Climbers", 3, "30 Sec", "5 Minutes", "Core & Cardio",
+        "Mountain climbers work the core while raising your heart rate.",
+        ["Start in a high plank position.", "Drive one knee towards your chest.", "Switch legs quickly.", "Keep your hips low and core tight."]),
+    ],
+  },
+};
+
+const dayNames = {
+  Mon: "MONDAY",
+  Tue: "TUESDAY",
+  Wed: "WEDNESDAY",
+  Thu: "THURSDAY",
+  Fri: "FRIDAY",
+  Sat: "SATURDAY",
+  Sun: "SUNDAY",
+};
 
 const days = [
   ["Mon", "Day 01"],
@@ -273,8 +353,6 @@ function MemberDashboard() {
   const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [completed, setCompleted] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [playingId, setPlayingId] = useState(null); // video playing inside a card
-  const [detailPlaying, setDetailPlaying] = useState(false); // video on detail page
   const [selectedDiet, setSelectedDiet] = useState(() => {
     const savedDiet = localStorage.getItem("fitguide-diet");
     return savedDiet === "vegetarian" ? "vegetarian" : "non-vegetarian";
@@ -421,14 +499,15 @@ function MemberDashboard() {
     );
   };
 
+  const todaysPlan = workoutPlans[activeDay];
+  const todaysWorkouts = todaysPlan ? todaysPlan.exercises : [];
+
   const openWorkout = (workout) => {
     setSelectedWorkout(workout);
-    setDetailPlaying(false);
   };
 
   const goBack = () => {
     setSelectedWorkout(null);
-    setDetailPlaying(false);
   };
 
   return (
@@ -464,8 +543,6 @@ function MemberDashboard() {
               onClick={() => {
                 setActiveMenu(item.name);
                 setSelectedWorkout(null);
-                setPlayingId(null);
-                setDetailPlaying(false);
                 setMenuOpen(false);
               }}
             >
@@ -532,7 +609,7 @@ function MemberDashboard() {
             <div className="detail-heading">
               <div>
                 <span className="section-label">
-                  MONDAY WORKOUT / EXERCISE DETAILS
+                  {dayNames[activeDay]} WORKOUT / EXERCISE DETAILS
                 </span>
 
                 <h1>{selectedWorkout.title}</h1>
@@ -551,30 +628,19 @@ function MemberDashboard() {
               <div className="detail-image-card">
 
                 <div className="detail-image">
-                  {detailPlaying ? (
-                    <VideoPlayer
-                      url={selectedWorkout.videoUrl}
-                      title={selectedWorkout.title}
-                    />
-                  ) : (
-                    <>
-                      <img
-                        src={selectedWorkout.image}
-                        alt={selectedWorkout.title}
-                      />
+                  <video
+                    key={selectedWorkout.id}
+                    src={selectedWorkout.videoUrl}
+                    poster={selectedWorkout.image}
+                    controls
+                    autoPlay
+                    loop
+                    playsInline
+                  />
 
-                      <button
-                        className="detail-play-button"
-                        onClick={() => setDetailPlaying(true)}
-                      >
-                        <FiPlay />
-                      </button>
-
-                      <span className="demo-label">
-                        EXERCISE DEMO
-                      </span>
-                    </>
-                  )}
+                  <span className="demo-label">
+                    EXERCISE DEMO
+                  </span>
                 </div>
 
                 <div className="detail-stats">
@@ -666,10 +732,7 @@ function MemberDashboard() {
                       ? "day-card active-day"
                       : "day-card"
                   }
-                  onClick={() => {
-                    setActiveDay(day);
-                    setPlayingId(null);
-                  }}
+                  onClick={() => setActiveDay(day)}
                 >
                   <strong>{day}</strong>
                   <span>{label}</span>
@@ -691,18 +754,16 @@ function MemberDashboard() {
                 </small>
 
                 <h2>
-                  {activeDay === "Mon"
-                    ? "Chest & Triceps Hypertrophy"
-                    : activeDay === "Sun"
+                  {activeDay === "Sun"
                     ? "Recovery & Rest"
-                    : "Assigned Training Schedule"}
+                    : todaysPlan.focus}
                 </h2>
               </div>
 
               <span className="exercise-count">
                 {activeDay === "Sun"
                   ? "Rest Day"
-                  : `${workouts.length} Exercises Assigned`}
+                  : `${todaysWorkouts.length} Exercises Assigned`}
               </span>
 
             </div>
@@ -720,38 +781,15 @@ function MemberDashboard() {
 
               <div className="workout-grid">
 
-                {workouts.map((workout) => (
+                {todaysWorkouts.map((workout) => (
 
                   <div className="exercise-card" key={workout.id}>
 
-                    <div className="exercise-image">
-
-                      {playingId === workout.id ? (
-                        <VideoPlayer
-                          url={workout.videoUrl}
-                          title={workout.title}
-                        />
-                      ) : (
-                        <>
-                          <img
-                            src={workout.image}
-                            alt={workout.title}
-                          />
-
-                          <span className="demo-label">
-                            DEMO VIDEO
-                          </span>
-
-                          <button
-                            className="play-button"
-                            onClick={() => setPlayingId(workout.id)}
-                          >
-                            <FiPlay />
-                          </button>
-                        </>
-                      )}
-
-                    </div>
+                    <HoverVideo
+                      url={workout.videoUrl}
+                      poster={workout.image}
+                      onOpen={() => openWorkout(workout)}
+                    />
 
                     <div className="exercise-details">
 

@@ -26,7 +26,6 @@
   justify-content: center;
   padding: 60px 20px;
 }
-
 .admin-signin-header {
   text-align: center;
   margin-bottom: 28px;
@@ -929,11 +928,25 @@
 
 .admin-settings-actions {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   gap: 16px;
   margin-top: 6px;
 }
 
+.admin-logout{
+ display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #141916;
+  border: none;
+  border-radius: 8px;
+  border-color:oklch(63.7% .237 25.331);
+  color: oklch(70.4% .191 22.216);
+  font-size: 13px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: color 0.s;
+}
 .admin-save-settings-btn {
   background: #c5ff16;
   color: #000000;
@@ -943,9 +956,11 @@
   border-radius: 8px;
   padding: 11px 24px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.3s;
 }
-
+.admin-logout:hover{
+  background:oklch(28.551% 0.08475 24.213);
+}
 .admin-save-settings-btn:hover {
   background: #b0e613;
 }
