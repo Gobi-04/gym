@@ -1,11 +1,13 @@
 
 .navbar {
   width: 100%;
-  height: 65px;
+  height: 48px;
+  top:0;
+  left:0;
   background: #050505;
   border-bottom: 1px solid #292929;
-  position: relative;
-  z-index: 10;
+  position: fixed;
+  z-index: 10;  
 }
 
 .navbar-inner {
