@@ -23,14 +23,14 @@
 
 .membership-heading p {
   color: #c5f900;
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 700;
   margin-bottom: 15px;
 }
 
 .membership-heading h2 {
   color: #f5f8e5;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
@@ -73,14 +73,14 @@
 
 .plan-top h3 {
   color: #f5f8e5;
-  font-size: 13px;
+  font-size: 19px;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
 .plan-description {
   color: #999999;
-  font-size: 9px;
+  font-size: 13px;
   line-height: 1.5;
   min-height: 28px;
 }
@@ -94,14 +94,14 @@
 
 .plan-price h2 {
   color: #f5f8e5;
-  font-size: 23px;
+  font-size: 25px;
   font-weight: 800;
   margin-bottom: 7px;
 }
 
 .plan-price p {
   color: #999999;
-  font-size: 9px;
+  font-size: 13px;
   margin-bottom: 8px;
 }
 
@@ -111,7 +111,7 @@
   border: 1px solid #353535;
   border-radius: 20px;
   padding: 4px 10px;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 600;
 }
 
@@ -120,7 +120,7 @@
 .plan-benefits {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 14px;
   margin-bottom: 20px;
 }
 
@@ -132,7 +132,7 @@
 
 .benefit-check {
   color: #c5f900;
-  font-size: 15px;
+  font-size: 19px;
   line-height: 1;
   font-weight: 700;
   flex-shrink: 0;
@@ -140,7 +140,7 @@
 
 .benefit-item p {
   color: #eeeeee;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 500;
   line-height: 1.4;
 }
@@ -156,7 +156,7 @@
   background: transparent;
   color: #f5f8e5;
   font-family: inherit;
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
