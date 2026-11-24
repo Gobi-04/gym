@@ -16,6 +16,29 @@ function AdminPortal() {
     return localStorage.getItem("fitguideAdminToken") ? true : false;
   });
 
+  // Admin Profile State
+  const [adminProfile, setAdminProfile] = useState(() => {
+    const saved = localStorage.getItem("fitguideAdminProfile");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        // use fallback
+      }
+    }
+    return {
+      name: "Marcus Vance",
+      email: "admin@fitguide.club",
+      avatar:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
+    };
+  });
+
+  const handleUpdateProfile = (newProfile) => {
+    setAdminProfile(newProfile);
+    localStorage.setItem("fitguideAdminProfile", JSON.stringify(newProfile));
+  };
+
   // Active Menu: "Dashboard" | "Member Management" | "Membership & Payments" | "Workout Management" | "Diet Plan Management" | "Profile & Settings"
   const [activeMenu, setActiveMenu] = useState("Dashboard");
 
@@ -115,12 +138,12 @@ function AdminPortal() {
 
           <div className="admin-top-profile">
             <div className="admin-profile-info">
-              <div className="admin-profile-name">Marcus Vance</div>
-              <div className="admin-profile-email">admin@fitguide.club</div>
+              <div className="admin-profile-name">{adminProfile.name}</div>
+              <div className="admin-profile-email">{adminProfile.email}</div>
             </div>
             <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-              alt="Marcus Vance"
+              src={adminProfile.avatar}
+              alt={adminProfile.name}
               className="admin-profile-thumb"
             />
           </div>
@@ -145,7 +168,11 @@ function AdminPortal() {
           {activeMenu === "Diet Plan Management" && <AdminDiet />}
 
           {activeMenu === "Profile & Settings" && (
-            <AdminSettings onLogout={handleLogout} />
+            <AdminSettings
+              profile={adminProfile}
+              onUpdateProfile={handleUpdateProfile}
+              onLogout={handleLogout}
+            />
           )}
         </div>
       </main>
