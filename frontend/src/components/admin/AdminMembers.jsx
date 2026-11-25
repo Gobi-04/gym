@@ -3,6 +3,17 @@ import {
   FiSearch,
   FiCheckCircle,
   FiXCircle,
+  FiEye,
+  FiEdit2,
+  FiChevronDown,
+  FiX,
+  FiCheck,
+  FiCalendar,
+  FiMail,
+  FiPhone,
+  FiActivity,
+  FiCoffee,
+  FiAward,
 } from "react-icons/fi";
 import "../../styles/AdminPortal.css";
 
@@ -120,24 +131,48 @@ const defaultMembers = [
 ];
 
 function AdminMembers({ members }) {
+  // Member List State
+  const [memberList, setMemberList] = useState(() => {
+    const saved = localStorage.getItem("fitguideMembersList");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        // use fallback
+      }
+    }
+    if (members && Array.isArray(members) && members.length > 5) {
+      return members;
+    }
+    return defaultMembers;
+  });
+
+  // Filter States
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGoal, setSelectedGoal] = useState("All");
   const [selectedDiet, setSelectedDiet] = useState("All");
   const [selectedPlan, setSelectedPlan] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
 
-  // Merge external props members if provided, otherwise default to full 10-member dataset
-  const memberList = useMemo(() => {
-    if (members && Array.isArray(members) && members.length > 5) {
-      return members;
-    }
-    return defaultMembers;
-  }, [members]);
+  // Modal & Menu States
+  const [viewingMember, setViewingMember] = useState(null);
+  const [editingMember, setEditingMember] = useState(null);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const [toastMessage, setToastMessage] = useState("");
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(""), 3500);
+  };
+
+  const saveMemberList = (updatedList) => {
+    setMemberList(updatedList);
+    localStorage.setItem("fitguideMembersList", JSON.stringify(updatedList));
+  };
 
   // Filter logic
   const filteredMembers = useMemo(() => {
     return memberList.filter((m) => {
-      // Search term matching ID, name, email, or phone
       if (searchTerm.trim()) {
         const query = searchTerm.toLowerCase();
         const matchesQuery =
@@ -148,22 +183,18 @@ function AdminMembers({ members }) {
         if (!matchesQuery) return false;
       }
 
-      // Goal filter
       if (selectedGoal !== "All" && m.fitnessGoal !== selectedGoal) {
         return false;
       }
 
-      // Diet filter
       if (selectedDiet !== "All" && m.dietaryPreference !== selectedDiet) {
         return false;
       }
 
-      // Plan filter
       if (selectedPlan !== "All" && m.membershipPlan !== selectedPlan) {
         return false;
       }
 
-      // Status filter
       if (selectedStatus !== "All") {
         const currentStatus = m.membershipStatus?.toLowerCase();
         if (currentStatus !== selectedStatus.toLowerCase()) {
@@ -182,8 +213,67 @@ function AdminMembers({ members }) {
     selectedStatus,
   ]);
 
+  // Actions
+  const handleSaveEdit = (e) => {
+    e.preventDefault();
+    if (!editingMember) return;
+    const updated = memberList.map((m) =>
+      m.id === editingMember.id ? editingMember : m
+    );
+    saveMemberList(updated);
+    setEditingMember(null);
+    showToast(`Member ${editingMember.name} updated successfully!`);
+  };
+
+  const handleToggleStatus = (id) => {
+    const updated = memberList.map((m) => {
+      if (m.id === id) {
+        const nextStatus = m.membershipStatus === "Active" ? "Expired" : "Active";
+        return { ...m, membershipStatus: nextStatus };
+      }
+      return m;
+    });
+    saveMemberList(updated);
+    showToast("Member status updated!");
+  };
+
+  const handleQuickRenew = (id) => {
+    const updated = memberList.map((m) => {
+      if (m.id === id) {
+        const nextDate = new Date();
+        nextDate.setDate(nextDate.getDate() + 30);
+        const yyyy = nextDate.getFullYear();
+        const mm = String(nextDate.getMonth() + 1).padStart(2, "0");
+        const dd = String(nextDate.getDate()).padStart(2, "0");
+        return {
+          ...m,
+          membershipStatus: "Active",
+          expiryDate: `${yyyy}-${mm}-${dd}`,
+        };
+      }
+      return m;
+    });
+    saveMemberList(updated);
+    showToast("Membership renewed for 30 days!");
+  };
+
+  const handleDeleteMember = (id) => {
+    if (window.confirm("Are you sure you want to delete this member?")) {
+      const updated = memberList.filter((m) => m.id !== id);
+      saveMemberList(updated);
+      showToast("Member deleted successfully.");
+    }
+  };
+
   return (
     <div className="admin-member-management-page">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="admin-toast-banner">
+          <FiCheck /> {toastMessage}
+        </div>
+      )}
+
       {/* Page Header */}
       <div className="admin-members-header-row">
         <div className="admin-heading-block">
@@ -279,6 +369,7 @@ function AdminMembers({ members }) {
                 <th>Membership Plan</th>
                 <th>Membership Status</th>
                 <th>Expiry Date</th>
+                <th className="actions-header-cell">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -312,12 +403,88 @@ function AdminMembers({ members }) {
                         </span>
                       </td>
                       <td className="member-expiry-cell">{m.expiryDate}</td>
+                      <td className="admin-actions-cell">
+                        <div className="admin-actions-group">
+                          {/* View Button */}
+                          <button
+                            type="button"
+                            className="admin-action-btn admin-view-btn"
+                            onClick={() => setViewingMember(m)}
+                            title="View Member Details"
+                          >
+                            <FiEye />
+                            <span>View</span>
+                          </button>
+
+                          {/* Edit Button */}
+                          <button
+                            type="button"
+                            className="admin-action-btn admin-edit-btn"
+                            onClick={() => setEditingMember({ ...m })}
+                            title="Edit Member"
+                          >
+                            <FiEdit2 />
+                            <span>Edit</span>
+                          </button>
+
+                          {/* Dropdown Options */}
+                          <div className="admin-dropdown-menu-wrapper">
+                            <button
+                              type="button"
+                              className="admin-action-btn admin-more-btn"
+                              onClick={() =>
+                                setOpenMenuId(
+                                  openMenuId === m.id ? null : m.id
+                                )
+                              }
+                              title="More Options"
+                            >
+                              <FiChevronDown />
+                            </button>
+
+                            {openMenuId === m.id && (
+                              <div className="admin-row-dropdown-popover">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    handleToggleStatus(m.id);
+                                    setOpenMenuId(null);
+                                  }}
+                                >
+                                  {m.membershipStatus === "Active"
+                                    ? "Mark Expired"
+                                    : "Mark Active"}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    handleQuickRenew(m.id);
+                                    setOpenMenuId(null);
+                                  }}
+                                >
+                                  Quick Renew (+30d)
+                                </button>
+                                <button
+                                  type="button"
+                                  className="popover-danger-btn"
+                                  onClick={() => {
+                                    handleDeleteMember(m.id);
+                                    setOpenMenuId(null);
+                                  }}
+                                >
+                                  Delete Member
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                   );
                 })
               ) : (
                 <tr>
-                  <td colSpan="9" className="admin-no-results-cell">
+                  <td colSpan="10" className="admin-no-results-cell">
                     No registered members found matching your search and
                     filters.
                   </td>
@@ -327,6 +494,297 @@ function AdminMembers({ members }) {
           </table>
         </div>
       </div>
+
+      {/* VIEW MEMBER MODAL */}
+      {viewingMember && (
+        <div
+          className="admin-modal-backdrop"
+          onClick={() => setViewingMember(null)}
+        >
+          <div
+            className="admin-modal-window"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="admin-modal-top">
+              <div className="admin-modal-title-wrap">
+                <span className="admin-modal-id-badge">
+                  {viewingMember.id}
+                </span>
+                <h2>{viewingMember.name}</h2>
+              </div>
+              <button
+                type="button"
+                className="admin-modal-close-btn"
+                onClick={() => setViewingMember(null)}
+              >
+                <FiX />
+              </button>
+            </div>
+
+            <div className="admin-modal-body">
+              <div className="admin-modal-info-grid">
+                <div className="admin-modal-info-item">
+                  <span className="info-label">
+                    <FiMail /> Email Address
+                  </span>
+                  <span className="info-val">{viewingMember.email}</span>
+                </div>
+                <div className="admin-modal-info-item">
+                  <span className="info-label">
+                    <FiPhone /> Mobile Number
+                  </span>
+                  <span className="info-val">{viewingMember.phone}</span>
+                </div>
+                <div className="admin-modal-info-item">
+                  <span className="info-label">
+                    <FiActivity /> Fitness Goal
+                  </span>
+                  <span className="info-val">{viewingMember.fitnessGoal}</span>
+                </div>
+                <div className="admin-modal-info-item">
+                  <span className="info-label">
+                    <FiCoffee /> Dietary Preference
+                  </span>
+                  <span className="info-val">
+                    {viewingMember.dietaryPreference}
+                  </span>
+                </div>
+                <div className="admin-modal-info-item">
+                  <span className="info-label">
+                    <FiAward /> Membership Tier
+                  </span>
+                  <span className="info-val">
+                    {viewingMember.membershipPlan}
+                  </span>
+                </div>
+                <div className="admin-modal-info-item">
+                  <span className="info-label">
+                    <FiCalendar /> Expiry Date
+                  </span>
+                  <span className="info-val">{viewingMember.expiryDate}</span>
+                </div>
+              </div>
+
+              <div className="admin-modal-status-highlight">
+                <span className="status-highlight-label">Current Status:</span>
+                <span
+                  className={`member-status-indicator ${
+                    viewingMember.membershipStatus === "Active"
+                      ? "status-active"
+                      : "status-expired"
+                  }`}
+                >
+                  {viewingMember.membershipStatus === "Active" ? (
+                    <FiCheckCircle />
+                  ) : (
+                    <FiXCircle />
+                  )}
+                  <strong>{viewingMember.membershipStatus}</strong>
+                </span>
+              </div>
+            </div>
+
+            <div className="admin-modal-foot">
+              <button
+                type="button"
+                className="admin-modal-secondary-btn"
+                onClick={() => setViewingMember(null)}
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="admin-modal-primary-btn"
+                onClick={() => {
+                  setEditingMember({ ...viewingMember });
+                  setViewingMember(null);
+                }}
+              >
+                <FiEdit2 /> Edit Member
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT MEMBER MODAL */}
+      {editingMember && (
+        <div
+          className="admin-modal-backdrop"
+          onClick={() => setEditingMember(null)}
+        >
+          <div
+            className="admin-modal-window"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="admin-modal-top">
+              <div className="admin-modal-title-wrap">
+                <span className="admin-modal-id-badge">
+                  {editingMember.id}
+                </span>
+                <h2>Edit Member Details</h2>
+              </div>
+              <button
+                type="button"
+                className="admin-modal-close-btn"
+                onClick={() => setEditingMember(null)}
+              >
+                <FiX />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit}>
+              <div className="admin-modal-body">
+                <div className="admin-modal-edit-fields">
+                  <div className="admin-edit-field">
+                    <label>Full Name</label>
+                    <input
+                      type="text"
+                      value={editingMember.name}
+                      onChange={(e) =>
+                        setEditingMember({
+                          ...editingMember,
+                          name: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div className="admin-edit-field">
+                    <label>Email Address</label>
+                    <input
+                      type="email"
+                      value={editingMember.email}
+                      onChange={(e) =>
+                        setEditingMember({
+                          ...editingMember,
+                          email: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div className="admin-edit-field">
+                    <label>Mobile Number</label>
+                    <input
+                      type="text"
+                      value={editingMember.phone}
+                      onChange={(e) =>
+                        setEditingMember({
+                          ...editingMember,
+                          phone: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div className="admin-edit-field">
+                    <label>Fitness Goal</label>
+                    <select
+                      value={editingMember.fitnessGoal}
+                      onChange={(e) =>
+                        setEditingMember({
+                          ...editingMember,
+                          fitnessGoal: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="Muscle Building">Muscle Building</option>
+                      <option value="Fat Loss">Fat Loss</option>
+                      <option value="Strength Training">Strength Training</option>
+                      <option value="Weight Loss">Weight Loss</option>
+                    </select>
+                  </div>
+
+                  <div className="admin-edit-field">
+                    <label>Dietary Preference</label>
+                    <select
+                      value={editingMember.dietaryPreference}
+                      onChange={(e) =>
+                        setEditingMember({
+                          ...editingMember,
+                          dietaryPreference: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="Vegetarian">Vegetarian</option>
+                      <option value="Non-Vegetarian">Non-Vegetarian</option>
+                    </select>
+                  </div>
+
+                  <div className="admin-edit-field">
+                    <label>Membership Plan</label>
+                    <select
+                      value={editingMember.membershipPlan}
+                      onChange={(e) =>
+                        setEditingMember({
+                          ...editingMember,
+                          membershipPlan: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="Monthly - 1 Month">Monthly - 1 Month</option>
+                      <option value="Quarterly - 3 Months">
+                        Quarterly - 3 Months
+                      </option>
+                      <option value="Annual - 12 Months">
+                        Annual - 12 Months
+                      </option>
+                    </select>
+                  </div>
+
+                  <div className="admin-edit-field">
+                    <label>Membership Status</label>
+                    <select
+                      value={editingMember.membershipStatus}
+                      onChange={(e) =>
+                        setEditingMember({
+                          ...editingMember,
+                          membershipStatus: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Expired">Expired</option>
+                    </select>
+                  </div>
+
+                  <div className="admin-edit-field">
+                    <label>Expiry Date</label>
+                    <input
+                      type="date"
+                      value={editingMember.expiryDate}
+                      onChange={(e) =>
+                        setEditingMember({
+                          ...editingMember,
+                          expiryDate: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="admin-modal-foot">
+                <button
+                  type="button"
+                  className="admin-modal-secondary-btn"
+                  onClick={() => setEditingMember(null)}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="admin-modal-primary-btn">
+                  <FiCheck /> Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
