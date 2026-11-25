@@ -2001,3 +2001,486 @@
     align-items: stretch;
   }
 }
+
+/* ========================================================
+   WORKOUT MANAGEMENT PAGE
+   ======================================================== */
+.admin-workout-management-page {
+  width: 100%;
+}
+
+.admin-workout-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-assign-schedule-btn {
+  background: #c5ff16;
+  color: #000000;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s;
+}
+
+.admin-assign-schedule-btn:hover {
+  background: #b0e613;
+}
+
+.admin-workout-filter-card {
+  background: #121714;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+}
+
+.admin-section-micro-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.admin-goal-pills-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-goal-pill {
+  background: #141a16;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d1d5db;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-goal-pill:hover {
+  border-color: rgba(197, 255, 22, 0.3);
+  color: #ffffff;
+}
+
+.admin-goal-pill.active {
+  background: #c5ff16;
+  border-color: #c5ff16;
+  color: #000000;
+  font-weight: 700;
+}
+
+.admin-schedule-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.admin-day-card {
+  background: #141916;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.admin-day-card:hover {
+  background: #1b231d;
+  border-color: rgba(197, 255, 22, 0.25);
+}
+
+.admin-day-card.active {
+  border-color: #c5ff16;
+  background: rgba(197, 255, 22, 0.07);
+  box-shadow: 0 0 14px rgba(197, 255, 22, 0.12);
+}
+
+.admin-day-card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 3px;
+}
+
+.admin-day-card-count {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.admin-day-card.sunday-card .admin-day-card-count {
+  color: #f59e0b;
+}
+
+/* Action Bar */
+.admin-workout-action-bar {
+  background: #121714;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 16px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-workout-name-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 280px;
+}
+
+.admin-micro-label {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.admin-workout-name-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-workout-name-input-group input {
+  background: #090c0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 9px 14px;
+  color: #ffffff;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  max-width: 320px;
+}
+
+.admin-workout-name-input-group input:focus {
+  border-color: #c5ff16;
+}
+
+.admin-save-name-btn {
+  background: #16201a;
+  border: 1px solid rgba(197, 255, 22, 0.3);
+  color: #c5ff16;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.admin-save-name-btn:hover {
+  background: #202d24;
+  border-color: #c5ff16;
+}
+
+.admin-workout-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-clear-day-btn {
+  background: #181d1a;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.admin-clear-day-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+}
+
+.admin-add-exercise-btn {
+  background: #c5ff16;
+  border: none;
+  color: #000000;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+
+.admin-add-exercise-btn:hover {
+  background: #b0e613;
+}
+
+/* Exercises Grid */
+.admin-exercises-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.admin-exercise-card {
+  background: #121714;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.admin-exercise-card:hover {
+  border-color: rgba(197, 255, 22, 0.25);
+  transform: translateY(-2px);
+}
+
+.admin-exercise-img-wrap {
+  position: relative;
+  height: 165px;
+  background: #090c0a;
+  overflow: hidden;
+}
+
+.admin-exercise-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+.admin-exercise-img-wrap:hover img {
+  opacity: 1;
+}
+
+.admin-demo-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #c5ff16;
+  color: #000000;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+.admin-demo-play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.admin-demo-play-overlay svg {
+  width: 36px;
+  height: 36px;
+  color: #c5ff16;
+  border: 2px solid #c5ff16;
+  border-radius: 50%;
+  padding: 7px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.admin-exercise-card-content {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.admin-exercise-card-content h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 14px 0;
+}
+
+.admin-exercise-metrics-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.admin-metric-box {
+  background: #090c0a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-lbl {
+  font-size: 10px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.metric-val {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+.admin-exercise-card-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-card-action-btn {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid;
+  transition: all 0.15s;
+}
+
+.admin-card-action-btn.edit {
+  background: #141b16;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #d1d5db;
+}
+
+.admin-card-action-btn.edit:hover {
+  color: #c5ff16;
+  border-color: #c5ff16;
+}
+
+.admin-card-action-btn.delete {
+  background: #191414;
+  border-color: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.admin-card-action-btn.delete:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+}
+
+.admin-sunday-rest-box {
+  background: #121714;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 50px 30px;
+  text-align: center;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.admin-sunday-icon-wrap {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.admin-sunday-rest-box h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.admin-sunday-rest-box p {
+  font-size: 13px;
+  color: #9ca3af;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.admin-no-exercises-card {
+  background: #121714;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 50px 20px;
+  text-align: center;
+  grid-column: span 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #9ca3af;
+}
+
+.admin-no-exercises-card svg {
+  font-size: 32px;
+  color: #6b7280;
+}
+
+@media (max-width: 1024px) {
+  .admin-schedule-days-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .admin-exercises-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-schedule-days-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-exercises-grid {
+    grid-template-columns: 1fr;
+  }
+}
