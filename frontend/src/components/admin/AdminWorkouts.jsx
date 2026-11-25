@@ -11,7 +11,7 @@ import {
   FiSun,
   FiActivity,
 } from "react-icons/fi";
-import "../../styles/AdminPortal.css";
+import "../../styles/AdminWorkouts.css";
 
 const initialSchedules = {
   "Fat Loss": {

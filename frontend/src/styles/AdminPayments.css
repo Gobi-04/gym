@@ -1,0 +1,436 @@
+/* ========================================================
+   ADMIN MEMBERSHIP & PAYMENTS STYLING
+   ======================================================== */
+
+.admin-payments-page {
+  width: 100%;
+}
+
+.admin-plans-section {
+  margin-bottom: 28px;
+}
+
+.admin-plans-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-plans-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.admin-plans-header span {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.admin-plans-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.admin-plan-card {
+  background: #121714;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-plan-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.admin-plan-card-title-wrap h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+}
+
+.admin-plan-card-enrolled {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.admin-plan-edit-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: #18201a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-plan-edit-btn:hover {
+  color: #c5ff16;
+  border-color: rgba(197, 255, 22, 0.4);
+  background: #1e2821;
+}
+
+.admin-plan-price {
+  font-size: 26px;
+  font-weight: 700;
+  color: #c5ff16;
+  margin-bottom: 10px;
+}
+
+.admin-plan-description {
+  font-size: 12px;
+  color: #9ca3af;
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+}
+
+/* Toolbar & Segmented Tabs */
+.admin-payments-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-segmented-tabs {
+  background: #0f1411;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 30px;
+  padding: 4px;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.admin-seg-tab {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.admin-seg-tab:hover {
+  color: #ffffff;
+}
+
+.admin-seg-tab.active {
+  background: #c5ff16;
+  color: #000000;
+  font-weight: 700;
+}
+
+.admin-payments-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-payments-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 220px;
+}
+
+.admin-payments-search-icon {
+  position: absolute;
+  left: 12px;
+  color: #6b7280;
+  font-size: 15px;
+  pointer-events: none;
+}
+
+.admin-payments-search-box input {
+  background: #090c0a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 9px 12px 9px 34px;
+  color: #ffffff;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.admin-payments-search-box input:focus {
+  border-color: #c5ff16;
+}
+
+/* Transactions Table */
+.txn-ref-bold {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.txn-ref-sub {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.txn-member-bold {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.txn-member-id {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.txn-package-cell,
+.txn-method-cell {
+  color: #d1d5db;
+  font-size: 13px;
+}
+
+.txn-amount-cell {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.txn-date-cell {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.admin-status-select-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.admin-status-dropdown {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid;
+  transition: all 0.2s;
+}
+
+.status-pending-select {
+  background-color: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+}
+
+.status-verified-select {
+  background-color: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.admin-receipt-action-btn {
+  background: #121915;
+  border: 1px solid rgba(197, 255, 22, 0.3);
+  color: #c5ff16;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.admin-receipt-action-btn:hover {
+  background: #1a251f;
+  border-color: #c5ff16;
+  box-shadow: 0 0 10px rgba(197, 255, 22, 0.15);
+}
+
+.member-status-indicator.status-due {
+  color: #f59e0b;
+}
+
+/* Receipt Sheet Modal */
+.admin-receipt-modal {
+  max-width: 520px;
+}
+
+.admin-receipt-sheet {
+  padding: 24px;
+  background: #0c100d;
+  color: #ffffff;
+}
+
+.admin-receipt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 16px;
+}
+
+.admin-receipt-brand {
+  font-size: 20px;
+  font-weight: 800;
+  color: #c5ff16;
+  letter-spacing: 0.5px;
+}
+
+.admin-receipt-brand-sub {
+  font-size: 10px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+.admin-receipt-badge-verified {
+  font-size: 10px;
+  font-weight: 700;
+  color: #c5ff16;
+  border: 1px solid #c5ff16;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.admin-receipt-meta-box {
+  background: #131915;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.admin-receipt-meta-box .meta-label {
+  font-size: 10px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.admin-receipt-meta-box .meta-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.admin-receipt-meta-box .meta-sub {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 2px;
+  display: block;
+}
+
+.admin-receipt-meta-box .meta-amount {
+  font-size: 18px;
+  font-weight: 800;
+  color: #c5ff16;
+  display: block;
+  text-align: right;
+}
+
+.admin-receipt-meta-box .meta-paid-pill {
+  font-size: 10px;
+  color: #10b981;
+  font-weight: 600;
+  display: block;
+  text-align: right;
+  margin-top: 2px;
+}
+
+.admin-receipt-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.admin-receipt-grid .meta-label {
+  font-size: 10px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.admin-receipt-grid p {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 2px 0 0;
+}
+
+.admin-receipt-pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.pricing-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.pricing-row.pricing-total {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.admin-receipt-signature {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 11px;
+}
+
+.digitally-signed {
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.valid-until {
+  color: #6b7280;
+}

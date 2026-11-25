@@ -1,0 +1,411 @@
+/* ========================================================
+   ADMIN OVERVIEW DASHBOARD STYLING
+   ======================================================== */
+
+.admin-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 26px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-heading-block h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.admin-heading-block p {
+  color: #9ca3af;
+  font-size: 13px;
+  margin: 0;
+  max-width: 620px;
+  line-height: 1.5;
+}
+
+.admin-quick-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-pill-btn {
+  background: #141916;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: #d1d5db;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.admin-pill-btn:hover {
+  background: #1a221d;
+  border-color: rgba(197, 255, 22, 0.3);
+  color: #ffffff;
+}
+
+.admin-pill-btn svg {
+  color: #c5ff16;
+  font-size: 14px;
+}
+
+/* 4 STATS CARDS */
+.admin-stats-deck {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admin-deck-card {
+  background: #121714;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 125px;
+}
+
+.admin-deck-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-deck-top span {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.admin-deck-top svg {
+  font-size: 16px;
+  color: #9ca3af;
+}
+
+.admin-deck-top svg.icon-green {
+  color: #10b981;
+}
+
+.admin-deck-top svg.icon-amber {
+  color: #f59e0b;
+}
+
+.admin-deck-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 14px;
+}
+
+.admin-deck-num {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.admin-deck-num.color-lime {
+  color: #c5ff16;
+  font-size: 28px;
+}
+
+.admin-deck-link {
+  font-size: 12px;
+  color: #c5ff16;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-weight: 500;
+}
+
+.admin-deck-link.color-amber {
+  color: #f59e0b;
+}
+
+.admin-deck-tag {
+  font-size: 11px;
+  color: #10b981;
+  font-weight: 500;
+}
+
+.admin-deck-tag.color-gray {
+  color: #9ca3af;
+}
+
+/* DUAL PANEL GRID */
+.admin-panels-row {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 20px;
+}
+
+.admin-panel {
+  background: #121714;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 22px 24px;
+}
+
+.admin-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.admin-panel-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin-panel-action {
+  font-size: 12px;
+  color: #c5ff16;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.admin-panel-action:hover {
+  text-decoration: underline;
+}
+
+.admin-panel-sub {
+  font-size: 12px;
+  color: #8b949e;
+  margin: 0 0 20px;
+}
+
+/* PROGRESS BAR */
+.admin-progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.admin-progress-header .active-label {
+  color: #10b981;
+}
+
+.admin-progress-header .expired-label {
+  color: #ef4444;
+}
+
+.admin-dual-progress {
+  height: 6px;
+  width: 100%;
+  background: #222;
+  border-radius: 3px;
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.admin-dual-progress .bar-active {
+  background: #c5ff16;
+  height: 100%;
+}
+
+.admin-dual-progress .bar-expired {
+  background: #ef4444;
+  height: 100%;
+}
+
+/* TIER ROWS */
+.admin-tier-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-tier-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.admin-tier-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.admin-tier-price {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.admin-tier-stats {
+  text-align: right;
+}
+
+.admin-tier-members {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.admin-tier-pct {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+/* RENEWALS TABLE */
+.admin-renewals-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.admin-renewals-table th {
+  text-align: left;
+  color: #8b949e;
+  font-weight: 500;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 11px;
+}
+
+.admin-renewals-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.admin-renewal-name {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.admin-renewal-id {
+  font-size: 10px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.admin-status-pill-expired {
+  color: #ef4444;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-status-pill-due {
+  color: #f59e0b;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-bottom-panels {
+  margin-top: 24px;
+}
+
+.admin-recent-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-recent-item:last-child {
+  border-bottom: none;
+}
+
+.admin-recent-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.admin-recent-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.admin-recent-meta {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.admin-recent-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.admin-recent-date {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.admin-recent-amount {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.admin-recent-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  text-align: right;
+}
+
+.badge-active {
+  color: #c5ff16;
+  background: rgba(197, 255, 22, 0.08);
+}
+
+.badge-verified {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.badge-pending {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.admin-action-link {
+  color: #c5ff16;
+  background: none;
+  border: none;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.admin-action-link:hover {
+  text-decoration: underline;
+}

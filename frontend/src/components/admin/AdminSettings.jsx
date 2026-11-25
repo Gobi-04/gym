@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FiUpload, FiEye, FiEyeOff, FiCheck, FiLogOut,} from "react-icons/fi";
-import "../../styles/AdminPortal.css";
+import "../../styles/AdminSettings.css";
 
 function AdminSettings({ profile, onUpdateProfile ,onLogout}) {
   const [name, setName] = useState(profile?.name || "Marcus Vance");

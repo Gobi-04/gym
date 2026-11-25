@@ -7,7 +7,7 @@ import {
   FiEyeOff,
   FiArrowRight,
 } from "react-icons/fi";
-import "../../styles/AdminPortal.css";
+import "../../styles/AdminSignIn.css";
 
 function AdminSignIn({ onLoginSuccess }) {
   const navigate = useNavigate();

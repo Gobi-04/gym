@@ -8,7 +8,7 @@ import {
   FiCoffee,
   FiClock,
 } from "react-icons/fi";
-import "../../styles/AdminPortal.css";
+import "../../styles/AdminOverview.css";
 
 const defaultRenewals = [
   {

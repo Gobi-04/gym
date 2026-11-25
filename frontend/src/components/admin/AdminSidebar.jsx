@@ -8,7 +8,7 @@ import {
   FiSettings,
   FiLogOut,
 } from "react-icons/fi";
-import "../../styles/AdminPortal.css";
+import "../../styles/AdminSidebar.css";
 
 function AdminSidebar({ activeMenu, onSelectMenu, onLogout }) {
   return (

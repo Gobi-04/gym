@@ -10,7 +10,7 @@ import {
   FiPrinter,
   FiCheck,
 } from "react-icons/fi";
-import "../../styles/AdminPortal.css";
+import "../../styles/AdminPayments.css";
 
 const defaultPlans = [
   {

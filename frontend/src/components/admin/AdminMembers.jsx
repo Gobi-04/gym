@@ -15,7 +15,7 @@ import {
   FiCoffee,
   FiAward,
 } from "react-icons/fi";
-import "../../styles/AdminPortal.css";
+import "../../styles/AdminMembers.css";
 
 const defaultMembers = [
   {

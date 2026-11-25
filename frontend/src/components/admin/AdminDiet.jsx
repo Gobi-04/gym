@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/AdminPortal.css";
+import "../../styles/AdminDiet.css";
 
 function AdminDiet() {
   return (
