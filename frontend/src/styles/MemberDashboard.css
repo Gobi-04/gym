@@ -1503,3 +1503,23 @@
   display: block;
   background: #000;
 }
+.exercise-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.exercise-image .demo-label,
+.exercise-image .play-button {
+  z-index: 2;
+}

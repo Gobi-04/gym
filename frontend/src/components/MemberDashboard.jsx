@@ -22,22 +22,18 @@ import "../styles/MemberDashboard.css";
 
 /* ---------- VIDEO HELPERS ---------- */
 // Converts YouTube links (watch / youtu.be / embed) into an embed link.
-// const getEmbedUrl = (url) => {
-//   if (!url) return null;
-//   const yt = url.match(
-//     /(?:youtu\.be\/|youtube\.com\/shorts\/|v=|embed\/)([\w-]{11})/
-//   );
-//   return yt
-//     ? `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0&playsinline=1`
-//     : null;
-// };
-const getEmbedUrl = (url) => {
+// Pass { muted: true } to get a silent, looping, controls-free preview URL.
+const getEmbedUrl = (url, { muted = false } = {}) => {
   if (!url) return null;
   const yt = url.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/);
-  return yt ? `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0` : null;
+  if (!yt) return null;
+  const id = yt[1];
+  return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0${
+    muted ? `&mute=1&controls=0&loop=1&playlist=${id}` : ""
+  }`;
 };
 
-// Shows YouTube link in an iframe, anything else (mp4/webm) in a <video> tag.
+// Full player: YouTube link in an iframe, anything else (mp4/webm) in a <video> tag.
 function VideoPlayer({ url, title }) {
   const embed = getEmbedUrl(url);
   return embed ? (
@@ -49,6 +45,29 @@ function VideoPlayer({ url, title }) {
     />
   ) : (
     <video src={url} controls autoPlay />
+  );
+}
+
+// Muted looping preview that plays while the mouse is over the card.
+// Browsers only allow autoplay when the video is muted.
+function HoverPreview({ url, title }) {
+  const embed = getEmbedUrl(url, { muted: true });
+  return embed ? (
+    <iframe
+      className="hover-preview"
+      src={embed}
+      title={title}
+      allow="autoplay; encrypted-media"
+    />
+  ) : (
+    <video
+      className="hover-preview"
+      src={url}
+      muted
+      loop
+      autoPlay
+      playsInline
+    />
   );
 }
 
@@ -182,7 +201,7 @@ const workouts = [
     title: "Standing Cable Fly",
     image:
       "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
-    videoUrl:"/videos/cable-fly.mp4",  // 👈 replace with your original link
+    videoUrl: "/videos/cable-fly.mp4", // 👈 replace with your original link
     sets: 3,
     reps: "10 - 12 Reps",
     duration: "10 Minutes",
@@ -201,7 +220,7 @@ const workouts = [
     title: "Seated Dumbbell Shoulder Press",
     image:
       "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
-    videoUrl:  "/videos/shoulder-press.mp4",  // 👈 replace with your original link
+    videoUrl: "/videos/shoulder-press.mp4", // 👈 replace with your original link
     sets: 3,
     reps: "10 - 12 Reps",
     duration: "10 Minutes",
@@ -220,7 +239,7 @@ const workouts = [
     title: "Triceps Rope Pushdown",
     image:
       "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900",
-    videoUrl: "/videos/triceps-pushdown.mp4",// 👈 replace with your original link
+    videoUrl: "/videos/triceps-pushdown.mp4", // 👈 replace with your original link
     sets: 3,
     reps: "12 - 15 Reps",
     duration: "8 Minutes",
@@ -239,7 +258,7 @@ const workouts = [
     title: "Parallel Bar Dips",
     image:
       "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900",
-    videoUrl:"/videos/dips.mp4",// 👈 replace with your original link
+    videoUrl: "/videos/dips.mp4", // 👈 replace with your original link
     sets: 3,
     reps: "10 - 12 Reps",
     duration: "10 Minutes",
@@ -273,7 +292,8 @@ function MemberDashboard() {
   const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [completed, setCompleted] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [playingId, setPlayingId] = useState(null); // video playing inside a card
+  const [playingId, setPlayingId] = useState(null); // full video playing inside a card
+  const [hoverId, setHoverId] = useState(null); // card currently under the mouse (preview)
   const [detailPlaying, setDetailPlaying] = useState(false); // video on detail page
   const [selectedDiet, setSelectedDiet] = useState(() => {
     const savedDiet = localStorage.getItem("fitguide-diet");
@@ -424,6 +444,7 @@ function MemberDashboard() {
   const openWorkout = (workout) => {
     setSelectedWorkout(workout);
     setDetailPlaying(false);
+    setHoverId(null);
   };
 
   const goBack = () => {
@@ -465,6 +486,7 @@ function MemberDashboard() {
                 setActiveMenu(item.name);
                 setSelectedWorkout(null);
                 setPlayingId(null);
+                setHoverId(null);
                 setDetailPlaying(false);
                 setMenuOpen(false);
               }}
@@ -669,6 +691,7 @@ function MemberDashboard() {
                   onClick={() => {
                     setActiveDay(day);
                     setPlayingId(null);
+                    setHoverId(null);
                   }}
                 >
                   <strong>{day}</strong>
@@ -724,7 +747,12 @@ function MemberDashboard() {
 
                   <div className="exercise-card" key={workout.id}>
 
-                    <div className="exercise-image">
+                    {/* Hover here -> muted preview plays. Click play -> full video. */}
+                    <div
+                      className="exercise-image"
+                      onMouseEnter={() => setHoverId(workout.id)}
+                      onMouseLeave={() => setHoverId(null)}
+                    >
 
                       {playingId === workout.id ? (
                         <VideoPlayer
@@ -737,6 +765,13 @@ function MemberDashboard() {
                             src={workout.image}
                             alt={workout.title}
                           />
+
+                          {hoverId === workout.id && (
+                            <HoverPreview
+                              url={workout.videoUrl}
+                              title={workout.title}
+                            />
+                          )}
 
                           <span className="demo-label">
                             DEMO VIDEO
