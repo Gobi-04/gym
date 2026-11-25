@@ -22,22 +22,18 @@ import "../styles/MemberDashboard.css";
 
 /* ---------- VIDEO HELPERS ---------- */
 // Converts YouTube links (watch / youtu.be / embed) into an embed link.
-// const getEmbedUrl = (url) => {
-//   if (!url) return null;
-//   const yt = url.match(
-//     /(?:youtu\.be\/|youtube\.com\/shorts\/|v=|embed\/)([\w-]{11})/
-//   );
-//   return yt
-//     ? `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0&playsinline=1`
-//     : null;
-// };
-const getEmbedUrl = (url) => {
+// Pass { muted: true } to get a silent, looping, controls-free preview URL.
+const getEmbedUrl = (url, { muted = false } = {}) => {
   if (!url) return null;
   const yt = url.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/);
-  return yt ? `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0` : null;
+  if (!yt) return null;
+  const id = yt[1];
+  return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0${
+    muted ? `&mute=1&controls=0&loop=1&playlist=${id}` : ""
+  }`;
 };
 
-// Shows YouTube link in an iframe, anything else (mp4/webm) in a <video> tag.
+// Full player: YouTube link in an iframe, anything else (mp4/webm) in a <video> tag.
 function VideoPlayer({ url, title }) {
   const embed = getEmbedUrl(url);
   return embed ? (
@@ -49,6 +45,29 @@ function VideoPlayer({ url, title }) {
     />
   ) : (
     <video src={url} controls autoPlay />
+  );
+}
+
+// Muted looping preview that plays while the mouse is over the card.
+// Browsers only allow autoplay when the video is muted.
+function HoverPreview({ url, title }) {
+  const embed = getEmbedUrl(url, { muted: true });
+  return embed ? (
+    <iframe
+      className="hover-preview"
+      src={embed}
+      title={title}
+      allow="autoplay; encrypted-media"
+    />
+  ) : (
+    <video
+      className="hover-preview"
+      src={url}
+      muted
+      loop
+      autoPlay
+      playsInline
+    />
   );
 }
 
@@ -138,122 +157,210 @@ const dietPlanData = {
   },
 };
 
-const workouts = [
-  {
-    id: 1,
-    title: "Flat Barbell Bench Press",
-    image:
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900",
-    videoUrl: "/videos/bench-press.mp4", // 👈 replace with your original link
-    sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "10 Minutes",
-    muscle: "Chest",
-    description:
-      "The flat barbell bench press helps build chest strength and upper body muscles.",
-    steps: [
-      "Lie flat on the bench.",
-      "Hold the barbell slightly wider than shoulder width.",
-      "Lower the bar slowly towards your chest.",
-      "Push the bar upward until your arms are extended.",
+// const workouts = [
+//   {
+//     id: 1,
+//     title: "Flat Barbell Bench Press",
+//     image:
+//       "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900",
+//     videoUrl: "/videos/bench-press.mp4", // 👈 replace with your original link
+//     sets: 3,
+//     reps: "10 - 12 Reps",
+//     duration: "10 Minutes",
+//     muscle: "Chest",
+//     description:
+//       "The flat barbell bench press helps build chest strength and upper body muscles.",
+//     steps: [
+//       "Lie flat on the bench.",
+//       "Hold the barbell slightly wider than shoulder width.",
+//       "Lower the bar slowly towards your chest.",
+//       "Push the bar upward until your arms are extended.",
+//     ],
+//   },
+//   {
+//     id: 2,
+//     title: "Incline Dumbbell Press",
+//     image:
+//       "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900",
+//     videoUrl: "/videos/incline-press.mp4", // 👈 replace with your original link
+//     sets: 3,
+//     reps: "10 - 12 Reps",
+//     duration: "12 Minutes",
+//     muscle: "Upper Chest",
+//     description:
+//       "Incline dumbbell press focuses on developing the upper chest and shoulder muscles.",
+//     steps: [
+//       "Set the bench at an incline angle.",
+//       "Hold one dumbbell in each hand.",
+//       "Lower the dumbbells towards your upper chest.",
+//       "Push both dumbbells upward with control.",
+//     ],
+//   },
+//   {
+//     id: 3,
+//     title: "Standing Cable Fly",
+//     image:
+//       "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
+//     videoUrl: "/videos/cable-fly.mp4", // 👈 replace with your original link
+//     sets: 3,
+//     reps: "10 - 12 Reps",
+//     duration: "10 Minutes",
+//     muscle: "Chest",
+//     description:
+//       "Standing cable fly helps improve chest muscle strength and control.",
+//     steps: [
+//       "Stand between the cable machine handles.",
+//       "Hold both handles with your arms open.",
+//       "Bring your hands together in front of your chest.",
+//       "Slowly return to the starting position.",
+//     ],
+//   },
+//   {
+//     id: 4,
+//     title: "Seated Dumbbell Shoulder Press",
+//     image:
+//       "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
+//     videoUrl: "/videos/shoulder-press.mp4", // 👈 replace with your original link
+//     sets: 3,
+//     reps: "10 - 12 Reps",
+//     duration: "10 Minutes",
+//     muscle: "Shoulders",
+//     description:
+//       "Seated dumbbell press builds overhead pushing strength and sculpted shoulders.",
+//     steps: [
+//       "Sit upright with back support and dumbbells at shoulder height.",
+//       "Press the weights upward until arms are almost fully extended.",
+//       "Pause briefly at the top without banging the weights together.",
+//       "Lower under control back to ear level.",
+//     ],
+//   },
+//   {
+//     id: 5,
+//     title: "Triceps Rope Pushdown",
+//     image:
+//       "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900",
+//     videoUrl: "/videos/triceps-pushdown.mp4", // 👈 replace with your original link
+//     sets: 3,
+//     reps: "12 - 15 Reps",
+//     duration: "8 Minutes",
+//     muscle: "Triceps",
+//     description:
+//       "Rope pushdowns isolate the lateral and long heads of the triceps.",
+//     steps: [
+//       "Attach a rope to a high cable pulley.",
+//       "Keep elbows tucked tightly to your sides.",
+//       "Push downward and spread the rope apart at the bottom contraction.",
+//       "Return slowly to 90-degree elbow flexion.",
+//     ],
+//   },
+//   {
+//     id: 6,
+//     title: "Parallel Bar Dips",
+//     image:
+//       "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900",
+//     videoUrl: "/videos/dips.mp4", // 👈 replace with your original link
+//     sets: 3,
+//     reps: "10 - 12 Reps",
+//     duration: "10 Minutes",
+//     muscle: "Chest & Triceps",
+//     description:
+//       "Dips are an essential compound movement for chest and tricep power.",
+//     steps: [
+//       "Grip the parallel bars and push yourself up to the starting position.",
+//       "Lean forward slightly to target the chest.",
+//       "Lower your body until elbows reach a 90-degree bend.",
+//       "Drive back up using your chest and triceps.",
+//     ],
+//   },
+// ];
+const DEFAULT_IMG =
+  "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900";
+
+// Short helper: 6 videos x 6 days ku easy ah ezhutha
+const ex = (id, title, videoUrl, muscle, steps = [], image = DEFAULT_IMG) => ({
+  id,
+  title,
+  image,
+  videoUrl,
+  sets: 3,
+  reps: "10 - 12 Reps",
+  duration: "10 Minutes",
+  muscle,
+  description: `${title} helps build ${muscle.toLowerCase()} strength and control.`,
+  steps: steps.length
+    ? steps
+    : ["Set up with correct posture.", "Perform the movement slowly.", "Control the return.", "Repeat for all reps."],
+});
+
+const weeklyPlan = {
+  Mon: {
+    focus: "Chest & Triceps Hypertrophy",
+    exercises: [
+      ex(101, "Flat Barbell Bench Press", "/videos/mon/bench-press.mp4", "Chest"),
+      ex(102, "Incline Dumbbell Press", "/videos/mon/incline-press.mp4", "Upper Chest"),
+      ex(103, "Standing Cable Fly", "/videos/mon/cable-fly.mp4", "Chest"),
+      ex(104, "Seated Dumbbell Shoulder Press", "/videos/mon/shoulder-press.mp4", "Shoulders"),
+      ex(105, "Triceps Rope Pushdown", "/videos/mon/triceps-pushdown.mp4", "Triceps"),
+      ex(106, "Parallel Bar Dips", "/videos/mon/dips.mp4", "Chest & Triceps"),
     ],
   },
-  {
-    id: 2,
-    title: "Incline Dumbbell Press",
-    image:
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900",
-    videoUrl: "/videos/incline-press.mp4", // 👈 replace with your original link
-    sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "12 Minutes",
-    muscle: "Upper Chest",
-    description:
-      "Incline dumbbell press focuses on developing the upper chest and shoulder muscles.",
-    steps: [
-      "Set the bench at an incline angle.",
-      "Hold one dumbbell in each hand.",
-      "Lower the dumbbells towards your upper chest.",
-      "Push both dumbbells upward with control.",
+  Tue: {
+    focus: "Back & Biceps Strength",
+    exercises: [
+      ex(201, "Lat Pulldown", "/videos/tue/lat-pulldown.mp4", "Back"),
+      ex(202, "Seated Cable Row", "/videos/tue/cable-row.mp4", "Back"),
+      ex(203, "Barbell Row", "/videos/tue/barbell-row.mp4", "Back"),
+      ex(204, "Dumbbell Curl", "/videos/tue/dumbbell-curl.mp4", "Biceps"),
+      ex(205, "Hammer Curl", "/videos/tue/hammer-curl.mp4", "Biceps"),
+      ex(206, "Face Pull", "/videos/tue/face-pull.mp4", "Rear Delts"),
     ],
   },
-  {
-    id: 3,
-    title: "Standing Cable Fly",
-    image:
-      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
-    videoUrl:"/videos/cable-fly.mp4",  // 👈 replace with your original link
-    sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "10 Minutes",
-    muscle: "Chest",
-    description:
-      "Standing cable fly helps improve chest muscle strength and control.",
-    steps: [
-      "Stand between the cable machine handles.",
-      "Hold both handles with your arms open.",
-      "Bring your hands together in front of your chest.",
-      "Slowly return to the starting position.",
+  Wed: {
+    focus: "Legs & Core",
+    exercises: [
+      ex(301, "Barbell Squat", "/videos/wed/squat.mp4", "Legs"),
+      ex(302, "Leg Press", "/videos/wed/leg-press.mp4", "Legs"),
+      ex(303, "Romanian Deadlift", "/videos/wed/rdl.mp4", "Hamstrings"),
+      ex(304, "Leg Extension", "/videos/wed/leg-extension.mp4", "Quads"),
+      ex(305, "Calf Raise", "/videos/wed/calf-raise.mp4", "Calves"),
+      ex(306, "Plank", "/videos/wed/plank.mp4", "Core"),
     ],
   },
-  {
-    id: 4,
-    title: "Seated Dumbbell Shoulder Press",
-    image:
-      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900",
-    videoUrl:  "/videos/shoulder-press.mp4",  // 👈 replace with your original link
-    sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "10 Minutes",
-    muscle: "Shoulders",
-    description:
-      "Seated dumbbell press builds overhead pushing strength and sculpted shoulders.",
-    steps: [
-      "Sit upright with back support and dumbbells at shoulder height.",
-      "Press the weights upward until arms are almost fully extended.",
-      "Pause briefly at the top without banging the weights together.",
-      "Lower under control back to ear level.",
+  Thu: {
+    focus: "Shoulders & Arms",
+    exercises: [
+      ex(401, "Overhead Press", "/videos/thu/overhead-press.mp4", "Shoulders"),
+      ex(402, "Lateral Raise", "/videos/thu/lateral-raise.mp4", "Shoulders"),
+      ex(403, "Front Raise", "/videos/thu/front-raise.mp4", "Shoulders"),
+      ex(404, "Skull Crusher", "/videos/thu/skull-crusher.mp4", "Triceps"),
+      ex(405, "Barbell Curl", "/videos/thu/barbell-curl.mp4", "Biceps"),
+      ex(406, "Shrugs", "/videos/thu/shrugs.mp4", "Traps"),
     ],
   },
-  {
-    id: 5,
-    title: "Triceps Rope Pushdown",
-    image:
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900",
-    videoUrl: "/videos/triceps-pushdown.mp4",// 👈 replace with your original link
-    sets: 3,
-    reps: "12 - 15 Reps",
-    duration: "8 Minutes",
-    muscle: "Triceps",
-    description:
-      "Rope pushdowns isolate the lateral and long heads of the triceps.",
-    steps: [
-      "Attach a rope to a high cable pulley.",
-      "Keep elbows tucked tightly to your sides.",
-      "Push downward and spread the rope apart at the bottom contraction.",
-      "Return slowly to 90-degree elbow flexion.",
+  Fri: {
+    focus: "Full Body Conditioning",
+    exercises: [
+      ex(501, "Deadlift", "/videos/fri/deadlift.mp4", "Full Body"),
+      ex(502, "Push Ups", "/videos/fri/push-ups.mp4", "Chest"),
+      ex(503, "Pull Ups", "/videos/fri/pull-ups.mp4", "Back"),
+      ex(504, "Walking Lunges", "/videos/fri/lunges.mp4", "Legs"),
+      ex(505, "Kettlebell Swing", "/videos/fri/kb-swing.mp4", "Full Body"),
+      ex(506, "Burpees", "/videos/fri/burpees.mp4", "Full Body"),
     ],
   },
-  {
-    id: 6,
-    title: "Parallel Bar Dips",
-    image:
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900",
-    videoUrl:"/videos/dips.mp4",// 👈 replace with your original link
-    sets: 3,
-    reps: "10 - 12 Reps",
-    duration: "10 Minutes",
-    muscle: "Chest & Triceps",
-    description:
-      "Dips are an essential compound movement for chest and tricep power.",
-    steps: [
-      "Grip the parallel bars and push yourself up to the starting position.",
-      "Lean forward slightly to target the chest.",
-      "Lower your body until elbows reach a 90-degree bend.",
-      "Drive back up using your chest and triceps.",
+  Sat: {
+    focus: "Cardio & Mobility",
+    exercises: [
+      ex(601, "Treadmill Run", "/videos/sat/treadmill.mp4", "Cardio"),
+      ex(602, "Rowing Machine", "/videos/sat/rowing.mp4", "Cardio"),
+      ex(603, "Jump Rope", "/videos/sat/jump-rope.mp4", "Cardio"),
+      ex(604, "Mountain Climbers", "/videos/sat/mountain-climbers.mp4", "Core"),
+      ex(605, "Hip Mobility Flow", "/videos/sat/hip-mobility.mp4", "Mobility"),
+      ex(606, "Full Body Stretch", "/videos/sat/stretch.mp4", "Mobility"),
     ],
   },
-];
+  Sun: { focus: "Recovery & Rest", exercises: [] },
+};
 
 const days = [
   ["Mon", "Day 01"],
@@ -273,7 +380,8 @@ function MemberDashboard() {
   const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [completed, setCompleted] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [playingId, setPlayingId] = useState(null); // video playing inside a card
+  const [playingId, setPlayingId] = useState(null); // full video playing inside a card
+  const [hoverId, setHoverId] = useState(null); // card currently under the mouse (preview)
   const [detailPlaying, setDetailPlaying] = useState(false); // video on detail page
   const [selectedDiet, setSelectedDiet] = useState(() => {
     const savedDiet = localStorage.getItem("fitguide-diet");
@@ -424,6 +532,7 @@ function MemberDashboard() {
   const openWorkout = (workout) => {
     setSelectedWorkout(workout);
     setDetailPlaying(false);
+    setHoverId(null);
   };
 
   const goBack = () => {
@@ -465,6 +574,7 @@ function MemberDashboard() {
                 setActiveMenu(item.name);
                 setSelectedWorkout(null);
                 setPlayingId(null);
+                setHoverId(null);
                 setDetailPlaying(false);
                 setMenuOpen(false);
               }}
@@ -669,6 +779,7 @@ function MemberDashboard() {
                   onClick={() => {
                     setActiveDay(day);
                     setPlayingId(null);
+                    setHoverId(null);
                   }}
                 >
                   <strong>{day}</strong>
@@ -724,7 +835,12 @@ function MemberDashboard() {
 
                   <div className="exercise-card" key={workout.id}>
 
-                    <div className="exercise-image">
+                    {/* Hover here -> muted preview plays. Click play -> full video. */}
+                    <div
+                      className="exercise-image"
+                      onMouseEnter={() => setHoverId(workout.id)}
+                      onMouseLeave={() => setHoverId(null)}
+                    >
 
                       {playingId === workout.id ? (
                         <VideoPlayer
@@ -737,6 +853,13 @@ function MemberDashboard() {
                             src={workout.image}
                             alt={workout.title}
                           />
+
+                          {hoverId === workout.id && (
+                            <HoverPreview
+                              url={workout.videoUrl}
+                              title={workout.title}
+                            />
+                          )}
 
                           <span className="demo-label">
                             DEMO VIDEO
