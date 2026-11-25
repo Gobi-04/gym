@@ -416,9 +416,8 @@ function AdminPayments() {
                               onChange={(e) =>
                                 handleStatusChange(tx.id, e.target.value)
                               }
-                              className={`admin-status-dropdown ${
-                                isPending ? "status-pending-select" : "status-verified-select"
-                              }`}
+                              className={`admin-status-dropdown ${isPending ? "status-pending-select" : "status-verified-select"
+                                }`}
                             >
                               <option value="Pending">Pending</option>
                               <option value="Paid & Verified">Paid &amp; Verified</option>
@@ -475,9 +474,8 @@ function AdminPayments() {
                       <td>{m.plan}</td>
                       <td>
                         <span
-                          className={`member-status-indicator ${
-                            isActive ? "status-active" : "status-expired"
-                          }`}
+                          className={`member-status-indicator ${isActive ? "status-active" : "status-expired"
+                            }`}
                         >
                           {isActive ? <FiCheckCircle /> : <FiClock />}
                           <span>{m.status}</span>
@@ -518,9 +516,8 @@ function AdminPayments() {
                       <td>{r.plan}</td>
                       <td>
                         <span
-                          className={`member-status-indicator ${
-                            isExpired ? "status-expired" : "status-due"
-                          }`}
+                          className={`member-status-indicator ${isExpired ? "status-expired" : "status-due"
+                            }`}
                         >
                           <FiClock />
                           <span>{r.dueIn}</span>
