@@ -59,4 +59,204 @@
   .admin-canvas {
     padding: 20px 16px;
   }
+
+  .admin-profile-fields-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================================
+   MEMBER MANAGEMENT PAGE
+   ======================================================== */
+.admin-member-management-page {
+  width: 100%;
+}
+
+.admin-members-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-members-count-badge {
+  font-size: 13px;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+.admin-members-count-badge strong {
+  color: #ffffff;
+}
+
+.admin-members-filter-bar {
+  background: #121714;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.admin-members-search-box {
+  flex: 1;
+  min-width: 260px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.admin-members-search-icon {
+  position: absolute;
+  left: 14px;
+  color: #6b7280;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.admin-members-search-box input {
+  width: 100%;
+  background: #090c0a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 14px 10px 38px;
+  color: #ffffff;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.admin-members-search-box input:focus {
+  border-color: #c5ff16;
+  box-shadow: 0 0 0 2px rgba(197, 255, 22, 0.15);
+}
+
+.admin-members-search-box input::placeholder {
+  color: #6b7280;
+}
+
+.admin-filter-dropdown-wrap select {
+  background: #090c0a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #d1d5db;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.admin-filter-dropdown-wrap select:focus {
+  border-color: #c5ff16;
+}
+
+.admin-members-table-card {
+  background: #121714;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.admin-members-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.admin-members-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-members-table th {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9ca3af;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  white-space: nowrap;
+}
+
+.admin-members-table td {
+  padding: 16px 20px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.admin-members-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-members-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.member-id-cell {
+  color: #c5ff16;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.member-name-cell {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.member-email-cell {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.member-phone-cell {
+  color: #d1d5db;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.member-goal-cell,
+.member-diet-cell,
+.member-plan-cell {
+  color: #d1d5db;
+}
+
+.member-status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.member-status-indicator.status-active {
+  color: #10b981;
+}
+
+.member-status-indicator.status-expired {
+  color: #ef4444;
+}
+
+.member-status-indicator .status-icon {
+  font-size: 14px;
+}
+
+.member-expiry-cell {
+  color: #9ca3af;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-no-results-cell {
+  text-align: center;
+  color: #9ca3af;
+  padding: 40px 20px;
+  font-size: 13px;
 }
