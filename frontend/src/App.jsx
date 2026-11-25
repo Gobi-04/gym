@@ -6,6 +6,7 @@ import Membership from './components/Membership';
 import Reviews from './components/Reviews';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import UserLogin from './components/UserLogin';
 import Payment from './components/Payment';
 import MemberDashboard from './components/MemberDashboard';
 import FitnessOnboarding from './components/FitnessOnboarding';
@@ -14,10 +15,18 @@ import { Route, Routes, useSearchParams } from 'react-router-dom';
 import './App.css';
 
 function LoginPage() {
-  const [searchParams] = useSearchParams();
-  const initialTab = searchParams.get('mode') === 'signup' ? 'signup' : 'login';
+  const [searchParams, setSearchParams] = useSearchParams();
+  const mode = searchParams.get('mode');
 
-  return <Payment initialTab={initialTab} />;
+  if (mode === 'signup') {
+    return <Payment initialTab="signup" />;
+  }
+
+  return (
+    <UserLogin
+      onSwitchToSignup={() => setSearchParams({ mode: 'signup' })}
+    />
+  );
 }
 
 function LandingPage() {

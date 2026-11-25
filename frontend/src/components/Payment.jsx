@@ -12,6 +12,7 @@ import {
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
+import UserLogin from "./UserLogin";
 
 import "../styles/Payment.css";
 
@@ -236,6 +237,10 @@ function Payment({ initialTab = "signup" }) {
     { id: "annual", name: "Annual", duration: "12 Month", price: "₹14,000" },
   ];
   const chosenPlan = plans.find((plan) => plan.id === selectedPlan);
+
+  if (activeTab === "login") {
+    return <UserLogin onSwitchToSignup={() => switchTab("signup")} />;
+  }
 
   return (
     <div className="gym-page">
