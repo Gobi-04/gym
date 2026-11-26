@@ -12,14 +12,14 @@
 }
 
 .admin-heading-block h1 {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   margin: 0 0 6px;
 }
 
 .admin-heading-block p {
   color: #9ca3af;
-  font-size: 13px;
+  font-size: 14px;
   margin: 0;
   max-width: 620px;
   line-height: 1.5;
@@ -37,7 +37,7 @@
   color: #d1d5db;
   padding: 7px 14px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   display: flex;
@@ -54,7 +54,7 @@
 
 .admin-pill-btn svg {
   color: #c5ff16;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 /* 4 STATS CARDS */
@@ -83,7 +83,7 @@
 }
 
 .admin-deck-top span {
-  font-size: 12px;
+  font-size: 16px;
   color: #9ca3af;
 }
 
@@ -108,18 +108,18 @@
 }
 
 .admin-deck-num {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 700;
   line-height: 1;
 }
 
 .admin-deck-num.color-lime {
   color: #c5ff16;
-  font-size: 28px;
+  font-size: 29px;
 }
 
 .admin-deck-link {
-  font-size: 12px;
+  font-size: 16px;
   color: #c5ff16;
   cursor: pointer;
   background: none;
@@ -133,7 +133,7 @@
 }
 
 .admin-deck-tag {
-  font-size: 11px;
+  font-size: 14px;
   color: #10b981;
   font-weight: 500;
 }
@@ -164,13 +164,13 @@
 }
 
 .admin-panel-header h3 {
-  font-size: 16px;
+  font-size: 22px;
   font-weight: 600;
   margin: 0;
 }
 
 .admin-panel-action {
-  font-size: 12px;
+  font-size: 14px;
   color: #c5ff16;
   background: none;
   border: none;
@@ -183,7 +183,7 @@
 }
 
 .admin-panel-sub {
-  font-size: 12px;
+  font-size: 14px;
   color: #8b949e;
   margin: 0 0 20px;
 }
@@ -192,7 +192,7 @@
 .admin-progress-header {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
   margin-bottom: 8px;
 }
@@ -241,13 +241,13 @@
 }
 
 .admin-tier-name {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   color: #ffffff;
 }
 
 .admin-tier-price {
-  font-size: 11px;
+  font-size: 14px;
   color: #6b7280;
   margin-top: 2px;
 }
@@ -257,13 +257,13 @@
 }
 
 .admin-tier-members {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #e5e7eb;
 }
 
 .admin-tier-pct {
-  font-size: 11px;
+  font-size: 12px;
   color: #6b7280;
   margin-top: 2px;
 }
@@ -272,7 +272,7 @@
 .admin-renewals-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .admin-renewals-table th {
@@ -281,8 +281,9 @@
   font-weight: 500;
   padding: 8px 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 11px;
+  font-size: 14px;
 }
+
 
 .admin-renewals-table td {
   padding: 12px 10px;
@@ -295,14 +296,14 @@
 }
 
 .admin-renewal-id {
-  font-size: 10px;
+  font-size: 14px;
   color: #6b7280;
   margin-top: 2px;
 }
 
 .admin-status-pill-expired {
   color: #ef4444;
-  font-size: 11px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -310,7 +311,7 @@
 
 .admin-status-pill-due {
   color: #f59e0b;
-  font-size: 11px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -344,13 +345,13 @@
 }
 
 .admin-recent-name {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   color: #ffffff;
 }
 
 .admin-recent-meta {
-  font-size: 11px;
+  font-size: 14px;
   color: #9ca3af;
 }
 
@@ -362,7 +363,7 @@
 }
 
 .admin-recent-date {
-  font-size: 11px;
+  font-size: 12px;
   color: #9ca3af;
 }
 
@@ -373,7 +374,7 @@
 }
 
 .admin-recent-badge {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   padding: 2px 7px;
   border-radius: 4px;
@@ -400,7 +401,7 @@
   color: #c5ff16;
   background: none;
   border: none;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   padding: 0;
