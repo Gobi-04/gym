@@ -1,7 +1,563 @@
-/* ========================================================
-   ADMIN DIET PLAN MANAGEMENT STYLING
-   ======================================================== */
+/* =====================================================
+   AdminDiet.css — Diet Plan Management Page
+   ===================================================== */
 
-.admin-diet-management-page {
+/* ── ROOT ── */
+.adiet-root {
+  padding: 32px 36px;
+  min-height: 100vh;
+  color: #fff;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* ── PAGE HEADER ── */
+.adiet-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.adiet-page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.5px;
+}
+
+.adiet-page-sub {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 0;
+  max-width: 540px;
+  line-height: 1.6;
+}
+
+.adiet-assign-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #c5ff16;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+.adiet-assign-btn:hover { opacity: 0.85; }
+
+/* ── FILTER CARD ── */
+.adiet-filter-card {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.adiet-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.adiet-filter-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.adiet-filter-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.adiet-tab {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #9ca3af;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.adiet-tab:hover { border-color: #c5ff16; color: #c5ff16; }
+.adiet-tab.active {
+  background: #c5ff16;
+  border-color: #c5ff16;
+  color: #000;
+  font-weight: 700;
+}
+
+/* ── DAY ROW ── */
+.adiet-day-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.adiet-day {
+  background: #111;
+  border: 1px solid #222;
+  color: #9ca3af;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.adiet-day:hover { border-color: #c5ff16; color: #c5ff16; }
+.adiet-day.active {
+  background: #1a2a00;
+  border-color: #c5ff16;
+  color: #c5ff16;
+  font-weight: 700;
+}
+
+/* ── HYDRATION CARD ── */
+.adiet-hydration-card {
+  background: #0f1a00;
+  border: 1px solid #2a3800;
+  border-radius: 12px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.adiet-hydration-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.adiet-hydration-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #c5ff16;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.adiet-drop-icon {
+  color: #c5ff16;
+  font-size: 14px;
+}
+
+.adiet-hydration-text {
+  font-size: 14px;
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.adiet-hydration-input {
+  background: #111;
+  border: 1px solid #c5ff16;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  padding: 10px 14px;
   width: 100%;
+  outline: none;
+}
+
+.adiet-hydration-edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1a2a00;
+  border: 1px solid #3a5000;
+  color: #c5ff16;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.adiet-hydration-edit-btn:hover { background: #2a3800; }
+
+.adiet-hydration-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── TOAST ── */
+.adiet-toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0f1a00;
+  border: 1px solid #c5ff16;
+  color: #c5ff16;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  width: fit-content;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MEAL GRID ── */
+.adiet-meal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+}
+
+/* ── MEAL CARD ── */
+.adiet-meal-card {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.adiet-meal-card:hover { border-color: #333; }
+
+.adiet-meal-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.adiet-meal-num {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.adiet-meal-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.adiet-edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid #333;
+  color: #9ca3af;
+  border-radius: 7px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.adiet-edit-btn:hover { border-color: #c5ff16; color: #c5ff16; }
+
+.adiet-delete-btn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #6b7280;
+  border-radius: 7px;
+  padding: 5px 9px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+.adiet-delete-btn:hover { border-color: #ef4444; color: #ef4444; }
+
+/* Card Body */
+.adiet-meal-body {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  align-items: flex-start;
+}
+
+.adiet-meal-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.adiet-meal-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.adiet-meal-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.adiet-meal-time {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.adiet-protein-badge {
+  background: #0f1a00;
+  border: 1px solid #c5ff1640;
+  color: #c5ff16;
+  border-radius: 6px;
+  padding: 2px 9px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.adiet-meal-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.adiet-meal-portion {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── ADD MEAL CARD ── */
+.adiet-add-card {
+  background: #0d0d0d;
+  border: 2px dashed #2a2a2a;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 140px;
+  cursor: pointer;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.adiet-add-card:hover {
+  border-color: #c5ff16;
+  color: #c5ff16;
+  background: #0f1a00;
+}
+
+.adiet-add-icon { font-size: 22px; }
+
+/* ── EMPTY STATE ── */
+.adiet-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 60px 0;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.adiet-add-first-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #c5ff16;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ── BUTTONS (shared) ── */
+.adiet-btn-save {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #c5ff16;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.adiet-btn-save:hover { opacity: 0.85; }
+.adiet-btn-save.sm { padding: 7px 14px; font-size: 12px; }
+
+.adiet-btn-cancel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1a1a1a;
+  color: #9ca3af;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.adiet-btn-cancel:hover { border-color: #ef4444; color: #ef4444; }
+.adiet-btn-cancel.sm { padding: 7px 10px; font-size: 13px; }
+
+/* ── MODAL ── */
+.adiet-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(4px);
+}
+
+.adiet-modal {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+}
+
+.adiet-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.adiet-modal-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.adiet-modal-close {
+  background: transparent;
+  border: 1px solid #333;
+  color: #9ca3af;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+.adiet-modal-close:hover { border-color: #ef4444; color: #ef4444; }
+
+.adiet-modal-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.adiet-modal-body label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #6b7280;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.adiet-modal-body input,
+.adiet-modal-body textarea,
+.adiet-modal-body select {
+  background: #0d0d0d;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  padding: 10px 12px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  resize: vertical;
+}
+.adiet-modal-body input:focus,
+.adiet-modal-body textarea:focus,
+.adiet-modal-body select:focus {
+  border-color: #c5ff16;
+}
+
+.adiet-img-preview {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #222;
+  margin-top: 4px;
+}
+
+.adiet-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid #1a1a1a;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .adiet-root { padding: 20px 16px; }
+  .adiet-meal-grid { grid-template-columns: 1fr; }
+  .adiet-filter-card { flex-direction: column; gap: 20px; }
+  .adiet-page-header { flex-direction: column; }
 }
