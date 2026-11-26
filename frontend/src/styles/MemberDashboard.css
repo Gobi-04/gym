@@ -1492,7 +1492,9 @@
     padding: 17px;
   }
 }
-/* Add this at the bottom of MemberDashboard.css */
+/* ===== VIDEO PLAYER & HOVER PREVIEW ===== */
+
+/* Full player (iframe / video) card and detail page rendu layum */
 .exercise-image iframe,
 .exercise-image video,
 .detail-image iframe,
@@ -1504,23 +1506,31 @@
   display: block;
   background: #000;
 }
+
 .exercise-image {
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
-.hover-preview {
+/* Mouse vachaa vara muted preview */
+.exercise-image .hover-preview {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 0;
-  pointer-events: none;
   z-index: 1;
+  pointer-events: none;
 }
 
 .exercise-image .demo-label,
 .exercise-image .play-button {
   z-index: 2;
+  transition: opacity 0.2s ease;
+}
+
+/* Video play aagum pothu play button and DEMO VIDEO label hide */
+.exercise-image.is-playing .play-button,
+.exercise-image.is-playing .demo-label {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
