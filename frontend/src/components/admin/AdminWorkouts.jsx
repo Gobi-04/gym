@@ -191,6 +191,14 @@ const initialSchedules = {
           image:
             "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=500&auto=format&fit=crop&q=80",
         },
+        {
+          id: "st-m-3",
+          name: "Weighted Parallel Bar Dips",
+          sets: "3",
+          reps: "8 - 10 Reps",
+          image:
+            "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&auto=format&fit=crop&q=80",
+        },
       ],
     },
     Tuesday: {
@@ -204,12 +212,116 @@ const initialSchedules = {
           image:
             "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500&auto=format&fit=crop&q=80",
         },
+        {
+          id: "st-t-2",
+          name: "Weighted Pull-Ups",
+          sets: "4",
+          reps: "6 - 8 Reps",
+          image:
+            "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "st-t-3",
+          name: "Bent-Over Barbell Rows",
+          sets: "4",
+          reps: "8 Reps",
+          image:
+            "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&auto=format&fit=crop&q=80",
+        },
       ],
     },
-    Wednesday: { name: "Active Deload", exercises: [] },
-    Thursday: { name: "Leg Power Foundations", exercises: [] },
-    Friday: { name: "Shoulders & Arms", exercises: [] },
-    Saturday: { name: "Power Clean & Core", exercises: [] },
+    Wednesday: {
+      name: "Leg Power Foundations",
+      exercises: [
+        {
+          id: "st-w-1",
+          name: "Barbell Back Squat",
+          sets: "4",
+          reps: "5 - 6 Reps",
+          image:
+            "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "st-w-2",
+          name: "Front Squat",
+          sets: "3",
+          reps: "6 - 8 Reps",
+          image:
+            "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "st-w-3",
+          name: "Heavy Leg Press",
+          sets: "4",
+          reps: "8 - 10 Reps",
+          image:
+            "https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Thursday: {
+      name: "Overhead & Shoulder Strength",
+      exercises: [
+        {
+          id: "st-th-1",
+          name: "Standing Overhead Barbell Press",
+          sets: "4",
+          reps: "6 - 8 Reps",
+          image:
+            "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "st-th-2",
+          name: "Heavy Dumbbell Shrugs",
+          sets: "3",
+          reps: "10 Reps",
+          image:
+            "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Friday: {
+      name: "Shoulders & Arms Power",
+      exercises: [
+        {
+          id: "st-f-1",
+          name: "Close-Grip Bench Press",
+          sets: "4",
+          reps: "6 - 8 Reps",
+          image:
+            "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "st-f-2",
+          name: "Barbell Bicep Curls",
+          sets: "3",
+          reps: "8 - 10 Reps",
+          image:
+            "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Saturday: {
+      name: "Power Clean & Core",
+      exercises: [
+        {
+          id: "st-s-1",
+          name: "Romanian Deadlifts",
+          sets: "4",
+          reps: "6 - 8 Reps",
+          image:
+            "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "st-s-2",
+          name: "Farmer's Walk Heavy Carry",
+          sets: "3",
+          reps: "40 Meters",
+          image:
+            "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
     Sunday: { name: "Rest & Muscle Repair", isRest: true, exercises: [] },
   },
   "Muscle Building": {
@@ -224,13 +336,145 @@ const initialSchedules = {
           image:
             "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=80",
         },
+        {
+          id: "mb-m-2",
+          name: "Incline Barbell Press",
+          sets: "3",
+          reps: "10 - 12 Reps",
+          image:
+            "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "mb-m-3",
+          name: "Pec Deck Cable Fly",
+          sets: "3",
+          reps: "12 - 15 Reps",
+          image:
+            "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&auto=format&fit=crop&q=80",
+        },
       ],
     },
-    Tuesday: { name: "Lats & Upper Back", exercises: [] },
-    Wednesday: { name: "Quadriceps & Calves", exercises: [] },
-    Thursday: { name: "Deltoids & Traps", exercises: [] },
-    Friday: { name: "Biceps & Triceps Pump", exercises: [] },
-    Saturday: { name: "Hamstrings & Glutes", exercises: [] },
+    Tuesday: {
+      name: "Lats & Upper Back",
+      exercises: [
+        {
+          id: "mb-t-1",
+          name: "Wide-Grip Lat Pulldown",
+          sets: "4",
+          reps: "10 - 12 Reps",
+          image:
+            "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "mb-t-2",
+          name: "One-Arm Dumbbell Row",
+          sets: "3",
+          reps: "10 - 12 Reps",
+          image:
+            "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "mb-t-3",
+          name: "Seated Cable Rows",
+          sets: "3",
+          reps: "12 Reps",
+          image:
+            "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Wednesday: {
+      name: "Quadriceps & Calves",
+      exercises: [
+        {
+          id: "mb-w-1",
+          name: "Barbell Squats",
+          sets: "4",
+          reps: "10 - 12 Reps",
+          image:
+            "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "mb-w-2",
+          name: "Leg Extension Machine",
+          sets: "3",
+          reps: "12 - 15 Reps",
+          image:
+            "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "mb-w-3",
+          name: "Standing Calf Raises",
+          sets: "4",
+          reps: "15 - 20 Reps",
+          image:
+            "https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Thursday: {
+      name: "Deltoids & Traps",
+      exercises: [
+        {
+          id: "mb-th-1",
+          name: "Seated Dumbbell Shoulder Press",
+          sets: "4",
+          reps: "10 - 12 Reps",
+          image:
+            "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "mb-th-2",
+          name: "Dumbbell Lateral Raises",
+          sets: "3",
+          reps: "12 - 15 Reps",
+          image:
+            "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Friday: {
+      name: "Biceps & Triceps Pump",
+      exercises: [
+        {
+          id: "mb-f-1",
+          name: "Incline Dumbbell Curls",
+          sets: "3",
+          reps: "12 Reps",
+          image:
+            "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "mb-f-2",
+          name: "Triceps Rope Pushdown",
+          sets: "3",
+          reps: "12 - 15 Reps",
+          image:
+            "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Saturday: {
+      name: "Hamstrings & Glutes",
+      exercises: [
+        {
+          id: "mb-s-1",
+          name: "Romanian Deadlifts",
+          sets: "4",
+          reps: "10 - 12 Reps",
+          image:
+            "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "mb-s-2",
+          name: "Seated Leg Curl",
+          sets: "3",
+          reps: "12 - 15 Reps",
+          image:
+            "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
     Sunday: { name: "Rest & Nutritive Recovery", isRest: true, exercises: [] },
   },
   "Weight Loss": {
@@ -245,13 +489,145 @@ const initialSchedules = {
           image:
             "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&auto=format&fit=crop&q=80",
         },
+        {
+          id: "wl-m-2",
+          name: "Kettlebell Goblet Squats",
+          sets: "3",
+          reps: "15 Reps",
+          image:
+            "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "wl-m-3",
+          name: "Mountain Climbers",
+          sets: "3",
+          reps: "30 Secs",
+          image:
+            "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&auto=format&fit=crop&q=80",
+        },
       ],
     },
-    Tuesday: { name: "Speed Intervals", exercises: [] },
-    Wednesday: { name: "Full Body Resistance", exercises: [] },
-    Thursday: { name: "Core & Mobility", exercises: [] },
-    Friday: { name: "Metabolic Conditioning", exercises: [] },
-    Saturday: { name: "Functional Stamina", exercises: [] },
+    Tuesday: {
+      name: "Speed Intervals",
+      exercises: [
+        {
+          id: "wl-t-1",
+          name: "Rowing Machine Sprints",
+          sets: "5",
+          reps: "250 Meters",
+          image:
+            "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "wl-t-2",
+          name: "Jump Rope Conditioning",
+          sets: "4",
+          reps: "60 Secs",
+          image:
+            "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "wl-t-3",
+          name: "Battle Ropes Slams",
+          sets: "4",
+          reps: "45 Secs",
+          image:
+            "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Wednesday: {
+      name: "Full Body Resistance",
+      exercises: [
+        {
+          id: "wl-w-1",
+          name: "Dumbbell Thrusters",
+          sets: "3",
+          reps: "12 - 15 Reps",
+          image:
+            "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "wl-w-2",
+          name: "Walking Lunges",
+          sets: "3",
+          reps: "12 Reps / Leg",
+          image:
+            "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "wl-w-3",
+          name: "Push-Up to Renegade Row",
+          sets: "3",
+          reps: "10 Reps",
+          image:
+            "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Thursday: {
+      name: "Core & Mobility",
+      exercises: [
+        {
+          id: "wl-th-1",
+          name: "Russian Twists with Medicine Ball",
+          sets: "3",
+          reps: "20 Reps",
+          image:
+            "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "wl-th-2",
+          name: "Plank Shoulder Taps",
+          sets: "3",
+          reps: "45 Secs",
+          image:
+            "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Friday: {
+      name: "Metabolic Conditioning",
+      exercises: [
+        {
+          id: "wl-f-1",
+          name: "Incline Treadmill Power Walk",
+          sets: "1",
+          reps: "20 Mins",
+          image:
+            "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "wl-f-2",
+          name: "Kettlebell Swings",
+          sets: "4",
+          reps: "15 Reps",
+          image:
+            "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
+    Saturday: {
+      name: "Functional Stamina",
+      exercises: [
+        {
+          id: "wl-s-1",
+          name: "Sled Push / Cycling Intervals",
+          sets: "4",
+          reps: "45 Secs",
+          image:
+            "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=500&auto=format&fit=crop&q=80",
+        },
+        {
+          id: "wl-s-2",
+          name: "Bodyweight Squat Jumps",
+          sets: "3",
+          reps: "15 Reps",
+          image:
+            "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&auto=format&fit=crop&q=80",
+        },
+      ],
+    },
     Sunday: { name: "Rest & Hydration", isRest: true, exercises: [] },
   },
 };
@@ -275,7 +651,7 @@ const categories = [
 
 function AdminWorkouts() {
   const [schedules, setSchedules] = useState(() => {
-    const saved = localStorage.getItem("fitguideAdminSchedules");
+    const saved = localStorage.getItem("fitguideAdminSchedules_v2");
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -319,7 +695,7 @@ function AdminWorkouts() {
   const persistSchedules = (newSchedules) => {
     setSchedules(newSchedules);
     localStorage.setItem(
-      "fitguideAdminSchedules",
+      "fitguideAdminSchedules_v2",
       JSON.stringify(newSchedules)
     );
   };
