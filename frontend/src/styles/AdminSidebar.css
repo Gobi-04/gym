@@ -1,8 +1,14 @@
 /* ========================================================
    ADMIN SIDEBAR & APP BAR STYLING
    ======================================================== */
-
 .admin-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: auto;
+
   width: 250px;
   background: #080b09;
   border-right: 1px solid rgba(255, 255, 255, 0.05);
