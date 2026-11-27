@@ -175,39 +175,26 @@ const normalizeMember = (m, idx = 0) => {
 };
 
 function AdminMembers({ members = [] }) {
-  // Member List State
+  // Member List State (only real registered members, no dummy defaults)
   const [memberList, setMemberList] = useState(() => {
     if (members && Array.isArray(members) && members.length > 0) {
       return members.map(normalizeMember);
     }
-    const saved = localStorage.getItem("fitguideMembersList");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map(normalizeMember);
-        }
-      } catch {
-        // use fallback
-      }
-    }
-    return defaultMembers;
+    return [];
   });
 
-  // Sync with backend API on mount (falls back to props/localStorage if offline)
+  // Sync with backend API on mount (falls back to props if backend is offline)
   useEffect(() => {
     let cancelled = false;
     api
       .getAdminMembers()
       .then((res) => {
-        if (!cancelled && Array.isArray(res) && res.length > 0) {
-          const normalized = res.map(normalizeMember);
-          setMemberList(normalized);
-          localStorage.setItem("fitguideMembersList", JSON.stringify(normalized));
+        if (!cancelled && Array.isArray(res)) {
+          setMemberList(res.map(normalizeMember));
         }
       })
       .catch(() => {
-        if (!cancelled && members && Array.isArray(members) && members.length > 0) {
+        if (!cancelled && Array.isArray(members)) {
           setMemberList(members.map(normalizeMember));
         }
       });

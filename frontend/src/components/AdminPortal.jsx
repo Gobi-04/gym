@@ -55,33 +55,16 @@ function AdminPortal() {
   const loadData = async () => {
     try {
       const res = await api.getAdminMembers();
-      if (res && Array.isArray(res) && res.length > 0) {
+      if (Array.isArray(res)) {
         setMembers(res);
       } else {
-        fallbackMembers();
+        setMembers([]);
       }
     } catch {
-      fallbackMembers();
-    }
-
-    try {
-      const payRes = await api.getAdminPayments();
-      if (payRes && Array.isArray(payRes) && payRes.length > 0) {
-        setPayments(payRes);
-      } else {
-        fallbackPayments();
-      }
-    } catch {
-      fallbackPayments();
-    }
-  };
-
-  const fallbackMembers = () => {
-    const localUsers = JSON.parse(localStorage.getItem("fitguideUsers") || "[]");
-    if (localUsers.length > 0) {
+      const localUsers = JSON.parse(localStorage.getItem("fitguideUsers") || "[]");
       setMembers(
         localUsers.map((u, i) => ({
-          id: i + 1,
+          id: u.id || i + 1,
           name: u.name,
           email: u.email,
           phone: u.phone,
@@ -90,23 +73,18 @@ function AdminPortal() {
           created_at: new Date().toISOString(),
         }))
       );
-    } else {
-      setMembers([
-        { id: 1041, name: "Suresh Kumar", email: "suresh@fitguide.com", phone: "+91 98765 11111", plan_name: "Monthly - 1 Month", membership_status: "active", created_at: "2026-10-12" },
-        { id: 1042, name: "Madhu Shalini", email: "madhu@fitguide.com", phone: "+91 98765 22222", plan_name: "Quarterly - 3 Months", membership_status: "active", created_at: "2026-09-18" },
-        { id: 1043, name: "Rohan Malhotra", email: "rohan@fitguide.com", phone: "+91 98765 33333", plan_name: "Monthly - 1 Month", membership_status: "expired", created_at: "2026-10-12" },
-        { id: 1047, name: "Kabir Deshmukh", email: "kabir@fitguide.com", phone: "+91 98765 44444", plan_name: "Monthly - 1 Month", membership_status: "expired", created_at: "2026-10-05" },
-        { id: 1050, name: "Ishita Banerjee", email: "ishita@fitguide.com", phone: "+91 98765 55555", plan_name: "Quarterly - 3 Months", membership_status: "expired", created_at: "2026-08-14" },
-      ]);
     }
-  };
 
-  const fallbackPayments = () => {
-    setPayments([
-      { id: "TXN-8841", customer_name: "Karan Verma", plan_name: "Quarterly Membership", amount: 4499, method: "UPI / PhonePe", status: "Paid", date: "01 Nov 2026" },
-      { id: "TXN-8842", customer_name: "Madhu Shalini", plan_name: "Quarterly Membership", amount: 4499, method: "Credit Card", status: "Paid", date: "15 Oct 2026" },
-      { id: "TXN-8843", customer_name: "Suresh Kumar", plan_name: "Annual Elite", amount: 14000, method: "Google Pay", status: "Paid", date: "20 Oct 2026" },
-    ]);
+    try {
+      const payRes = await api.getAdminPayments();
+      if (Array.isArray(payRes)) {
+        setPayments(payRes);
+      } else {
+        setPayments([]);
+      }
+    } catch {
+      setPayments([]);
+    }
   };
 
   const handleLogout = () => {
