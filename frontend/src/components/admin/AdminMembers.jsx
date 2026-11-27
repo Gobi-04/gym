@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   FiSearch,
   FiCheckCircle,
@@ -15,6 +15,7 @@ import {
   FiCoffee,
   FiAward,
 } from "react-icons/fi";
+import { api } from "../../services/api";
 import "../../styles/AdminMembers.css";
 
 const defaultMembers = [
@@ -130,22 +131,90 @@ const defaultMembers = [
   },
 ];
 
-function AdminMembers({ members }) {
+const formatGoal = (goal) => {
+  if (!goal) return "Muscle Building";
+  return goal
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+};
+
+const formatDiet = (diet) => {
+  if (!diet) return "Non-Vegetarian";
+  return diet
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join("-");
+};
+
+const formatDate = (value) => {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return String(value).slice(0, 10);
+  return d.toISOString().slice(0, 10);
+};
+
+const normalizeMember = (m, idx = 0) => {
+  const isNumericId = typeof m.id === "number";
+  const displayId = m.memberId || (String(m.id || "").startsWith("FG-") ? m.id : `FG-${1040 + (isNumericId ? m.id : idx + 1)}`);
+  const rawStatus = (m.membershipStatus || m.membership_status || m.status || "Active").toLowerCase();
+  const statusLabel = rawStatus === "expired" || rawStatus === "cancelled" ? "Expired" : "Active";
+
+  return {
+    id: displayId,
+    dbId: m.dbId ?? (isNumericId ? m.id : null),
+    name: m.name || "Member",
+    email: m.email || "—",
+    phone: m.phone || "—",
+    fitnessGoal: formatGoal(m.fitnessGoal || m.goal),
+    dietaryPreference: formatDiet(m.dietaryPreference || m.diet),
+    membershipPlan: m.membershipPlan || m.plan_name || m.plan || "Monthly - 1 Month",
+    membershipStatus: statusLabel,
+    expiryDate: formatDate(m.expiryDate || m.end_date),
+  };
+};
+
+function AdminMembers({ members = [] }) {
   // Member List State
   const [memberList, setMemberList] = useState(() => {
+    if (members && Array.isArray(members) && members.length > 0) {
+      return members.map(normalizeMember);
+    }
     const saved = localStorage.getItem("fitguideMembersList");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map(normalizeMember);
+        }
       } catch {
         // use fallback
       }
     }
-    if (members && Array.isArray(members) && members.length > 5) {
-      return members;
-    }
     return defaultMembers;
   });
+
+  // Sync with backend API on mount (falls back to props/localStorage if offline)
+  useEffect(() => {
+    let cancelled = false;
+    api
+      .getAdminMembers()
+      .then((res) => {
+        if (!cancelled && Array.isArray(res) && res.length > 0) {
+          const normalized = res.map(normalizeMember);
+          setMemberList(normalized);
+          localStorage.setItem("fitguideMembersList", JSON.stringify(normalized));
+        }
+      })
+      .catch(() => {
+        if (!cancelled && members && Array.isArray(members) && members.length > 0) {
+          setMemberList(members.map(normalizeMember));
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [members]);
 
   // Filter States
   const [searchTerm, setSearchTerm] = useState("");
@@ -214,30 +283,58 @@ function AdminMembers({ members }) {
   ]);
 
   // Actions
-  const handleSaveEdit = (e) => {
+  const handleSaveEdit = async (e) => {
     e.preventDefault();
     if (!editingMember) return;
     const updated = memberList.map((m) =>
       m.id === editingMember.id ? editingMember : m
     );
     saveMemberList(updated);
+    if (editingMember.dbId) {
+      try {
+        await api.updateAdminMember(editingMember.dbId, {
+          name: editingMember.name,
+          email: editingMember.email,
+          phone: editingMember.phone,
+          plan_name: editingMember.membershipPlan,
+          membership_status: editingMember.membershipStatus.toLowerCase(),
+          goal: editingMember.fitnessGoal.toLowerCase().replace(/\s+/g, "-"),
+          diet: editingMember.dietaryPreference.toLowerCase(),
+        });
+      } catch {
+        // already saved locally
+      }
+    }
     setEditingMember(null);
     showToast(`Member ${editingMember.name} updated successfully!`);
   };
 
-  const handleToggleStatus = (id) => {
+  const handleToggleStatus = async (id) => {
+    let targetMember = null;
+    let nextStatus = "Active";
     const updated = memberList.map((m) => {
       if (m.id === id) {
-        const nextStatus = m.membershipStatus === "Active" ? "Expired" : "Active";
-        return { ...m, membershipStatus: nextStatus };
+        nextStatus = m.membershipStatus === "Active" ? "Expired" : "Active";
+        targetMember = { ...m, membershipStatus: nextStatus };
+        return targetMember;
       }
       return m;
     });
     saveMemberList(updated);
+    if (targetMember?.dbId) {
+      try {
+        await api.updateAdminMember(targetMember.dbId, {
+          membership_status: nextStatus.toLowerCase(),
+        });
+      } catch {
+        // already saved locally
+      }
+    }
     showToast("Member status updated!");
   };
 
-  const handleQuickRenew = (id) => {
+  const handleQuickRenew = async (id) => {
+    let targetMember = null;
     const updated = memberList.map((m) => {
       if (m.id === id) {
         const nextDate = new Date();
@@ -245,22 +342,40 @@ function AdminMembers({ members }) {
         const yyyy = nextDate.getFullYear();
         const mm = String(nextDate.getMonth() + 1).padStart(2, "0");
         const dd = String(nextDate.getDate()).padStart(2, "0");
-        return {
+        targetMember = {
           ...m,
           membershipStatus: "Active",
           expiryDate: `${yyyy}-${mm}-${dd}`,
         };
+        return targetMember;
       }
       return m;
     });
     saveMemberList(updated);
+    if (targetMember?.dbId) {
+      try {
+        await api.updateAdminMember(targetMember.dbId, {
+          membership_status: "active",
+        });
+      } catch {
+        // already saved locally
+      }
+    }
     showToast("Membership renewed for 30 days!");
   };
 
-  const handleDeleteMember = (id) => {
+  const handleDeleteMember = async (id) => {
     if (window.confirm("Are you sure you want to delete this member?")) {
+      const target = memberList.find((m) => m.id === id);
       const updated = memberList.filter((m) => m.id !== id);
       saveMemberList(updated);
+      if (target?.dbId) {
+        try {
+          await api.deleteMember(target.dbId);
+        } catch {
+          // already removed locally
+        }
+      }
       showToast("Member deleted successfully.");
     }
   };
