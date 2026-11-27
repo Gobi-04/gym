@@ -332,7 +332,8 @@
   align-items: center;
   padding: 13px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
+}  
+  
 
 .admin-recent-item:last-child {
   border-bottom: none;
@@ -342,7 +343,9 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
-}
+} 
+
+
 
 .admin-recent-name {
   font-size: 16px;
@@ -350,20 +353,27 @@
   color: #ffffff;
 }
 
-.admin-recent-meta {
-  font-size: 14px;
+ .admin-recent-meta {
+  font-size: 13px;
   color: #9ca3af;
-}
+  align-items: flex-end;
+  min-width: 100px;
+} 
+ 
 
 .admin-recent-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
+  justify-content: center;
+   min-width: 100px;
+  flex-shrink: 0;
+  text-align: right;
 }
 
 .admin-recent-date {
-  font-size: 12px;
+  font-size: 14px;
   color: #9ca3af;
 }
 
@@ -371,16 +381,20 @@
   font-size: 13px;
   font-weight: 700;
   color: #ffffff;
-}
+} 
+ 
 
-.admin-recent-badge {
+  .admin-recent-badge {
   font-size: 12px;
   font-weight: 600;
   padding: 2px 7px;
   border-radius: 4px;
   display: inline-block;
   text-align: right;
-}
+}  
+
+
+
 
 .badge-active {
   color: #c5ff16;
