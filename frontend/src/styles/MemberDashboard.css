@@ -1218,28 +1218,112 @@
   line-height: 1.5;
 }
 
+.assigned-goal-card {
+  background: #171717;
+  border: 1px solid #2b2b2b;
+  border-left: 4px solid #c5ff16;
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  margin-bottom: 20px;
+}
+
+.assigned-goal-info .assigned-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #c5ff16;
+  margin-bottom: 4px;
+}
+
+.assigned-goal-info h2 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 5px 0;
+}
+
+.assigned-goal-info p {
+  font-size: 12px;
+  color: #9c9c9c;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.change-goal-link {
+  background: #202020;
+  border: 1px solid #333333;
+  color: #c5ff16;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.change-goal-link:hover {
+  background: #c5ff16;
+  color: #111111;
+  border-color: #c5ff16;
+}
+
+.diet-controls-flex {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+
+.diet-control-block {
+  flex: 1;
+  min-width: 260px;
+}
+
+.diet-control-block h3 {
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #e5e5e5;
+}
+
 .diet-toggle-row {
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-bottom: 2px;
+  flex-wrap: wrap;
 }
 
 .diet-toggle {
+  display: inline-flex;
+  align-items: center;
   border: 1px solid #2d2d2d;
   background: #161616;
   color: #d2d2d2;
-  padding: 10px 18px;
+  padding: 9px 16px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 11px;
+  transition: all 0.2s ease;
+}
+
+.diet-toggle:hover {
+  border-color: #555;
+  color: #fff;
 }
 
 .diet-toggle.active {
   background: #c5ff16;
   color: #111;
   border-color: #c5ff16;
+  box-shadow: 0 0 12px rgba(197, 255, 22, 0.25);
 }
 
 .diet-focus-card {
@@ -1287,10 +1371,471 @@
   line-height: 1.5;
 }
 
+/* DAILY WATER INTAKE TRACKER */
+.water-tracker-card {
+  background: linear-gradient(145deg, #12171a, #0d1012);
+  border: 1px solid rgba(0, 229, 255, 0.22);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 22px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.water-tracker-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+}
+
+.water-tracker-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.water-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.water-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00e5ff;
+  font-size: 20px;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+}
+
+.water-badge {
+  font-size: 9px;
+  font-weight: 800;
+  color: #00e5ff;
+  letter-spacing: 0.8px;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.water-title-wrap h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+.water-header-with-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.water-tool-buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.water-tool-btn {
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  color: #00e5ff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.water-tool-btn:hover,
+.water-tool-btn.active {
+  background: #00e5ff;
+  color: #000;
+  border-color: #00e5ff;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+}
+
+/* CUSTOM TARGET & INTAKE DRAWER */
+.water-custom-editor-drawer {
+  background: rgba(0, 229, 255, 0.04);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.custom-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.drawer-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: #00e5ff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.drawer-close-btn {
+  background: transparent;
+  border: none;
+  color: #8c9ba5;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 5px;
+  transition: color 0.2s;
+}
+
+.drawer-close-btn:hover {
+  color: #fff;
+}
+
+.target-presets-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.presets-label {
+  font-size: 10px;
+  color: #8c9ba5;
+  font-weight: 600;
+}
+
+.target-preset-chip {
+  background: #182025;
+  border: 1px solid #283740;
+  color: #c5d5e0;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.target-preset-chip:hover {
+  border-color: #00e5ff;
+  color: #00e5ff;
+}
+
+.target-preset-chip.active {
+  background: #00e5ff;
+  color: #000;
+  border-color: #00e5ff;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.35);
+}
+
+.custom-input-flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.input-prompt {
+  font-size: 10px;
+  color: #a0b0bd;
+  font-weight: 500;
+}
+
+.input-with-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.water-input-field {
+  background: #101417;
+  border: 1px solid #293842;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  width: 90px;
+  outline: none;
+}
+
+.water-input-field:focus {
+  border-color: #00e5ff;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+}
+
+.unit-label {
+  font-size: 11px;
+  color: #8c9ba5;
+  font-weight: 700;
+}
+
+.apply-custom-btn {
+  background: #00e5ff;
+  border: none;
+  color: #000;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.apply-custom-btn:hover {
+  background: #33ebff;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.water-target-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8c9ba5;
+}
+
+.water-stats-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.water-percent {
+  font-size: 15px;
+  font-weight: 800;
+  color: #00e5ff;
+}
+
+.water-glasses-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: #c5d5e0;
+  border-left: 1px solid rgba(0, 229, 255, 0.25);
+  padding-left: 10px;
+}
+
+.water-progress-track {
+  width: 100%;
+  height: 10px;
+  background: #182025;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.water-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0099cc, #00e5ff);
+  border-radius: 6px;
+  position: relative;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+}
+
+.water-glasses-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.glass-indicator {
+  flex: 1;
+  min-width: 28px;
+  height: 34px;
+  background: #141a1e;
+  border: 1px solid #243037;
+  border-radius: 6px;
+  color: #4a5c68;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 11px;
+}
+
+.glass-indicator span {
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.glass-indicator:hover {
+  border-color: #00e5ff;
+  color: #00e5ff;
+  transform: translateY(-2px);
+}
+
+.glass-indicator.filled {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: #00e5ff;
+  color: #00e5ff;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+
+.water-controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.water-quick-buttons,
+.water-action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.water-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.water-btn.add-btn {
+  background: #1a2227;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  color: #e0f7fa;
+}
+
+.water-btn.add-btn:hover {
+  background: #00e5ff;
+  color: #000;
+  border-color: #00e5ff;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+}
+
+/* CUSTOM LOG INLINE INPUT */
+.water-custom-log-inline {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #141a1e;
+  border: 1px solid #27363f;
+  padding: 3px 4px 3px 8px;
+  border-radius: 6px;
+}
+
+.water-custom-log-input {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  width: 70px;
+  outline: none;
+}
+
+.water-custom-log-input::placeholder {
+  color: #556773;
+  font-weight: 500;
+}
+
+.custom-log-btn {
+  background: #00e5ff;
+  color: #000;
+  border: none;
+  padding: 5px 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-log-btn:disabled {
+  background: #232d33;
+  color: #5c6c75;
+  cursor: not-allowed;
+}
+
+.custom-log-btn:not(:disabled):hover {
+  background: #33ebff;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+.water-btn.minus-btn {
+  background: #1f1f21;
+  border: 1px solid #38383a;
+  color: #ff9800;
+}
+
+.water-btn.minus-btn:hover {
+  background: #ff9800;
+  color: #111;
+  border-color: #ff9800;
+}
+
+.water-btn.reset-btn {
+  background: #1f1f21;
+  border: 1px solid #38383a;
+  color: #8c9ba5;
+}
+
+.water-btn.reset-btn:hover {
+  background: #2a2a2e;
+  color: #fff;
+  border-color: #555;
+}
+
+.water-tip-text {
+  font-size: 11px;
+  color: #7b94a2;
+  margin: 0;
+  line-height: 1.45;
+  font-style: italic;
+}
+
 .diet-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px;
+  align-items: stretch;
 }
 
 .diet-card {
@@ -1298,11 +1843,14 @@
   border: 1px solid #2a2a2a;
   border-radius: 12px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .diet-image-wrap {
   position: relative;
-  height: 215px;
+  height: 200px;
 }
 
 .diet-image-wrap img {
@@ -1320,12 +1868,41 @@
   font-weight: 700;
   border-radius: 4px;
   padding: 5px 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .diet-chip {
   left: 12px;
   background: #c5ff16;
   color: #111;
+}
+
+.diet-chip.breakfast {
+  background: #c5ff16;
+  color: #111;
+}
+
+.diet-chip.lunch {
+  background: #10b981;
+  color: #fff;
+}
+
+.diet-chip.pre-workout {
+  background: #f59e0b;
+  color: #000;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+.diet-chip.post-workout {
+  background: #06b6d4;
+  color: #000;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+}
+
+.diet-chip.dinner {
+  background: #a855f7;
+  color: #fff;
 }
 
 .diet-time {
@@ -1338,6 +1915,9 @@
 .diet-card-body {
   background: rgba(10, 10, 10, 0.72);
   padding: 16px 14px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .diet-card-header {
@@ -1370,6 +1950,216 @@
   color: #d9d9d9;
   font-size: 11px;
   line-height: 1.6;
+}
+
+/* DYNAMIC WORKOUT MEAL OPTIONS & SYNERGY */
+.diet-card.dynamic-workout-card {
+  border-color: #383838;
+  position: relative;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.diet-card.dynamic-workout-card:hover {
+  border-color: #c5ff16;
+}
+
+.diet-dynamic-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(197, 255, 22, 0.4);
+  color: #c5ff16;
+  font-size: 8px;
+  font-weight: 800;
+  border-radius: 4px;
+  padding: 4px 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dynamic-options-bar {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+}
+
+.dynamic-options-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.dynamic-options-label {
+  font-size: 9px;
+  font-weight: 800;
+  color: #c5ff16;
+  letter-spacing: 0.6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+}
+
+.swap-option-btn {
+  background: rgba(197, 255, 22, 0.1);
+  border: 1px solid rgba(197, 255, 22, 0.3);
+  color: #c5ff16;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.swap-option-btn:hover {
+  background: #c5ff16;
+  color: #111;
+}
+
+.option-pill-group {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.option-pill {
+  background: #181818;
+  border: 1px solid #2e2e2e;
+  color: #a8a8a8;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.option-pill:hover {
+  border-color: #555;
+  color: #fff;
+}
+
+.option-pill.active {
+  background: #c5ff16;
+  color: #111;
+  border-color: #c5ff16;
+  font-weight: 800;
+  box-shadow: 0 0 8px rgba(197, 255, 22, 0.3);
+}
+
+.workout-synergy-banner,
+.standard-meal-footer {
+  margin-top: auto;
+  padding: 9px 11px;
+  border-radius: 6px;
+}
+
+.workout-synergy-banner {
+  background: rgba(197, 255, 22, 0.05);
+  border-left: 3px solid #c5ff16;
+}
+
+.standard-meal-bar {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.standard-meal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.standard-meal-label {
+  font-size: 9px;
+  font-weight: 800;
+  color: #c5ff16;
+  letter-spacing: 0.6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: uppercase;
+}
+
+.standard-macro-tag {
+  font-size: 8px;
+  color: #999;
+  background: #202020;
+  border: 1px solid #303030;
+  padding: 3px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.standard-meal-footer.breakfast-footer {
+  background: rgba(197, 255, 22, 0.04);
+  border-left: 3px solid #c5ff16;
+}
+
+.standard-meal-footer.breakfast-footer .synergy-badge {
+  color: #c5ff16;
+}
+
+.standard-meal-footer.lunch-footer {
+  background: rgba(16, 185, 129, 0.05);
+  border-left: 3px solid #10b981;
+}
+
+.standard-meal-footer.lunch-footer .synergy-badge {
+  color: #10b981;
+}
+
+.standard-meal-footer.dinner-footer {
+  background: rgba(168, 85, 247, 0.05);
+  border-left: 3px solid #a855f7;
+}
+
+.standard-meal-footer.dinner-footer .synergy-badge {
+  color: #a855f7;
+}
+
+.synergy-badge {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.workout-synergy-banner .synergy-badge {
+  color: #c5ff16;
+}
+
+.synergy-tip {
+  color: #a6a6a6;
+  font-size: 9px;
+  line-height: 1.45;
+  margin: 0;
 }
 
 /* MOBILE MENU */

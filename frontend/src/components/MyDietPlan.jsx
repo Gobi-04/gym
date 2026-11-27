@@ -12,7 +12,7 @@ const dietPlanData = {
         id: 1,
         time: "08:00 AM - 8:30 AM",
         mealType: "Breakfast",
-        title: "Chicken & Egg Power Breakfast",
+        title: "",
         image:
           "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=900&q=80",
         portion: "Portion Recommendation",

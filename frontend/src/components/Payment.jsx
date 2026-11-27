@@ -199,6 +199,19 @@ function Payment({ initialTab = "signup" }) {
       const res = await api.login(loginData.login, loginData.password);
       if (res?.user) {
         localStorage.setItem("fitguideCurrentUser", JSON.stringify(res.user));
+        if (res.user.fitnessProfile?.goal || res.user.goal) {
+          const rawGoal = res.user.fitnessProfile?.goal || res.user.goal;
+          const mappedGoal =
+            rawGoal === "muscle-building"
+              ? "bulking"
+              : rawGoal === "fat-loss"
+              ? "weightLoss"
+              : rawGoal;
+          localStorage.setItem("fitguide-goal", mappedGoal);
+        }
+        if (res.user.fitnessProfile?.diet || res.user.diet) {
+          localStorage.setItem("fitguide-diet", res.user.fitnessProfile?.diet || res.user.diet);
+        }
         setLoginError("");
         navigate("/dashboard");
         return;
@@ -227,6 +240,19 @@ function Payment({ initialTab = "signup" }) {
     }
 
     localStorage.setItem("fitguideCurrentUser", JSON.stringify(user));
+    if (user.fitnessProfile?.goal || user.goal) {
+      const rawGoal = user.fitnessProfile?.goal || user.goal;
+      const mappedGoal =
+        rawGoal === "muscle-building"
+          ? "bulking"
+          : rawGoal === "fat-loss"
+          ? "weightLoss"
+          : rawGoal;
+      localStorage.setItem("fitguide-goal", mappedGoal);
+    }
+    if (user.fitnessProfile?.diet || user.diet) {
+      localStorage.setItem("fitguide-diet", user.fitnessProfile?.diet || user.diet);
+    }
     setLoginError("");
     navigate("/dashboard");
   };
