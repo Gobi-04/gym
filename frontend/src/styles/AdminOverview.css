@@ -333,7 +333,8 @@
   gap: 16px;
   padding: 13px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
+}  
+  
 
 .admin-recent-item:last-child {
   border-bottom: none;
@@ -342,6 +343,7 @@
 .admin-recent-info {
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
   gap: 4px;
   flex: 1;
   min-width: 0;
@@ -360,6 +362,12 @@
   margin: 0;
   line-height: 1.4;
 }
+=======
+  gap: 3px;
+} 
+
+
+>>>>>>> 96b88baaa583a999adf099ed81b67b971d833bf9
 
 .admin-recent-name {
   font-size: 16px;
@@ -367,6 +375,7 @@
   color: #ffffff;
 }
 
+<<<<<<< HEAD
 .admin-recent-meta {
   display: flex;
   flex-direction: column;
@@ -376,19 +385,33 @@
   white-space: nowrap;
   text-align: right;
   font-size: 14px;
+=======
+ .admin-recent-meta {
+  font-size: 13px;
+>>>>>>> 96b88baaa583a999adf099ed81b67b971d833bf9
   color: #9ca3af;
-}
+  align-items: flex-end;
+  min-width: 100px;
+} 
+ 
 
 .admin-recent-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
+<<<<<<< HEAD
   flex-shrink: 0;
+=======
+  justify-content: center;
+   min-width: 100px;
+  flex-shrink: 0;
+  text-align: right;
+>>>>>>> 96b88baaa583a999adf099ed81b67b971d833bf9
 }
 
 .admin-recent-date {
-  font-size: 12px;
+  font-size: 14px;
   color: #9ca3af;
   white-space: nowrap;
 }
@@ -397,18 +420,30 @@
   font-size: 14px;
   font-weight: 700;
   color: #ffffff;
+<<<<<<< HEAD
   white-space: nowrap;
 }
+=======
+} 
+ 
+>>>>>>> 96b88baaa583a999adf099ed81b67b971d833bf9
 
-.admin-recent-badge {
+  .admin-recent-badge {
   font-size: 12px;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 4px;
   display: inline-block;
   text-align: right;
+<<<<<<< HEAD
   white-space: nowrap;
 }
+=======
+}  
+
+
+
+>>>>>>> 96b88baaa583a999adf099ed81b67b971d833bf9
 
 .admin-recent-badge.active,
 .badge-active {

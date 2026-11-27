@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { FiUpload, FiEye, FiEyeOff, FiCheck, FiLogOut,} from "react-icons/fi";
+import { FiUpload, FiEye, FiEyeOff, FiCheck, FiLogOut, } from "react-icons/fi";
 import "../../styles/AdminSettings.css";
 
-function AdminSettings({ profile, onUpdateProfile ,onLogout}) {
+function AdminSettings({ profile, onUpdateProfile, onLogout }) {
   const [name, setName] = useState(profile?.name || "Marcus Vance");
   const [email, setEmail] = useState(profile?.email || "admin@fitguide.club");
   const [avatar, setAvatar] = useState(
     profile?.avatar ||
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"
   );
 
   const [showPassword, setShowPassword] = useState(false);
@@ -152,20 +152,21 @@ function AdminSettings({ profile, onUpdateProfile ,onLogout}) {
 
         {/* Action Row */}
         <div className="admin-settings-actions">
-          <div className="admin logout">
-            <button type="button" className="admin-logout" onClick={onLogout}  >
-               <FiLogOut />
-                <span>Log-out</span>
+          <button type="button" className="admin-logout-btn" onClick={onLogout}>
+            <FiLogOut />
+            <span>Log Out</span>
+          </button>
+
+          <div className="admin-settings-save-wrap">
+            {savedMessage && (
+              <span className="admin-save-success-msg">
+                <FiCheck /> {savedMessage}
+              </span>
+            )}
+            <button type="submit" className="admin-save-settings-btn">
+              Save Changes
             </button>
           </div>
-          <button type="submit" className="admin-save-settings-btn">
-            Save Changes
-          </button>
-          {savedMessage && (
-            <span className="admin-save-success-msg">
-              <FiCheck /> {savedMessage}
-            </span>
-          )}
         </div>
       </form>
     </div>
