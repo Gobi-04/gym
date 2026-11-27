@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
+import { dietPlanData, dailyWorkoutSynergy, getDynamicMealOptions } from "../data/dietData";
 import {
   FiGrid,
   FiActivity,
@@ -16,6 +17,17 @@ import {
   FiCheckCircle,
   FiMenu,
   FiX,
+  FiSun,
+  FiMoon,
+  FiZap,
+  FiRefreshCw,
+  FiDroplet,
+  FiPlus,
+  FiMinus,
+  FiRotateCcw,
+  FiEdit2,
+  FiCheck,
+  FiSliders,
 } from "react-icons/fi";
 
 import "../styles/MemberDashboard.css";
@@ -74,88 +86,7 @@ function HoverPreview({ url, title }) {
 const SAMPLE_VIDEO =
   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
-const dietPlanData = {
-  "non-vegetarian": {
-    label: "Non-Vegetarian",
-    focus: "Chest & Triceps Hypertrophy",
-    description: "High-protein meals designed to build muscle and recover faster.",
-    meals: [
-      {
-        id: 1,
-        time: "08:00 AM - 8:30 AM",
-        mealType: "Breakfast",
-        title: "Chicken & Egg Power Breakfast",
-        image:
-          "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=900&q=80",
-        portion: "Portion Recommendation",
-        nutrients: "3 Whole Eggs + 4 Egg Whites + 2 Whole Wheat Toast",
-        calories: "480 kcal",
-      },
-      {
-        id: 2,
-        time: "12:30 PM - 1:00 PM",
-        mealType: "Lunch",
-        title: "Chicken Rice Bowl",
-        image:
-          "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80",
-        portion: "Portion Recommendation",
-        nutrients: "150g Grilled Chicken + 1 Cup Steamed Rice + Dal",
-        calories: "620 kcal",
-      },
-      {
-        id: 3,
-        time: "05:00 PM - 5:30 PM",
-        mealType: "Dinner",
-        title: "Salmon & Quinoa Plate",
-        image:
-          "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=900&q=80",
-        portion: "Portion Recommendation",
-        nutrients: "150g Salmon + Quinoa + Roasted Veggies",
-        calories: "590 kcal",
-      },
-    ],
-  },
-  vegetarian: {
-    label: "Vegetarian",
-    focus: "Plant Protein & Recovery",
-    description: "Balanced vegetarian meals with protein-rich ingredients for strength and energy.",
-    meals: [
-      {
-        id: 1,
-        time: "08:00 AM - 8:30 AM",
-        mealType: "Breakfast",
-        title: "Paneer Oats Bowl",
-        image:
-          "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80",
-        portion: "Portion Recommendation",
-        nutrients: "Oats + Paneer + Chia Seeds + Banana",
-        calories: "450 kcal",
-      },
-      {
-        id: 2,
-        time: "12:30 PM - 1:00 PM",
-        mealType: "Lunch",
-        title: "Soya Chunks Rice Bowl",
-        image:
-          "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80",
-        portion: "Portion Recommendation",
-        nutrients: "1 Cup Soya Chunks + Brown Rice + Lentils",
-        calories: "560 kcal",
-      },
-      {
-        id: 3,
-        time: "05:00 PM - 5:30 PM",
-        mealType: "Dinner",
-        title: "Tofu & Veggie Stir-Fry",
-        image:
-          "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80",
-        portion: "Portion Recommendation",
-        nutrients: "Tofu + Mixed Veggies + Quinoa + Olive Oil",
-        calories: "540 kcal",
-      },
-    ],
-  },
-};
+// dietPlanData is imported from ../data/dietData.js
 
 const DEFAULT_IMG =
   "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900";
@@ -304,10 +235,154 @@ function MemberDashboard() {
   const [playingId, setPlayingId] = useState(null); // full video playing inside a card
   const [hoverId, setHoverId] = useState(null); // card currently under the mouse (preview)
   const [detailPlaying, setDetailPlaying] = useState(false); // video on detail page
-  const [selectedDiet, setSelectedDiet] = useState(() => {
-    const savedDiet = localStorage.getItem("fitguide-diet");
-    return savedDiet === "vegetarian" ? "vegetarian" : "non-vegetarian";
+ const [selectedGoal, setSelectedGoal] = useState(() => {
+  const saved = localStorage.getItem("fitguide-goal");
+  if (["bulking", "weightLoss", "strength"].includes(saved)) {
+    return saved;
+  }
+
+  try {
+    const user = JSON.parse(localStorage.getItem("fitguideCurrentUser") || "{}");
+    const raw = user?.fitnessProfile?.goal || user?.goal;
+    if (raw === "muscle-building") return "bulking";
+    if (raw === "fat-loss") return "weightLoss";
+    if (["bulking", "weightLoss", "strength"].includes(raw)) return raw;
+  } catch {
+    // ignore
+  }
+
+  return "bulking";
+});
+
+const [selectedDiet, setSelectedDiet] = useState(() => {
+  const saved = localStorage.getItem("fitguide-diet");
+
+  return ["vegetarian", "non-vegetarian"].includes(saved)
+    ? saved
+    : "vegetarian";
+});
+
+const [workoutTiming, setWorkoutTiming] = useState(() => {
+  return localStorage.getItem("fitguide-workout-timing") || "evening";
+});
+
+const [selectedMealOptions, setSelectedMealOptions] = useState({});
+
+const handleWorkoutTimingChange = (timing) => {
+  setWorkoutTiming(timing);
+  localStorage.setItem("fitguide-workout-timing", timing);
+};
+
+const handleSelectMealOption = (mealKey, optionIndex) => {
+  setSelectedMealOptions((prev) => ({
+    ...prev,
+    [mealKey]: optionIndex,
+  }));
+};
+
+const handleCycleOption = (mealKey, totalOptions) => {
+  setSelectedMealOptions((prev) => {
+    const current = prev[mealKey] || 0;
+    return {
+      ...prev,
+      [mealKey]: (current + 1) % totalOptions,
+    };
   });
+};
+
+// Daily Water Intake Tracking with date-aware localStorage
+const getTodayDateStr = () => new Date().toISOString().slice(0, 10);
+
+const [waterIntake, setWaterIntake] = useState(() => {
+  try {
+    const saved = JSON.parse(localStorage.getItem("fitguide-water-tracker") || "{}");
+    if (saved && saved.date === getTodayDateStr() && typeof saved.amount === "number") {
+      return saved.amount;
+    }
+  } catch {
+    // fallback
+  }
+  return 1500;
+});
+
+const defaultWaterTarget =
+  selectedGoal === "bulking"
+    ? 3500
+    : selectedGoal === "strength"
+    ? 4000
+    : 3000;
+
+const [waterTarget, setWaterTarget] = useState(() => {
+  const saved = parseInt(localStorage.getItem("fitguide-water-target"), 10);
+  return saved && !isNaN(saved) && saved >= 500 ? saved : defaultWaterTarget;
+});
+
+const [isEditingTarget, setIsEditingTarget] = useState(false);
+const [customTargetInput, setCustomTargetInput] = useState(waterTarget);
+
+const [isEditingIntake, setIsEditingIntake] = useState(false);
+const [directIntakeInput, setDirectIntakeInput] = useState(1500);
+
+const [customAddInput, setCustomAddInput] = useState("");
+
+const handleSaveTarget = (newTarget) => {
+  if (!newTarget || isNaN(newTarget) || newTarget < 500) return;
+  const clamped = Math.min(Math.max(newTarget, 500), 10000);
+  setWaterTarget(clamped);
+  setCustomTargetInput(clamped);
+  localStorage.setItem("fitguide-water-target", clamped);
+  localStorage.setItem("fitguide-water-target-custom", "true");
+  setIsEditingTarget(false);
+};
+
+const handleSetExactIntake = (amount) => {
+  if (isNaN(amount) || amount < 0) return;
+  const clamped = Math.min(Math.max(amount, 0), 10000);
+  setWaterIntake(clamped);
+  setDirectIntakeInput(clamped);
+  localStorage.setItem(
+    "fitguide-water-tracker",
+    JSON.stringify({ date: getTodayDateStr(), amount: clamped })
+  );
+  setIsEditingIntake(false);
+};
+
+const handleAddCustomAmount = () => {
+  const parsed = parseInt(customAddInput, 10);
+  if (!parsed || isNaN(parsed) || parsed <= 0) return;
+  handleAddWater(parsed);
+  setCustomAddInput("");
+};
+
+const handleAddWater = (delta) => {
+  setWaterIntake((prev) => {
+    const nextVal = Math.max(0, Math.min(prev + delta, 10000));
+    localStorage.setItem(
+      "fitguide-water-tracker",
+      JSON.stringify({ date: getTodayDateStr(), amount: nextVal })
+    );
+    return nextVal;
+  });
+};
+
+const handleSetGlasses = (glassCount) => {
+  const nextVal = glassCount * 250;
+  setWaterIntake(nextVal);
+  localStorage.setItem(
+    "fitguide-water-tracker",
+    JSON.stringify({ date: getTodayDateStr(), amount: nextVal })
+  );
+};
+
+const handleResetWater = () => {
+  setWaterIntake(0);
+  localStorage.setItem(
+    "fitguide-water-tracker",
+    JSON.stringify({ date: getTodayDateStr(), amount: 0 })
+  );
+};
+
+const waterPercentage = Math.min(Math.round((waterIntake / waterTarget) * 100), 100);
 
   // Current logged in user
   const [currentUser, setCurrentUser] = useState(() => {
@@ -333,11 +408,46 @@ function MemberDashboard() {
         .then((fresh) => {
           if (fresh && !fresh.error) {
             setCurrentUser((prev) => ({ ...prev, ...fresh }));
+            if (fresh.fitnessProfile?.goal) {
+              const mappedGoal =
+                fresh.fitnessProfile.goal === "muscle-building"
+                  ? "bulking"
+                  : fresh.fitnessProfile.goal === "fat-loss"
+                  ? "weightLoss"
+                  : fresh.fitnessProfile.goal;
+              if (["bulking", "weightLoss", "strength"].includes(mappedGoal)) {
+                setSelectedGoal(mappedGoal);
+                localStorage.setItem("fitguide-goal", mappedGoal);
+              }
+            }
+            if (
+              fresh.fitnessProfile?.diet &&
+              ["vegetarian", "non-vegetarian"].includes(fresh.fitnessProfile.diet)
+            ) {
+              setSelectedDiet(fresh.fitnessProfile.diet);
+              localStorage.setItem("fitguide-diet", fresh.fitnessProfile.diet);
+            }
           }
         })
         .catch(() => {});
     }
   }, []);
+
+  const handleGoalChange = (goalId) => {
+    setSelectedGoal(goalId);
+    localStorage.setItem("fitguide-goal", goalId);
+    if (currentUser?.id && typeof currentUser.id === "number") {
+      api.updateFitnessProfile(currentUser.id, goalId, selectedDiet).catch(() => {});
+    }
+  };
+
+  const handleDietChange = (dietType) => {
+    setSelectedDiet(dietType);
+    localStorage.setItem("fitguide-diet", dietType);
+    if (currentUser?.id && typeof currentUser.id === "number") {
+      api.updateFitnessProfile(currentUser.id, selectedGoal, dietType).catch(() => {});
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("fitguideCurrentUser");
@@ -399,7 +509,55 @@ function MemberDashboard() {
   const paymentMethodStr =
     currentUser?.paymentMethod || "UPI / Google Pay (PhonePe)";
 
-  const currentDietPlan = dietPlanData[selectedDiet];
+  const basePlan =
+    dietPlanData[selectedGoal]?.[selectedDiet] ||
+    dietPlanData.bulking.vegetarian;
+
+  const rawMeals =
+    basePlan.days?.[activeDietDay] ||
+    basePlan.meals ||
+    [];
+
+  // Adjust timing and sequence dynamically based on workoutTiming (morning vs evening)
+  const currentMeals = rawMeals
+    .map((meal) => {
+      if (workoutTiming === "morning") {
+        if (meal.mealType === "Pre-Workout") {
+          return { ...meal, time: "06:15 AM - 06:45 AM", sortOrder: 1 };
+        }
+        if (meal.mealType === "Post-Workout") {
+          return { ...meal, time: "08:15 AM - 08:45 AM", sortOrder: 2 };
+        }
+        if (meal.mealType === "Breakfast") {
+          return { ...meal, time: "09:15 AM - 09:45 AM", sortOrder: 3 };
+        }
+        if (meal.mealType === "Lunch") {
+          return { ...meal, sortOrder: 4 };
+        }
+        if (meal.mealType === "Dinner") {
+          return { ...meal, sortOrder: 5 };
+        }
+      } else {
+        // Evening timing
+        if (meal.mealType === "Breakfast") return { ...meal, sortOrder: 1 };
+        if (meal.mealType === "Lunch") return { ...meal, sortOrder: 2 };
+        if (meal.mealType === "Pre-Workout") return { ...meal, sortOrder: 3 };
+        if (meal.mealType === "Post-Workout") return { ...meal, sortOrder: 4 };
+        if (meal.mealType === "Dinner") return { ...meal, sortOrder: 5 };
+      }
+      return { ...meal, sortOrder: 3 };
+    })
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+
+  const dayFocus =
+    basePlan.weeklyFocus?.[activeDietDay] ||
+    basePlan.focus;
+
+  const currentDietPlan = {
+    ...basePlan,
+    focus: dayFocus,
+    meals: currentMeals,
+  };
 
   const dayPlan = weeklyPlan[activeDay] || { focus: "Assigned Training Schedule", exercises: [] };
   const dayWorkouts = dayPlan.exercises;
@@ -849,31 +1007,107 @@ function MemberDashboard() {
 
           <section className="diet-plan-content">
             <span className="section-label">MEMBER PORTAL</span>
-            <div className="diet-plan-header">
-              <div>
-                <h1>MY DIET PLAN</h1>
-                <p className="diet-plan-description">
-                  Assigned for MUSCLE BUILDING - Whole Food Performance Fuel
-                </p>
-              </div>
+            
+<div className="diet-plan-header">
+  <div>
+    <h1>MY DIET PLAN</h1>
+    <p className="diet-plan-description">
+      Personalized daily nutrition based on the fitness goal you selected during onboarding.
+    </p>
+  </div>
+</div>
 
-              <div className="diet-toggle-row">
-                <button
-                  type="button"
-                  className={selectedDiet === "non-vegetarian" ? "diet-toggle active" : "diet-toggle"}
-                  onClick={() => setSelectedDiet("non-vegetarian")}
-                >
-                  Non-Vegetarian
-                </button>
-                <button
-                  type="button"
-                  className={selectedDiet === "vegetarian" ? "diet-toggle active" : "diet-toggle"}
-                  onClick={() => setSelectedDiet("vegetarian")}
-                >
-                  Vegetarian
-                </button>
-              </div>
-            </div>
+{/* ASSIGNED GOAL SUMMARY (FROM ONBOARDING / LOGIN) */}
+<div className="diet-selection-section">
+  <div className="assigned-goal-card">
+    <div className="assigned-goal-info">
+      <span className="assigned-label">ASSIGNED FITNESS GOAL</span>
+      <h2>
+        {selectedGoal === "bulking"
+          ? "💪 Muscle Building & Hypertrophy"
+          : selectedGoal === "weightLoss"
+          ? "🔥 Fat Loss & Calorie Deficit"
+          : "🏋️ Strength & Peak Performance"}
+      </h2>
+      <p>
+        {selectedGoal === "bulking"
+          ? "Your daily meals are calibrated in a clean calorie surplus with high protein to build lean muscle mass."
+          : selectedGoal === "weightLoss"
+          ? "Your daily meals are structured in a controlled calorie deficit with high fiber to burn fat and preserve lean muscle."
+          : "Your daily meals are packed with dense whole foods and clean carbs to maximize compound lift power."}
+      </p>
+    </div>
+    <button
+      type="button"
+      className="change-goal-link"
+      onClick={() => navigate("/onboarding")}
+    >
+      Change Goal ↗
+    </button>
+  </div>
+
+  {/* FOOD PREFERENCE & WORKOUT TIMING */}
+  <div className="diet-controls-flex">
+    <div className="diet-control-block">
+      <h3>Select Food Preference</h3>
+      <div className="diet-toggle-row">
+        <button
+          type="button"
+          className={
+            selectedDiet === "vegetarian"
+              ? "diet-toggle active"
+              : "diet-toggle"
+          }
+          onClick={() => handleDietChange("vegetarian")}
+        >
+          🌱 Vegetarian
+        </button>
+
+        <button
+          type="button"
+          className={
+            selectedDiet === "non-vegetarian"
+              ? "diet-toggle active"
+              : "diet-toggle"
+          }
+          onClick={() => handleDietChange("non-vegetarian")}
+        >
+          🍗 Non-Vegetarian
+        </button>
+      </div>
+    </div>
+
+    <div className="diet-control-block">
+      <h3>Workout Training Window</h3>
+      <div className="diet-toggle-row">
+        <button
+          type="button"
+          className={
+            workoutTiming === "evening"
+              ? "diet-toggle active"
+              : "diet-toggle"
+          }
+          onClick={() => handleWorkoutTimingChange("evening")}
+        >
+          <FiMoon style={{ marginRight: 6 }} /> Evening Workout (4:30 PM Pre / 7:00 PM Post)
+        </button>
+
+        <button
+          type="button"
+          className={
+            workoutTiming === "morning"
+              ? "diet-toggle active"
+              : "diet-toggle"
+          }
+          onClick={() => handleWorkoutTimingChange("morning")}
+        >
+          <FiSun style={{ marginRight: 6 }} /> Morning Workout (6:15 AM Pre / 8:15 AM Post)
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
             {/* WEEKLY DIET DAYS */}
             <div className="weekly-schedule">
@@ -893,39 +1127,444 @@ function MemberDashboard() {
                 </button>
               ))}
             </div>
+
+            {/* SUNDAY RECOVERY NOTE */}
+            {activeDietDay === "Sun" && (
+              <div className="rest-message" style={{ margin: "1rem 0" }}>
+                <FiCoffee />
+                <h2>Sunday: Rest &amp; Nutrition Recovery</h2>
+                <p>
+                  Hydration and cellular recovery day. Drink 3–4 liters of water, maintain steady protein intake, and allow your digestive system and muscles to recharge.
+                </p>
+              </div>
+            )}
+
             <div className="diet-focus-card">
               <div className="calendar-icon diet-icon">
                 <FiCoffee />
               </div>
 
               <div className="focus-details diet-focus-details">
-                <small>{currentDietPlan.label.toUpperCase()} PLAN</small>
-                <h2>{currentDietPlan.focus}</h2>
+                <small>
+  {activeDietDay.toUpperCase()} SCHEDULE &bull;{" "}
+  {selectedGoal === "bulking"
+    ? "BULKING PLAN"
+    : selectedGoal === "weightLoss"
+    ? "WEIGHT LOSS PLAN"
+    : "STRENGTH TRAINING PLAN"}
+  {" / "}
+  {currentDietPlan.label.toUpperCase()}
+</small>
+
+<h2>{currentDietPlan.focus}</h2>
               </div>
 
               <span className="diet-plan-note">{currentDietPlan.description}</span>
             </div>
 
-            <div className="diet-grid">
-              {currentDietPlan.meals.map((meal) => (
-                <div className="diet-card" key={meal.id}>
-                  <div className="diet-image-wrap">
-                    <img src={meal.image} alt={meal.title} />
-                    <span className="diet-chip">{meal.mealType}</span>
-                    <span className="diet-time">{meal.time}</span>
+            {/* DAILY WATER & HYDRATION TRACKER */}
+            <div className="water-tracker-card">
+              <div className="water-tracker-top">
+                <div className="water-title-wrap">
+                  <div className="water-icon-circle">
+                    <FiDroplet />
                   </div>
-
-                  <div className="diet-card-body">
-                    <div className="diet-card-header">
-                      <h3>{meal.title}</h3>
-                      <span>{meal.calories}</span>
+                  <div>
+                    <span className="water-badge">DAILY HYDRATION TRACKER</span>
+                    <div className="water-header-with-actions">
+                      <h3>
+                        {(waterIntake / 1000).toFixed(2)}L{" "}
+                        <span className="water-target-label">
+                          / {(waterTarget / 1000).toFixed(1)}L Goal
+                        </span>
+                      </h3>
+                      <div className="water-tool-buttons">
+                        <button
+                          type="button"
+                          className={`water-tool-btn ${isEditingTarget ? "active" : ""}`}
+                          onClick={() => {
+                            setIsEditingTarget(!isEditingTarget);
+                            setIsEditingIntake(false);
+                          }}
+                          title="Set custom daily target goal"
+                        >
+                          <FiEdit2 /> Set Goal
+                        </button>
+                        <button
+                          type="button"
+                          className={`water-tool-btn ${isEditingIntake ? "active" : ""}`}
+                          onClick={() => {
+                            setIsEditingIntake(!isEditingIntake);
+                            setIsEditingTarget(false);
+                          }}
+                          title="Manually set current consumed amount"
+                        >
+                          <FiSliders /> Set Intake
+                        </button>
+                      </div>
                     </div>
-
-                    <p className="diet-portion">{meal.portion}</p>
-                    <p className="diet-nutrients">{meal.nutrients}</p>
                   </div>
                 </div>
-              ))}
+
+                <div className="water-stats-pill">
+                  <span className="water-percent">{waterPercentage}%</span>
+                  <span className="water-glasses-count">
+                    {Math.floor(waterIntake / 250)} / {Math.floor(waterTarget / 250)} Glasses
+                  </span>
+                </div>
+              </div>
+
+              {/* CUSTOM TARGET GOAL DRAWER */}
+              {isEditingTarget && (
+                <div className="water-custom-editor-drawer">
+                  <div className="custom-drawer-header">
+                    <span className="drawer-title">
+                      <FiEdit2 /> Customize Daily Water Target Goal:
+                    </span>
+                    <button
+                      type="button"
+                      className="drawer-close-btn"
+                      onClick={() => setIsEditingTarget(false)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div className="target-presets-row">
+                    <span className="presets-label">Quick Presets:</span>
+                    {[2000, 2500, 3000, 3500, 4000, 4500, 5000].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        className={`target-preset-chip ${waterTarget === preset ? "active" : ""}`}
+                        onClick={() => handleSaveTarget(preset)}
+                      >
+                        {(preset / 1000).toFixed(1)}L
+                      </button>
+                    ))}
+                  </div>
+                  <div className="custom-input-flex">
+                    <span className="input-prompt">Or enter custom target:</span>
+                    <div className="input-with-button">
+                      <input
+                        type="number"
+                        min="500"
+                        max="10000"
+                        step="100"
+                        value={customTargetInput}
+                        onChange={(e) => setCustomTargetInput(e.target.value)}
+                        placeholder="e.g. 3200"
+                        className="water-input-field"
+                      />
+                      <span className="unit-label">ml</span>
+                      <button
+                        type="button"
+                        className="apply-custom-btn"
+                        onClick={() => handleSaveTarget(Number(customTargetInput))}
+                      >
+                        <FiCheck /> Apply Goal
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* DIRECT INTAKE ADJUSTMENT DRAWER */}
+              {isEditingIntake && (
+                <div className="water-custom-editor-drawer">
+                  <div className="custom-drawer-header">
+                    <span className="drawer-title">
+                      <FiSliders /> Manually Set Current Consumed Water:
+                    </span>
+                    <button
+                      type="button"
+                      className="drawer-close-btn"
+                      onClick={() => setIsEditingIntake(false)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div className="custom-input-flex">
+                    <span className="input-prompt">Enter current total volume:</span>
+                    <div className="input-with-button">
+                      <input
+                        type="number"
+                        min="0"
+                        max="10000"
+                        step="50"
+                        value={directIntakeInput}
+                        onChange={(e) => setDirectIntakeInput(e.target.value)}
+                        placeholder="e.g. 1850"
+                        className="water-input-field"
+                      />
+                      <span className="unit-label">ml</span>
+                      <button
+                        type="button"
+                        className="apply-custom-btn"
+                        onClick={() => handleSetExactIntake(Number(directIntakeInput))}
+                      >
+                        <FiCheck /> Update Intake
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* PROGRESS BAR */}
+              <div className="water-progress-track">
+                <div
+                  className="water-progress-fill"
+                  style={{ width: `${waterPercentage}%` }}
+                >
+                  <div className="water-progress-glow"></div>
+                </div>
+              </div>
+
+              {/* INTERACTIVE GLASS INDICATORS */}
+              <div className="water-glasses-row">
+                {Array.from({ length: Math.min(Math.floor(waterTarget / 250), 16) }).map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`glass-indicator ${idx < Math.floor(waterIntake / 250) ? "filled" : ""}`}
+                    onClick={() => handleSetGlasses(idx + 1)}
+                    title={`Glass ${idx + 1} (250ml) - Click to set`}
+                  >
+                    <FiDroplet />
+                    <span>{idx + 1}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* QUICK & CUSTOM ACTION BUTTONS */}
+              <div className="water-controls-row">
+                <div className="water-quick-buttons">
+                  <button
+                    type="button"
+                    className="water-btn add-btn"
+                    onClick={() => handleAddWater(250)}
+                  >
+                    <FiPlus /> 250 ml (Glass)
+                  </button>
+                  <button
+                    type="button"
+                    className="water-btn add-btn"
+                    onClick={() => handleAddWater(500)}
+                  >
+                    <FiPlus /> 500 ml (Shaker)
+                  </button>
+                  <button
+                    type="button"
+                    className="water-btn add-btn"
+                    onClick={() => handleAddWater(750)}
+                  >
+                    <FiPlus /> 750 ml (Bottle)
+                  </button>
+
+                  {/* CUSTOM AMOUNT ADDER */}
+                  <div className="water-custom-log-inline">
+                    <input
+                      type="number"
+                      min="10"
+                      max="3000"
+                      step="50"
+                      value={customAddInput}
+                      onChange={(e) => setCustomAddInput(e.target.value)}
+                      placeholder="Custom ml"
+                      className="water-custom-log-input"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleAddCustomAmount();
+                      }}
+                    />
+                    <button
+                      type="button"
+                      className="water-btn custom-log-btn"
+                      onClick={handleAddCustomAmount}
+                      disabled={!customAddInput || Number(customAddInput) <= 0}
+                    >
+                      <FiPlus /> Add
+                    </button>
+                  </div>
+                </div>
+
+                <div className="water-action-buttons">
+                  {waterIntake > 0 && (
+                    <button
+                      type="button"
+                      className="water-btn minus-btn"
+                      onClick={() => handleAddWater(-250)}
+                      title="Remove 250ml"
+                    >
+                      <FiMinus /> 250ml
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="water-btn reset-btn"
+                    onClick={handleResetWater}
+                    title="Reset today's hydration"
+                  >
+                    <FiRotateCcw /> Reset
+                  </button>
+                </div>
+              </div>
+
+              <p className="water-tip-text">
+                {waterPercentage >= 100
+                  ? "🏆 Hydration goal achieved! Muscle cells are fully saturated for optimal nutrient delivery & recovery."
+                  : waterPercentage >= 65
+                  ? "💪 Great hydration pace! Sustained cellular volume prevents fatigue and optimizes muscle pumps."
+                  : waterPercentage >= 35
+                  ? "⚡ Keep hydrating! Sip water consistently between meals and peri-workout windows."
+                  : "💧 Tip: Drink at least 500ml before your training session to maintain high vascular output."}
+              </p>
+            </div>
+
+            <div className="diet-grid">
+              {currentDietPlan.meals.map((meal) => {
+                const isWorkoutMeal =
+                  meal.mealType === "Pre-Workout" || meal.mealType === "Post-Workout";
+                const dynamicOptions = isWorkoutMeal
+                  ? getDynamicMealOptions(meal, selectedGoal, selectedDiet, activeDietDay)
+                  : [];
+                const mealKey = `${activeDietDay}-${meal.id}`;
+                const activeOptIdx = selectedMealOptions[mealKey] || 0;
+                const activeMealData =
+                  dynamicOptions.length > 0 ? dynamicOptions[activeOptIdx] || meal : meal;
+                const synergy = dailyWorkoutSynergy[activeDietDay];
+
+                return (
+                  <div
+                    className={`diet-card ${isWorkoutMeal ? "dynamic-workout-card" : ""}`}
+                    key={meal.id}
+                  >
+                    <div className="diet-image-wrap">
+                      <img src={activeMealData.image} alt={activeMealData.title} />
+                      <span
+                        className={`diet-chip ${meal.mealType
+                          .toLowerCase()
+                          .replace(/[^a-z0-9]/g, "-")}`}
+                      >
+                        {meal.mealType}
+                      </span>
+                      <span className="diet-time">{meal.time}</span>
+                      {isWorkoutMeal && activeMealData.badge && (
+                        <span className="diet-dynamic-badge">
+                          ✨ {activeMealData.badge}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="diet-card-body">
+                      {isWorkoutMeal && dynamicOptions.length > 0 ? (
+                        <div className="dynamic-options-bar">
+                          <div className="dynamic-options-header">
+                            <span className="dynamic-options-label">
+                              <FiZap /> DIFFERENT OPTIONS:
+                            </span>
+                            <button
+                              type="button"
+                              className="swap-option-btn"
+                              onClick={() =>
+                                handleCycleOption(mealKey, dynamicOptions.length)
+                              }
+                              title="Cycle to next meal option"
+                            >
+                              <FiRefreshCw /> Swap
+                            </button>
+                          </div>
+
+                          <div className="option-pill-group">
+                            {dynamicOptions.map((opt, oIdx) => (
+                              <button
+                                key={opt.id || oIdx}
+                                type="button"
+                                className={`option-pill ${
+                                  activeOptIdx === oIdx ? "active" : ""
+                                }`}
+                                onClick={() => handleSelectMealOption(mealKey, oIdx)}
+                              >
+                                <span>{opt.icon}</span> {opt.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="standard-meal-bar">
+                          <div className="standard-meal-header">
+                            <span className="standard-meal-label">
+                              {meal.mealType === "Breakfast" ? (
+                                <>
+                                  <FiSun /> MORNING METABOLIC FUEL
+                                </>
+                              ) : meal.mealType === "Lunch" ? (
+                                <>
+                                  <FiActivity /> MID-DAY POWER FUEL
+                                </>
+                              ) : (
+                                <>
+                                  <FiMoon /> EVENING CELLULAR REPAIR
+                                </>
+                              )}
+                            </span>
+                            <span className="standard-macro-tag">
+                              {meal.mealType === "Breakfast"
+                                ? "High Bioavailability"
+                                : meal.mealType === "Lunch"
+                                ? "Sustained Glycogen"
+                                : "Nocturnal Amino Recovery"}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="diet-card-header">
+                        <h3>{activeMealData.title}</h3>
+                        <span>{activeMealData.calories}</span>
+                      </div>
+
+                      <p className="diet-portion">{activeMealData.portion}</p>
+                      <p className="diet-nutrients">{activeMealData.nutrients}</p>
+
+                      {isWorkoutMeal && synergy ? (
+                        <div className="workout-synergy-banner">
+                          <span className="synergy-badge">
+                            <FiZap /> {activeDietDay} WORKOUT SYNERGY
+                          </span>
+                          <p className="synergy-tip">
+                            {meal.mealType === "Pre-Workout"
+                              ? synergy.preTip
+                              : synergy.postTip}
+                          </p>
+                        </div>
+                      ) : (
+                        <div
+                          className={`standard-meal-footer ${meal.mealType
+                            .toLowerCase()
+                            .replace(/[^a-z0-9]/g, "-")}-footer`}
+                        >
+                          <span className="synergy-badge">
+                            {meal.mealType === "Breakfast" ? (
+                              <FiSun />
+                            ) : meal.mealType === "Lunch" ? (
+                              <FiActivity />
+                            ) : (
+                              <FiMoon />
+                            )}{" "}
+                            {meal.mealType.toUpperCase()} NUTRITION PURPOSE
+                          </span>
+                          <p className="synergy-tip">
+                            {meal.mealType === "Breakfast"
+                              ? "Restores overnight glycogen, balances morning cortisol, and primes muscle protein synthesis."
+                              : meal.mealType === "Lunch"
+                              ? "Stabilizes blood glucose and powers mid-day physical stamina with dense complex grains and lean proteins."
+                              : "Supplies essential amino acids, zinc, and healthy fats for continuous tissue reconstruction during sleep."}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </section>
 

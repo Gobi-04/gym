@@ -29,18 +29,67 @@ const fitnessGoals = [
 ];
 
 function FitnessOnboarding() {
-  const [selectedGoal, setSelectedGoal] = useState("muscle-building");
-  const [diet, setDiet] = useState(() => localStorage.getItem("fitguide-diet") || "");
+  const normalizeGoal = (id) => {
+    if (id === "muscle-building") return "bulking";
+    if (id === "fat-loss") return "weightLoss";
+    return id; // "strength"
+  };
+
+  const [selectedGoal, setSelectedGoal] = useState(() => {
+    const saved = localStorage.getItem("fitguide-goal");
+    if (saved === "weightLoss") return "fat-loss";
+    if (saved === "strength") return "strength";
+    return "muscle-building";
+  });
+  const [diet, setDiet] = useState(() => localStorage.getItem("fitguide-diet") || "non-vegetarian");
   const navigate = useNavigate();
+
+  const handleGoalSelect = (goalId) => {
+    setSelectedGoal(goalId);
+    const mapped = normalizeGoal(goalId);
+    localStorage.setItem("fitguide-goal", mapped);
+
+    try {
+      const user = JSON.parse(localStorage.getItem("fitguideCurrentUser") || "{}");
+      user.goal = mapped;
+      user.fitnessProfile = { ...(user.fitnessProfile || {}), goal: goalId };
+      localStorage.setItem("fitguideCurrentUser", JSON.stringify(user));
+    } catch {
+      // ignore
+    }
+  };
 
   const handleDietChange = (value) => {
     setDiet(value);
     localStorage.setItem("fitguide-diet", value);
+    try {
+      const user = JSON.parse(localStorage.getItem("fitguideCurrentUser") || "{}");
+      user.diet = value;
+      user.fitnessProfile = { ...(user.fitnessProfile || {}), diet: value };
+      localStorage.setItem("fitguideCurrentUser", JSON.stringify(user));
+    } catch {
+      // ignore
+    }
   };
 
   const handleContinue = async () => {
+    const mapped = normalizeGoal(selectedGoal);
+    localStorage.setItem("fitguide-goal", mapped);
+    if (diet) {
+      localStorage.setItem("fitguide-diet", diet);
+    }
+
     try {
       const user = JSON.parse(localStorage.getItem("fitguideCurrentUser") || "{}");
+      user.goal = mapped;
+      user.diet = diet || user.diet || "non-vegetarian";
+      user.fitnessProfile = {
+        ...(user.fitnessProfile || {}),
+        goal: selectedGoal,
+        diet: diet || "non-vegetarian",
+      };
+      localStorage.setItem("fitguideCurrentUser", JSON.stringify(user));
+
       if (user?.id) {
         await api.updateFitnessProfile(user.id, selectedGoal, diet);
       }
@@ -69,7 +118,7 @@ function FitnessOnboarding() {
             key={goal.id}
             type="button"
             aria-pressed={selectedGoal === goal.id}
-            onClick={() => setSelectedGoal(goal.id)}
+            onClick={() => handleGoalSelect(goal.id)}
           >
             <div className="goal-image-wrap">
               <img src={goal.image} alt="" />
