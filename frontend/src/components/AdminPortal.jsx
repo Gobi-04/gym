@@ -152,7 +152,11 @@ function AdminPortal() {
         {/* CONTENT CANVAS */}
         <div className="admin-canvas">
           {activeMenu === "Dashboard" && (
-            <AdminOverview onNavigateMenu={(menu) => setActiveMenu(menu)} />
+            <AdminOverview
+              members={members}
+              payments={payments}
+              onNavigateMenu={(menu) => setActiveMenu(menu)}
+            />
           )}
 
           {activeMenu === "Member Management" && (
