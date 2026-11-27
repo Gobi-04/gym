@@ -330,6 +330,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   padding: 13px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -341,7 +342,23 @@
 .admin-recent-info {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-recent-info h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.admin-recent-info p {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 0;
+  line-height: 1.4;
 }
 
 .admin-recent-name {
@@ -351,6 +368,13 @@
 }
 
 .admin-recent-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  text-align: right;
   font-size: 14px;
   color: #9ca3af;
 }
@@ -360,38 +384,45 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .admin-recent-date {
   font-size: 12px;
   color: #9ca3af;
+  white-space: nowrap;
 }
 
 .admin-recent-amount {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: #ffffff;
+  white-space: nowrap;
 }
 
 .admin-recent-badge {
   font-size: 12px;
   font-weight: 600;
-  padding: 2px 7px;
+  padding: 2px 8px;
   border-radius: 4px;
   display: inline-block;
   text-align: right;
+  white-space: nowrap;
 }
 
+.admin-recent-badge.active,
 .badge-active {
   color: #c5ff16;
   background: rgba(197, 255, 22, 0.08);
 }
 
+.admin-recent-badge.verified,
 .badge-verified {
   color: #10b981;
   background: rgba(16, 185, 129, 0.08);
 }
 
+.admin-recent-badge.pending,
 .badge-pending {
   color: #f59e0b;
   background: rgba(245, 158, 11, 0.08);
