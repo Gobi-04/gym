@@ -142,7 +142,7 @@ function AdminPortal() {
           )}
 
           {activeMenu === "Membership & Payments" && (
-            <AdminPayments payments={payments} />
+            <AdminPayments members={members} payments={payments} />
           )}
 
           {activeMenu === "Workout Management" && <AdminWorkouts />}

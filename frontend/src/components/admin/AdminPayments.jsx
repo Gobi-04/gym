@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   FiSearch,
   FiEdit2,
@@ -10,6 +10,7 @@ import {
   FiPrinter,
   FiCheck,
 } from "react-icons/fi";
+import { api } from "../../services/api";
 import "../../styles/AdminPayments.css";
 
 const defaultPlans = [
@@ -17,7 +18,6 @@ const defaultPlans = [
     id: "monthly",
     name: "Monthly - 1 Month",
     duration: "1 Month",
-    enrolled: 4,
     price: 2499,
     description:
       "Full gym access, goal-based weekly workouts, and personalized diet schedule for 30 days.",
@@ -26,7 +26,6 @@ const defaultPlans = [
     id: "quarterly",
     name: "Quarterly - 3 Months",
     duration: "3 Months",
-    enrolled: 4,
     price: 6499,
     description:
       "90-day structured transformation cycle with workout & meal plan synchronization.",
@@ -35,175 +34,164 @@ const defaultPlans = [
     id: "annual",
     name: "Annual - 12 Months",
     duration: "12 Months",
-    enrolled: 2,
     price: 19999,
     description:
       "Complete 12-month performance membership with full workout and nutrition portal access.",
   },
 ];
 
-const defaultTransactions = [
-  {
-    id: "TXN-FG-20261120-8841",
-    receiptNo: "RCPT-2026-0088",
-    member: "Devansh Joshi",
-    memberId: "FG-1049",
-    package: "Monthly - 1 Month",
-    method: "UPI",
-    amount: 2499,
-    date: "2026-11-20",
-    status: "Pending",
-  },
-  {
-    id: "TXN-FG-20261118-7730",
-    receiptNo: "RCPT-2026-0087",
-    member: "Sneha Kulkarni",
-    memberId: "FG-1048",
-    package: "Quarterly - 3 Months",
-    method: "Credit Card",
-    amount: 6499,
-    date: "2026-11-18",
-    status: "Paid & Verified",
-  },
-  {
-    id: "TXN-FG-20261112-6512",
-    receiptNo: "RCPT-2026-0086",
-    member: "Rohan Malhotra",
-    memberId: "FG-1043",
-    package: "Monthly - 1 Month",
-    method: "Net Banking",
-    amount: 2499,
-    date: "2026-11-12",
-    status: "Pending",
-  },
-  {
-    id: "TXN-FG-20261105-5401",
-    receiptNo: "RCPT-2026-0085",
-    member: "Kabir Deshmukh",
-    memberId: "FG-1047",
-    package: "Monthly - 1 Month",
-    method: "UPI",
-    amount: 2499,
-    date: "2026-11-05",
-    status: "Paid & Verified",
-  },
-  {
-    id: "TXN-FG-20261101-4390",
-    receiptNo: "RCPT-2026-0084",
-    member: "Meera Krishnan",
-    memberId: "FG-1046",
-    package: "Monthly - 1 Month",
-    method: "Google Pay",
-    amount: 2499,
-    date: "2026-11-01",
-    status: "Paid & Verified",
-  },
-  {
-    id: "TXN-FG-20261020-3289",
-    receiptNo: "RCPT-2026-0083",
-    member: "Vikramaditya Rao",
-    memberId: "FG-1045",
-    package: "Annual - 12 Months",
-    method: "Credit Card",
-    amount: 19999,
-    date: "2026-10-20",
-    status: "Paid & Verified",
-  },
-  {
-    id: "TXN-FG-20260929-2178",
-    receiptNo: "RCPT-2026-0082",
-    member: "Ananya Verma",
-    memberId: "FG-1044",
-    package: "Quarterly - 3 Months",
-    method: "UPI",
-    amount: 6499,
-    date: "2026-09-29",
-    status: "Paid & Verified",
-  },
-  {
-    id: "TXN-FG-20260914-1067",
-    receiptNo: "RCPT-2026-0081",
-    member: "Ishita Banerjee",
-    memberId: "FG-1050",
-    package: "Quarterly - 3 Months",
-    method: "Credit Card",
-    amount: 6499,
-    date: "2026-09-14",
-    status: "Paid & Verified",
-  },
-  {
-    id: "TXN-FG-20260902-9956",
-    receiptNo: "RCPT-2026-0080",
-    member: "Priya Nair",
-    memberId: "FG-1042",
-    package: "Quarterly - 3 Months",
-    method: "UPI",
-    amount: 6499,
-    date: "2026-09-02",
-    status: "Paid & Verified",
-  },
-  {
-    id: "TXN-FG-20260815-8845",
-    receiptNo: "RCPT-2026-0079",
-    member: "Aarav Sharma",
-    memberId: "FG-1041",
-    package: "Annual - 12 Months",
-    method: "Net Banking",
-    amount: 19999,
-    date: "2026-08-15",
-    status: "Paid & Verified",
-  },
-];
+const formatDate = (value) => {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return String(value).slice(0, 10);
+  return d.toISOString().slice(0, 10);
+};
 
-const activeExpiredList = [
-  { id: "FG-1041", name: "Aarav Sharma", plan: "Annual - 12 Months", status: "Active", expiry: "2027-08-15", amount: "₹19,999" },
-  { id: "FG-1042", name: "Priya Nair", plan: "Quarterly - 3 Months", status: "Active", expiry: "2026-12-02", amount: "₹6,499" },
-  { id: "FG-1043", name: "Rohan Malhotra", plan: "Monthly - 1 Month", status: "Expired", expiry: "2026-11-12", amount: "₹2,499" },
-  { id: "FG-1044", name: "Ananya Verma", plan: "Quarterly - 3 Months", status: "Active", expiry: "2026-11-29", amount: "₹6,499" },
-  { id: "FG-1045", name: "Vikramaditya Rao", plan: "Annual - 12 Months", status: "Active", expiry: "2027-08-20", amount: "₹19,999" },
-  { id: "FG-1046", name: "Meera Krishnan", plan: "Monthly - 1 Month", status: "Active", expiry: "2026-12-01", amount: "₹2,499" },
-  { id: "FG-1047", name: "Kabir Deshmukh", plan: "Monthly - 1 Month", status: "Expired", expiry: "2026-11-05", amount: "₹2,499" },
-  { id: "FG-1048", name: "Sneha Kulkarni", plan: "Quarterly - 3 Months", status: "Active", expiry: "2026-11-18", amount: "₹6,499" },
-  { id: "FG-1049", name: "Devansh Joshi", plan: "Monthly - 1 Month", status: "Active", expiry: "2026-12-20", amount: "₹2,499" },
-  { id: "FG-1050", name: "Ishita Banerjee", plan: "Quarterly - 3 Months", status: "Expired", expiry: "2026-11-14", amount: "₹6,499" },
-];
+const normalizeTransaction = (p, idx = 0) => {
+  const rawStatus = (p.status || "pending").toLowerCase();
+  const isVerified =
+    rawStatus === "success" ||
+    rawStatus === "paid" ||
+    rawStatus === "paid & verified" ||
+    rawStatus === "verified";
+  const numericUserId = typeof p.user_id === "number" ? p.user_id : idx + 1;
 
-const upcomingRenewalsList = [
-  { id: "FG-1044", name: "Ananya Verma", plan: "Quarterly - 3 Months", dueIn: "Due in 7d", expiry: "2026-11-29", renewalCost: "₹6,499" },
-  { id: "FG-1046", name: "Meera Krishnan", plan: "Monthly - 1 Month", dueIn: "Due in 9d", expiry: "2026-12-01", renewalCost: "₹2,499" },
-  { id: "FG-1042", name: "Priya Nair", plan: "Quarterly - 3 Months", dueIn: "Due in 10d", expiry: "2026-12-02", renewalCost: "₹6,499" },
-  { id: "FG-1049", name: "Devansh Joshi", plan: "Monthly - 1 Month", dueIn: "Due in 28d", expiry: "2026-12-20", renewalCost: "₹2,499" },
-  { id: "FG-1047", name: "Kabir Deshmukh", plan: "Monthly - 1 Month", dueIn: "Expired", expiry: "2026-11-05", renewalCost: "₹2,499" },
-  { id: "FG-1043", name: "Rohan Malhotra", plan: "Monthly - 1 Month", dueIn: "Expired", expiry: "2026-11-12", renewalCost: "₹2,499" },
-  { id: "FG-1050", name: "Ishita Banerjee", plan: "Quarterly - 3 Months", dueIn: "Expired", expiry: "2026-11-14", renewalCost: "₹6,499" },
-];
+  return {
+    dbId: typeof p.id === "number" ? p.id : null,
+    id: p.transaction_id || p.txnId || (String(p.id || "").startsWith("TXN-") ? p.id : `TXN-FG-${1000 + idx}`),
+    receiptNo: p.receipt_number || p.receiptNo || `RCPT-${new Date().getFullYear()}-${String(p.id || idx + 1).padStart(4, "0")}`,
+    member: p.customer_name || p.member || p.name || "Member",
+    memberId: p.memberId || `FG-${1040 + numericUserId}`,
+    package: p.plan_name || p.package || p.plan || "Monthly - 1 Month",
+    method: p.payment_method || p.method || "UPI",
+    amount: Number(p.total_amount || p.amount || 0),
+    date: formatDate(p.paid_at || p.date || p.created_at),
+    status: isVerified ? "Paid & Verified" : "Pending",
+  };
+};
 
-function AdminPayments() {
+const normalizePlan = (plan, idx = 0) => ({
+  dbId: typeof plan.id === "number" ? plan.id : null,
+  id: plan.id || `plan-${idx}`,
+  name: plan.name,
+  duration: plan.duration_months
+    ? `${plan.duration_months} ${Number(plan.duration_months) === 1 ? "Month" : "Months"}`
+    : plan.duration || "1 Month",
+  price: Number(plan.price || 0),
+  description: plan.description || plan.features || "",
+});
+
+function AdminPayments({ members: propMembers = [], payments: propPayments = [] }) {
   // Plan Configurations State
-  const [plans, setPlans] = useState(() => {
-    const saved = localStorage.getItem("fitguideAdminPlans");
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        // fallback
-      }
-    }
-    return defaultPlans;
-  });
+  const [plans, setPlans] = useState(defaultPlans);
 
   // Transactions State
-  const [transactions, setTransactions] = useState(() => {
-    const saved = localStorage.getItem("fitguideAdminTransactions");
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        // fallback
+  const [transactions, setTransactions] = useState(() =>
+    Array.isArray(propPayments) ? propPayments.map(normalizeTransaction) : []
+  );
+
+  // Members State (for Active/Expired, Renewals, and Plan Enrolled counts)
+  const [membersList, setMembersList] = useState(() =>
+    Array.isArray(propMembers) ? propMembers : []
+  );
+
+  // Fetch live data from backend API on mount
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadAll = async () => {
+      const [plansRes, paymentsRes, membersRes] = await Promise.allSettled([
+        api.getAdminPlans(),
+        api.getAdminPayments(),
+        api.getAdminMembers(),
+      ]);
+
+      if (cancelled) return;
+
+      if (plansRes.status === "fulfilled" && Array.isArray(plansRes.value) && plansRes.value.length > 0) {
+        setPlans(plansRes.value.map(normalizePlan));
       }
-    }
-    return defaultTransactions;
-  });
+      if (paymentsRes.status === "fulfilled" && Array.isArray(paymentsRes.value)) {
+        setTransactions(paymentsRes.value.map(normalizeTransaction));
+      }
+      if (membersRes.status === "fulfilled" && Array.isArray(membersRes.value)) {
+        setMembersList(membersRes.value);
+      }
+    };
+
+    loadAll();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Dynamically compute enrolled count per plan
+  const plansWithCounts = useMemo(() => {
+    return plans.map((p) => {
+      const key = p.name.toLowerCase().split(/[-– ]/)[0];
+      const enrolled = membersList.filter((m) => {
+        const mPlan = (m.plan_name || m.membershipPlan || m.plan || "").toLowerCase();
+        return mPlan === p.name.toLowerCase() || (key && mPlan.includes(key));
+      }).length;
+      return { ...p, enrolled };
+    });
+  }, [plans, membersList]);
+
+  // Dynamically derive Active & Expired list from real members
+  const activeExpiredList = useMemo(() => {
+    return membersList.map((m, idx) => {
+      const rawStatus = (m.membership_status || m.membershipStatus || m.status || "active").toLowerCase();
+      const isExpired = rawStatus === "expired" || rawStatus === "cancelled";
+      const planName = m.plan_name || m.membershipPlan || m.plan || "Monthly - 1 Month";
+      const matchedPlan = plans.find((p) => {
+        const key = p.name.toLowerCase().split(/[-– ]/)[0];
+        return planName.toLowerCase() === p.name.toLowerCase() || (key && planName.toLowerCase().includes(key));
+      });
+      const planPrice = matchedPlan ? matchedPlan.price : 2499;
+      const numericId = typeof m.id === "number" ? m.id : idx + 1;
+
+      return {
+        id: m.memberId || (String(m.id || "").startsWith("FG-") ? m.id : `FG-${1040 + numericId}`),
+        name: m.name || "Member",
+        plan: planName,
+        status: isExpired ? "Expired" : "Active",
+        expiry: formatDate(m.end_date || m.expiryDate),
+        amount: `₹${Number(planPrice).toLocaleString("en-IN")}`,
+      };
+    });
+  }, [membersList, plans]);
+
+  // Dynamically derive Upcoming Renewals (Expired or expiring within 30 days)
+  const upcomingRenewalsList = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return activeExpiredList
+      .filter((m) => {
+        if (m.status === "Expired") return true;
+        if (!m.expiry || m.expiry === "—") return false;
+        const expDate = new Date(m.expiry);
+        if (Number.isNaN(expDate.getTime())) return false;
+        const diffDays = Math.ceil((expDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        return diffDays <= 30;
+      })
+      .map((m) => {
+        let dueIn = "Expired";
+        if (m.status !== "Expired" && m.expiry !== "—") {
+          const expDate = new Date(m.expiry);
+          const diffDays = Math.ceil((expDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+          dueIn = diffDays <= 0 ? "Expired" : `Due in ${diffDays}d`;
+        }
+        return {
+          id: m.id,
+          name: m.name,
+          plan: m.plan,
+          dueIn,
+          expiry: m.expiry,
+          renewalCost: m.amount,
+        };
+      });
+  }, [activeExpiredList]);
 
   // Active Tab: "history" | "active-expired" | "renewals"
   const [activeTab, setActiveTab] = useState("history");
@@ -222,23 +210,47 @@ function AdminPayments() {
     setTimeout(() => setToastMessage(""), 3500);
   };
 
-  const handleStatusChange = (txnId, newStatus) => {
-    const updated = transactions.map((t) =>
-      t.id === txnId ? { ...t, status: newStatus } : t
-    );
+  const handleStatusChange = async (txnId, newStatus) => {
+    let targetDbId = null;
+    const updated = transactions.map((t) => {
+      if (t.id === txnId) {
+        targetDbId = t.dbId;
+        return { ...t, status: newStatus };
+      }
+      return t;
+    });
     setTransactions(updated);
-    localStorage.setItem("fitguideAdminTransactions", JSON.stringify(updated));
+    if (targetDbId) {
+      try {
+        await api.updatePaymentStatus(
+          targetDbId,
+          newStatus === "Paid & Verified" ? "success" : "pending"
+        );
+      } catch {
+        // already updated in UI
+      }
+    }
     showToast(`Transaction ${txnId} status updated to ${newStatus}`);
   };
 
-  const handleSavePlan = (e) => {
+  const handleSavePlan = async (e) => {
     e.preventDefault();
     if (!editingPlan) return;
     const updated = plans.map((p) =>
       p.id === editingPlan.id ? editingPlan : p
     );
     setPlans(updated);
-    localStorage.setItem("fitguideAdminPlans", JSON.stringify(updated));
+    if (editingPlan.dbId) {
+      try {
+        await api.updateAdminPlan(editingPlan.dbId, {
+          name: editingPlan.name,
+          price: Number(editingPlan.price),
+          description: editingPlan.description,
+        });
+      } catch {
+        // already updated in UI
+      }
+    }
     setEditingPlan(null);
     showToast(`Plan ${editingPlan.name} updated!`);
   };
@@ -291,7 +303,7 @@ function AdminPayments() {
         </div>
 
         <div className="admin-plans-cards-grid">
-          {plans.map((p) => (
+          {plansWithCounts.map((p) => (
             <div key={p.id} className="admin-plan-card">
               <div className="admin-plan-card-top">
                 <div className="admin-plan-card-title-wrap">
@@ -465,27 +477,35 @@ function AdminPayments() {
                 </tr>
               </thead>
               <tbody>
-                {activeExpiredList.map((m) => {
-                  const isActive = m.status === "Active";
-                  return (
-                    <tr key={m.id}>
-                      <td className="member-id-cell">{m.id}</td>
-                      <td className="member-name-cell">{m.name}</td>
-                      <td>{m.plan}</td>
-                      <td>
-                        <span
-                          className={`member-status-indicator ${isActive ? "status-active" : "status-expired"
-                            }`}
-                        >
-                          {isActive ? <FiCheckCircle /> : <FiClock />}
-                          <span>{m.status}</span>
-                        </span>
-                      </td>
-                      <td style={{ fontWeight: 600, color: "#ffffff" }}>{m.amount}</td>
-                      <td className="member-expiry-cell">{m.expiry}</td>
-                    </tr>
-                  );
-                })}
+                {activeExpiredList.length > 0 ? (
+                  activeExpiredList.map((m) => {
+                    const isActive = m.status === "Active";
+                    return (
+                      <tr key={m.id}>
+                        <td className="member-id-cell">{m.id}</td>
+                        <td className="member-name-cell">{m.name}</td>
+                        <td>{m.plan}</td>
+                        <td>
+                          <span
+                            className={`member-status-indicator ${isActive ? "status-active" : "status-expired"
+                              }`}
+                          >
+                            {isActive ? <FiCheckCircle /> : <FiClock />}
+                            <span>{m.status}</span>
+                          </span>
+                        </td>
+                        <td style={{ fontWeight: 600, color: "#ffffff" }}>{m.amount}</td>
+                        <td className="member-expiry-cell">{m.expiry}</td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="admin-no-results-cell">
+                      No active or expired memberships found.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -507,27 +527,35 @@ function AdminPayments() {
                 </tr>
               </thead>
               <tbody>
-                {upcomingRenewalsList.map((r) => {
-                  const isExpired = r.dueIn === "Expired";
-                  return (
-                    <tr key={r.id}>
-                      <td className="member-id-cell">{r.id}</td>
-                      <td className="member-name-cell">{r.name}</td>
-                      <td>{r.plan}</td>
-                      <td>
-                        <span
-                          className={`member-status-indicator ${isExpired ? "status-expired" : "status-due"
-                            }`}
-                        >
-                          <FiClock />
-                          <span>{r.dueIn}</span>
-                        </span>
-                      </td>
-                      <td style={{ color: "#c5ff16", fontWeight: 700 }}>{r.renewalCost}</td>
-                      <td className="member-expiry-cell">{r.expiry}</td>
-                    </tr>
-                  );
-                })}
+                {upcomingRenewalsList.length > 0 ? (
+                  upcomingRenewalsList.map((r) => {
+                    const isExpired = r.dueIn === "Expired";
+                    return (
+                      <tr key={r.id}>
+                        <td className="member-id-cell">{r.id}</td>
+                        <td className="member-name-cell">{r.name}</td>
+                        <td>{r.plan}</td>
+                        <td>
+                          <span
+                            className={`member-status-indicator ${isExpired ? "status-expired" : "status-due"
+                              }`}
+                          >
+                            <FiClock />
+                            <span>{r.dueIn}</span>
+                          </span>
+                        </td>
+                        <td style={{ color: "#c5ff16", fontWeight: 700 }}>{r.renewalCost}</td>
+                        <td className="member-expiry-cell">{r.expiry}</td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="admin-no-results-cell">
+                      No upcoming renewals found.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
